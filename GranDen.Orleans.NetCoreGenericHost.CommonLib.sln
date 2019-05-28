@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GranDen.Orleans.NetCoreGenericHost.CommonLib", "GranDen.Orleans.NetCoreGenericHost.CommonLib\GranDen.Orleans.NetCoreGenericHost.CommonLib.csproj", "{878F9B72-9EEC-430E-B65B-9114D5FA3685}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GranDen.Orleans.NetCoreGenericHost.CommonLib", "src\GranDen.Orleans.NetCoreGenericHost.CommonLib\GranDen.Orleans.NetCoreGenericHost.CommonLib.csproj", "{878F9B72-9EEC-430E-B65B-9114D5FA3685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GranDen.Orleans.Server.SharedInterface", "src\GranDen.Orleans.Server.SharedInterface\GranDen.Orleans.Server.SharedInterface.csproj", "{933FB5A2-DECE-4B89-ABD3-4289DCF27FEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{878F9B72-9EEC-430E-B65B-9114D5FA3685}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{878F9B72-9EEC-430E-B65B-9114D5FA3685}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{878F9B72-9EEC-430E-B65B-9114D5FA3685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{933FB5A2-DECE-4B89-ABD3-4289DCF27FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{933FB5A2-DECE-4B89-ABD3-4289DCF27FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{933FB5A2-DECE-4B89-ABD3-4289DCF27FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{933FB5A2-DECE-4B89-ABD3-4289DCF27FEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
