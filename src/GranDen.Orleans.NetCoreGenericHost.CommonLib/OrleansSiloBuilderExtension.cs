@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
 using GranDen.Orleans.Server.SharedInterface;
@@ -21,17 +22,33 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 {
     public static class OrleansSiloBuilderExtension
     {
-        public static IHostBuilder UseHostConfiguration(this IHostBuilder builder, 
+        // ReSharper disable once UnusedMember.Global
+        /// <summary>
+        /// Create .NET Core Generic HostBuilder using default value
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns></returns>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            new HostBuilder()
+                .UseHostConfiguration(args)
+                .UseAppConfiguration(args)
+                .UseConfigurationOptions()
+                .ApplyOrleansSettings()
+                .ConfigureLogging(logging => logging.AddSerilog(dispose: true))
+                .UseConsoleLifetime()
+                .UseSerilog();
+
+        public static IHostBuilder UseHostConfiguration(this IHostBuilder builder,
             string[] args,
             Action<IConfigurationBuilder> configureDelegate = null,
-            string HostEnvironmentPrefix = "ORLEANS_HOST_")
+            string hostEnvironmentPrefix = "ORLEANS_HOST_")
         {
             if (configureDelegate == null)
             {
                 builder.ConfigureHostConfiguration(configHost =>
                 {
                     configHost
-                        .AddEnvironmentVariables(prefix: HostEnvironmentPrefix)
+                        .AddEnvironmentVariables(prefix: hostEnvironmentPrefix)
                         .AddCommandLine(args);
                 });
             }
@@ -43,7 +60,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return builder;
         }
 
-        public static IHostBuilder UseAppConfiguration(this IHostBuilder builder, 
+        public static IHostBuilder UseAppConfiguration(this IHostBuilder builder,
             string[] args,
             Action<HostBuilderContext, IConfigurationBuilder> configureDelegate = null,
             string configEnvironmentPrefix = "ORLEANS_HOST_APP_",
@@ -51,12 +68,12 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             if (configureDelegate == null)
             {
-                builder.ConfigureAppConfiguration((hostContext, configApp) =>
+                builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
                 {
                     var cwdEnv = Environment.CurrentDirectory;
                     var cwd = Directory.GetCurrentDirectory();
 
-                    configApp
+                    configurationBuilder
                         .SetBasePath(string.IsNullOrEmpty(cwdEnv) ? cwd : cwdEnv)
                         .AddJsonFile($"{configFilePrefix}.json", optional: false)
                         .AddJsonFile($"{configFilePrefix}.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true)
@@ -101,16 +118,28 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return builder;
         }
 
-        public static IHostBuilder ApplyOrleansSettings(this IHostBuilder builder, 
+        public static IHostBuilder ApplyOrleansSettings(this IHostBuilder builder,
             Func<HostBuilderContext, IConfigurationSection> configDelegate = null,
-            string orleansConfigSection = "Orleans")
+            string orleansConfigSection = "Orleans",
+            string siloConfigSection = "SiloConfig",
+            string orleansProviderSection = "Provider",
+            string grainLoadOptionSection = "GrainOption", 
+            string orleansDashboardOptionSection = "Dashboard")
+
         {
             if (configDelegate == null)
             {
                 builder.UseOrleans((context, siloBuilder) =>
                 {
                     var orleansSettings = context.Configuration.GetSection(orleansConfigSection);
-                    ConfigSiloBuilder(context, siloBuilder, orleansSettings);
+                    var siloConfig = orleansSettings.GetTypedConfig<SiloConfigOption>(siloConfigSection);
+                    var orleansProviderConfig =
+                        orleansSettings.GetTypedConfig<OrleansProviderOption>(orleansProviderSection);
+                    var grainLoadOption = orleansSettings.GetTypedConfig<GrainLoadOption>(grainLoadOptionSection);
+                    var orleansDashboardOption =
+                        orleansSettings.GetTypedConfig<OrleansDashboardOption>(orleansDashboardOptionSection);
+                    
+                    ConfigSiloBuilder(siloBuilder, siloConfig, orleansProviderConfig, grainLoadOption, orleansDashboardOption);
                 });
             }
             else
@@ -118,7 +147,14 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 builder.UseOrleans((context, siloBuilder) =>
                 {
                     var orleansSettings = configDelegate(context);
-                    ConfigSiloBuilder(context, siloBuilder, orleansSettings);
+                    var siloConfig = orleansSettings.GetTypedConfig<SiloConfigOption>(siloConfigSection);
+                    var orleansProviderConfig =
+                        orleansSettings.GetTypedConfig<OrleansProviderOption>(orleansProviderSection);
+                    var grainLoadOption = orleansSettings.GetTypedConfig<GrainLoadOption>(grainLoadOptionSection);
+                    var orleansDashboardOption =
+                        orleansSettings.GetTypedConfig<OrleansDashboardOption>(orleansDashboardOptionSection);
+
+                    ConfigSiloBuilder(siloBuilder, siloConfig, orleansProviderConfig, grainLoadOption, orleansDashboardOption);
                 });
             }
             return builder;
@@ -126,10 +162,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
         #region Private Util Methods
 
-        private static void ConfigSiloBuilder(HostBuilderContext context, ISiloBuilder siloBuilder, IConfigurationSection orleansSettings)
+        private static void ConfigSiloBuilder(ISiloBuilder siloBuilder, 
+            SiloConfigOption siloConfig, OrleansProviderOption orleansProvider, GrainLoadOption grainLoadOption, OrleansDashboardOption orleansDashboard)
         {
-            var (siloConfig, grainLoadOption, orleansProvider, orleansDashboard) = GetServerConfig(orleansSettings);
-
             if (orleansDashboard.Enable)
             {
                 Log.Information($"Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host {orleansDashboard.Port} port");
@@ -283,23 +318,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             }
         }
 
-        private static (SiloConfigOption, GrainLoadOption, OrleansProviderOption, OrleansDashboardOption) GetServerConfig(IConfigurationSection config)
-        {
-            var siloConfigOption = new SiloConfigOption();
-            config.GetSection("SiloConfig").Bind(siloConfigOption);
-
-            var grainLoadOption = new GrainLoadOption();
-            config.GetSection("GrainOption").Bind(grainLoadOption);
-
-            var orleansProviderOption = new OrleansProviderOption();
-            config.GetSection("Provider").Bind(orleansProviderOption);
-
-            var orleansDashboardOption = new OrleansDashboardOption();
-            config.GetSection("Dashboard").Bind(orleansDashboardOption);
-
-            return (siloConfigOption, grainLoadOption, orleansProviderOption, orleansDashboardOption);
-        }
-
         private static bool IpAddressNotSpecified(string ipString)
         {
             if (ipString == null) { return true; }
@@ -357,8 +375,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return ret;
         }
 
-
         #endregion
-
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
+namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions
 {
     public class LoadGrainDllFailedException : Exception
     {
