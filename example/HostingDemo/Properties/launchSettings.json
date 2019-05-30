@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "HostingDemo": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GrainLoadPath": "../../../../"
+      }
+    }
+  }
+}

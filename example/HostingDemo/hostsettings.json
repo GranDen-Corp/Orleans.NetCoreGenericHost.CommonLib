@@ -1,0 +1,37 @@
+{
+  "Orleans": {
+    "SiloConfig": {
+      "ClusterId": "demo-host-server",
+      "ServiceId": "demo-service",
+      "AdvertisedIp": "*",
+      "ListenOnAnyHostAddress": true,
+      "SiloPort": 8320,
+      "GatewayPort": 8310
+    },
+    "Provider": {
+      "DefaultProvider": "MongoDB",
+      "MongoDB": {
+        "Cluster": {
+          "DbConn": "mongodb://localhost:27017",
+          "DbName": "demo-silo-Clustering"
+        },
+        "Storage": {
+          "DbConn": "mongodb://localhost:27017",
+          "DbName": "demo-silo-Storage"
+        },
+        "Reminder": {
+          "DbConn": "mongodb://localhost:27017",
+          "DbName": "demo-silo-Reminder"
+        }
+      }
+    },
+    "Dashboard": {
+      "enable": true,
+      "port": 8210
+    },
+    "GrainOption": {
+      "LoadPaths": [ "{GrainLoadPath}/GrainDemo/bin/Debug/netstandard2.0/GrainDemo.dll" ],
+      "ExcludedTypeFullNames": []
+    }
+  }
+}
