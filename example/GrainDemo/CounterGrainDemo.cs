@@ -2,8 +2,6 @@
 using Orleans;
 using RpcShareInterface;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GrainDemo
@@ -17,6 +15,8 @@ namespace GrainDemo
             _logger = logger;
         }
 
+        #region Grain Interface Implement
+               
         public Task Add(int increment)
         {
             _logger.LogInformation($"Try to increment {increment}");
@@ -38,6 +38,14 @@ namespace GrainDemo
             State.LastUpdate = null;
             State.Current = 0;
             return Task.CompletedTask;
+        }
+
+        #endregion
+
+        public override async Task OnDeactivateAsync()
+        {
+            await base.WriteStateAsync();
+            await base.OnDeactivateAsync();
         }
     }
 }
