@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers
 {
-    public static class AssemblyUtil
+    internal static class AssemblyUtil
     {
         public static string GetCurrentAssemblyPath()
         {

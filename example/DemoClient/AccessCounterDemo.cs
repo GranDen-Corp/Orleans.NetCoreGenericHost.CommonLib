@@ -38,7 +38,7 @@ namespace DemoClient
 
                 await grain.Add(3);
                 var current = await grain.CurrentValue();
-                _logger.LogInformation("Current counter value is{0}", current);
+                _logger.LogInformation("Current counter value is '{0}'", current);
 
                 await client.Close();
                 _logger.LogInformation("Client successfully close connection to silo host");

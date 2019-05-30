@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers
 {
-    public static class ConfigurationUtil
+    internal static class ConfigurationUtil
     {
         public static T GetTypedConfig<T>(this IConfigurationSection config, string sectionKey) where T : new()
         {
