@@ -2,6 +2,26 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Company>GranDen Inc.</Company>
+    <Authors>Isak Pao</Authors>
+    <Version>1.0.0</Version>
+    <Description>Package for Orleans (http://dotnet.github.io/orleans ) Grain to provide Dependency Injection implementation interface</Description>
+    <Copyright>Copyright (c) 2019 GranDen Corp.(狂點軟體開發)</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageTags>Orleans</PackageTags>
+    <RepositoryUrl>https://github.com/GranDen-Corp/Orleans.NetCoreGenericHost.CommonLib</RepositoryUrl>
+    <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.Server.SharedInterface</PackageProjectUrl>
+    <PackageReleaseNotes>1.0.0 : Initial release</PackageReleaseNotes>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\repo\Orleans.NetCoreGenericHost.CommonLib\src\GranDen.Orleans.Server.SharedInterface\GranDen.Orleans.Server.SharedInterface.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
