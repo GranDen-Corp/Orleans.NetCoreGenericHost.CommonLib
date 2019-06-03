@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "dependsOn": [
+                "build demo server",
+                "build demo client"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build demo grain",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/example/GrainDemo/GrainDemo.csproj"
+            ],
+            "problemMatcher": "$tsc",
+            "group": "build"
+        },
+        {
+            "label": "build demo server",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/example/HostingDemo/HostingDemo.csproj"
+            ],
+            "problemMatcher": "$tsc",
+            "dependsOn": [
+                "build demo grain"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "build demo client",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/example/DemoClient/DemoClient.csproj"
+            ],
+            "problemMatcher": "$tsc",
+            "group": "build",
+            "dependsOn": [
+                "build demo server"
+            ]
+        }
+    ]
+}

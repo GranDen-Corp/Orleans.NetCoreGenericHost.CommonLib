@@ -289,6 +289,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 var dllPaths = grainLoadOption.LoadPaths;
 
                 ConfigOtherFolderGrainLoad(parts, dllPaths, pathResolver);
+                
             });
 
             foreach (var serviceConfigAction in GetGrainServiceConfigurationAction(grainLoadOption, pathResolver))

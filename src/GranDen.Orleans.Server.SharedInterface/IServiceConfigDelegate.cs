@@ -5,6 +5,9 @@ using System.Text;
 
 namespace GranDen.Orleans.Server.SharedInterface
 {
+    /// <summary>
+    /// .NET Core Generic Host Dependency Injection implementation interface
+    /// </summary>
     public interface IServiceConfigDelegate
     {
         /// <summary>

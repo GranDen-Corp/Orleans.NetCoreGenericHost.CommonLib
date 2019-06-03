@@ -259,5 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
 src/GranDen.Orleans.NetCoreGenericHost.CommonLib/GranDen.Orleans.NetCoreGenericHost.CommonLib.xml
 src/GranDen.Orleans.Server.SharedInterface/GranDen.Orleans.Server.SharedInterface.xml

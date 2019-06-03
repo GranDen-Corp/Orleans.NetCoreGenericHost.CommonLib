@@ -21,7 +21,7 @@ namespace DemoClient
         public async Task RunCounter()
         {
             var (clusterInfo, providerOption) = GetConfigSettings();
-            using (var client = OrleansClientBuilder.CreateClient(_logger,clusterInfo,providerOption))
+            using (var client = OrleansClientBuilder.CreateClient(_logger, clusterInfo, providerOption))
             {
                 await client.ConnectWithRetryAsync();
                 _logger.LogInformation("Client successfully connect to silo host");
@@ -45,27 +45,13 @@ namespace DemoClient
             }
         }
 
-        private static (ClusterInfoOption, OrleansProviderOption) GetConfigSettings(Func<IConfigurationBuilder> func = null)
+        private static (ClusterInfoOption, OrleansProviderOption) GetConfigSettings()
         {
-            IConfigurationBuilder builder;
-            if (func == null)
-            {
-                builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-            }
-            else
-            {
-                builder = func();
-            }
+            IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
 
-            var config = builder.Build().GetSection("Orleans");
+            var configRoot = builder.Build();
 
-            var clusterInfo = new ClusterInfoOption();
-            config.GetSection("Cluster").Bind(clusterInfo);
-
-            var providerOption = new OrleansProviderOption();
-            config.GetSection("Provider").Bind(providerOption);
-
-            return (clusterInfo, providerOption);
+            return configRoot.GetSiloSettings();
         }
     }
 }

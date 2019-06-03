@@ -2,27 +2,33 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>GranDen Inc.</Company>
     <Authors>Isak Pao</Authors>
-    <Version>1.0.0</Version>
+    <Version>1.0.4</Version>
     <Description>Libraries for easier create Orleans (http://dotnet.github.io/orleans ) Silo Host running on .NET Core generic host</Description>
     <Copyright>Copyright (c) 2019 GranDen Corp.(狂點軟體開發)</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/GranDen-Corp/Orleans.NetCoreGenericHost.CommonLib.git</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageTags>Orleans</PackageTags>
-    <RepositoryUrl>https://github.com/GranDen-Corp/Orleans.NetCoreGenericHost.CommonLib</RepositoryUrl>
     <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.NetCoreGenericHost.CommonLib</PackageProjectUrl>
-    <PackageReleaseNotes>1.0.0 : Initial release</PackageReleaseNotes>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <PackageReleaseNotes>1.0.4 : Bump version to make aligned to all associated dependent library version</PackageReleaseNotes>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.CommonLib.xml</DocumentationFile>
+  </PropertyGroup>    
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>D:\repo\Orleans.NetCoreGenericHost.CommonLib\src\GranDen.Orleans.NetCoreGenericHost.CommonLib\GranDen.Orleans.NetCoreGenericHost.CommonLib.xml</DocumentationFile>
+    <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.CommonLib.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,6 +45,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All"/>
     <PackageReference Include="Orleans.Providers.MongoDB" Version="2.4.0" />
     <PackageReference Include="OrleansDashboard" Version="2.3.1" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="2.0.0" />  
