@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>GranDen Inc.</Company>
     <Authors>Isak Pao</Authors>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <Description>Libraries for easier create Orleans (http://dotnet.github.io/orleans ) Silo Host running on .NET Core generic host</Description>
     <Copyright>Copyright (c) 2019 GranDen Corp.(狂點軟體開發)</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -18,9 +18,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageTags>Orleans</PackageTags>
     <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.NetCoreGenericHost.CommonLib</PackageProjectUrl>
-    <PackageReleaseNotes>1.0.4 : Bump version to make aligned to all associated dependent library version</PackageReleaseNotes>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
+    <PackageReleaseNotes>1.0.5 : Update Microsoft Orleans to v2.3.4 &#38; Add Linux / Azure Application Insight Telemetry Consumer Support</PackageReleaseNotes>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -41,13 +41,15 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.3.2">
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.3.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.AI" Version="2.3.4" />
+    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Linux" Version="2.3.4" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
     <PackageReference Include="Orleans.Providers.MongoDB" Version="2.4.0" />
-    <PackageReference Include="OrleansDashboard" Version="2.3.1" />
+    <PackageReference Include="OrleansDashboard" Version="2.3.3" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="2.0.0" />  
   </ItemGroup>
 

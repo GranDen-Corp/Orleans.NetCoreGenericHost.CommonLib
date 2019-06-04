@@ -29,6 +29,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
         [Required]
         public string DefaultProvider { get; set; }
 
+        /// <summary>
+        /// Top level MongoDB provider setting
+        /// </summary>
         public MongoDbProviderSettings MongoDB { get; set; }
     }
 
@@ -37,45 +40,64 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
     /// </summary>
     public class MongoDbProviderSettings
     {
+        /// <summary>
+        /// Silo Cluster MongoDB provider setting
+        /// </summary>
         public MongoDbProviderClusterSettings Cluster { get; set; }
+
+        /// <summary>
+        /// Silo Storage MongoDB provider setting
+        /// </summary>
         public MongoDbProviderStorageSettings Storage { get; set; }
+
+        /// <summary>
+        /// Silo Reminder MongoDB provider setting
+        /// </summary>
         public MongoDbProviderReminderSettings Reminder { get; set; }
+    }
+
+    /// <summary>
+    /// Common POCO class for MongoDB connection setting
+    /// </summary>
+    public abstract class AbstractMongoDBSetting
+    {
+        /// <summary>
+        /// MongoDB connection string
+        /// </summary>
+        [Required]
+        public string DbConn { get; set; }
+
+        /// <summary>
+        /// MongoDB database name
+        /// </summary>
+        [Required]
+        public string DbName { get; set; }
+
+        /// <summary>
+        /// Collection name prefix
+        /// </summary>
+        public string CollectionPrefix { get; set; }
     }
 
     /// <summary>
     /// Silo Cluster MongoDB Provider typed configuration class
     /// </summary>
-    public class MongoDbProviderClusterSettings
+    public class MongoDbProviderClusterSettings : AbstractMongoDBSetting
     {
-        [Required]
-        public string DbConn { get; set; }
-        [Required]
-        public string DbName { get; set; }
-        public string CollectionPrefix { get; set; }
     }
 
     /// <summary>
     /// Grain Storage Provider typed configuration class
     /// </summary>
-    public class MongoDbProviderStorageSettings
+    public class MongoDbProviderStorageSettings : AbstractMongoDBSetting
     {
-        [Required]
-        public string DbConn { get; set; }
-        [Required]
-        public string DbName { get; set; }
-        public string CollectionPrefix { get; set; }
     }
 
     /// <summary>
     /// Grain Reminder Provider typed configuration class
     /// </summary>
-    public class MongoDbProviderReminderSettings
+    public class MongoDbProviderReminderSettings : AbstractMongoDBSetting
     {
-        [Required]
-        public string DbConn { get; set; }
-        [Required]
-        public string DbName { get; set; }
-        public string CollectionPrefix { get; set; }
     }
 
     /// <summary>
@@ -83,20 +105,51 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
     /// </summary>
     public class SiloConfigOption
     {
+        /// <summary>
+        /// Silo Cluster Id
+        /// </summary>
         [Required]
         public string ClusterId { get; set; }
+
+        /// <summary>
+        /// Silo Service Id
+        /// </summary>
         [Required]
         public string ServiceId { get; set; }
 
+        /// <summary>
+        /// Custom Silo Name
+        /// </summary>
         public string SiloName { get; set; }
 
+        /// <summary>
+        /// Broadcast Ip address
+        /// </summary>
         public string AdvertisedIp { get; set; }
+
+        /// <summary>
+        /// Set to true to binding all hosting environment's NICs
+        /// </summary>
         public bool ListenOnAnyHostAddress { get; set; }
+
+        /// <summary>
+        /// Silo-to-Silo port number
+        /// </summary>
         public int SiloPort { get; set; }
+
+        /// <summary>
+        /// Client connect port number
+        /// </summary>
         public int GatewayPort { get; set; }
 
+        /// <summary>
+        /// Timeout value, default is 3 minutes
+        /// </summary>
         public double ResponseTimeoutMinutes { get; set; } = 3.0;
 
+        /// <summary>
+        /// Set to true if using in Multi-Cluster configuration
+        /// </summary>
         public bool? IsMultiCluster { get; set; }
 
         /// <summary>
@@ -108,5 +161,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
         /// If IsMultiCluster is true, this must be set.
         /// </summary>
         public Dictionary<string, string> GossipChannels { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string AzureApplicationInsightKey { get; set; }
     }
 }

@@ -3,7 +3,12 @@ using Orleans;
 using RpcShareInterface;
 using System;
 using System.Threading.Tasks;
+using Orleans.CodeGeneration;
 
+
+// for shared interface code generate, if the shared interface project not being referenced in silo host project.
+// see https://kimsereyblog.blogspot.com/2017/12/microsoft-orleans-logs-warnings-and.html
+[assembly: KnownAssembly(typeof(ICounter))]
 namespace GrainDemo
 {
     public class CounterGrainDemo : Grain<CounterGrainState>, ICounter

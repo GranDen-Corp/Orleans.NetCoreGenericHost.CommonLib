@@ -26,6 +26,7 @@ namespace DemoClient {
                 await demo.RunCounter ();
             } catch (Exception ex) {
                 logger.LogError (ex, "error occured!");
+                throw;
             }
 
             logger.LogInformation ("Press enter to exit");

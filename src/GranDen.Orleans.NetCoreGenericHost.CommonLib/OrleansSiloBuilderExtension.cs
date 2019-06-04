@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
@@ -15,6 +16,7 @@ using Orleans;
 using Orleans.ApplicationParts;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Orleans.Statistics;
 using Serilog;
 using HostBuilderContext = Microsoft.Extensions.Hosting.HostBuilderContext;
 
@@ -197,6 +199,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     ConfigSiloBuilder(siloBuilder, siloConfig, orleansProviderConfig, grainLoadOption, orleansDashboardOption);
                 });
             }
+
             return builder;
         }
 
@@ -207,6 +210,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             if (orleansDashboard.Enable)
             {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    siloBuilder.UseLinuxEnvironmentStatistics();
+                }
+
                 Log.Information($"Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host {orleansDashboard.Port} port");
                 siloBuilder.UseDashboard(options =>
                 {
@@ -228,6 +236,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 options.ClusterId = siloConfig.ClusterId;
                 options.ServiceId = siloConfig.ServiceId;
             });
+
+            if (!string.IsNullOrEmpty(siloConfig.AzureApplicationInsightKey))
+            {
+                siloBuilder.AddApplicationInsightsTelemetryConsumer(siloConfig.AzureApplicationInsightKey);
+            }
 
             if (siloConfig.IsMultiCluster.HasValue && siloConfig.IsMultiCluster.Value)
             {
@@ -289,7 +302,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 var dllPaths = grainLoadOption.LoadPaths;
 
                 ConfigOtherFolderGrainLoad(parts, dllPaths, pathResolver);
-                
+
             });
 
             foreach (var serviceConfigAction in GetGrainServiceConfigurationAction(grainLoadOption, pathResolver))
