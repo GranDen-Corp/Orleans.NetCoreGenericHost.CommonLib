@@ -266,7 +266,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 });
             }
 
-            var pathResolver = new Func<string, string>(path =>
+            string pathResolver(string path)
             {
                 if (!path.Contains("{GrainLoadPath}"))
                 {
@@ -293,7 +293,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 }
 
                 return ret;
-            });
+            }
 
             siloBuilder.ConfigureApplicationParts(parts =>
             {
@@ -307,7 +307,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
             foreach (var serviceConfigAction in GetGrainServiceConfigurationAction(grainLoadOption, pathResolver))
             {
-                siloBuilder.ConfigureServices(serviceConfigAction);
+                Log.Information($"Configure DI using {serviceConfigAction}");
+
+                siloBuilder.ConfigureApplicationParts(serviceConfigAction.AppPartConfigurationAction);
+                siloBuilder.ConfigureServices(serviceConfigAction.ServiceConfigurationAction);
             }
 
             if (IpAddressNotSpecified(siloConfig.AdvertisedIp))
@@ -385,11 +388,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             {
                 var dllFileInfo = new FileInfo(pathResolveFunc(path));
                 var assembly = Assembly.LoadFile(dllFileInfo.FullName);
-                applicationPartManager.AddApplicationPart(assembly).WithReferences();
+                applicationPartManager.AddDynamicPart(assembly);
             }
         }
 
-        private static IEnumerable<Action<IServiceCollection>> GetGrainServiceConfigurationAction(GrainLoadOption grainLoadOption, Func<string, string> pathResolveFunc)
+        private static IEnumerable<IGrainServiceConfigDelegate> GetGrainServiceConfigurationAction(GrainLoadOption grainLoadOption, Func<string, string> pathResolveFunc)
         {
             var dllPaths = grainLoadOption.LoadPaths;
             var excludedTypeFullNames = grainLoadOption.ExcludedTypeFullNames;
@@ -397,9 +400,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return GetAllNeedServiceConfigure(dllPaths, excludedTypeFullNames, pathResolveFunc);
         }
 
-        private static IEnumerable<Action<IServiceCollection>> GetAllNeedServiceConfigure(IEnumerable<string> pathsList, ICollection<string> excludedTypeFullNames, Func<string, string> pathResolveFunc)
+        private static IEnumerable<IGrainServiceConfigDelegate> GetAllNeedServiceConfigure(IEnumerable<string> pathsList, ICollection<string> excludedTypeFullNames, Func<string, string> pathResolveFunc)
         {
-            var ret = new List<Action<IServiceCollection>>();
+            var ret = new List<IGrainServiceConfigDelegate>();
             foreach (var path in pathsList)
             {
                 var fullPath = pathResolveFunc(path);
@@ -421,8 +424,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                         throw new LoadGrainDllFailedException(serviceConfigureClass.FullName);
                     }
 
-                    var loadAction = serviceConfigDelegate.ServiceConfigurationAction;
-                    ret.Add(loadAction);
+                    ret.Add(serviceConfigDelegate);
                 }
             }
 

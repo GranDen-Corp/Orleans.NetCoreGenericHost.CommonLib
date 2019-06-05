@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Orleans.ApplicationParts;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 
 namespace GranDen.Orleans.Server.SharedInterface
 {
@@ -13,12 +14,19 @@ namespace GranDen.Orleans.Server.SharedInterface
         /// <summary>
         /// Define Orleans Grain's DI Service registration implementation.
         /// </summary>
-        Action<IServiceCollection> ServiceConfigurationAction { get; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Collapsed)]
+        Action<HostBuilderContext, IServiceCollection> ServiceConfigurationAction { get; }
     }
 
     /// <summary>
     /// To make Orleans's Grain project be able to use DI services in Grain implementation.
     /// </summary>
     public interface IGrainServiceConfigDelegate : IServiceConfigDelegate
-    { }
+    {
+        /// <summary>
+        /// ApplicaitonPartManager configuration implementation
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Collapsed)]
+        Action<IApplicationPartManager> AppPartConfigurationAction { get; }
+    }
 }

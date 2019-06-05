@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Orleans.CodeGeneration;
 
 namespace RpcShareInterface
 {
