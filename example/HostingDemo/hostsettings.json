@@ -9,7 +9,7 @@
       "GatewayPort": 8310
     },
     "Provider": {
-      "DefaultProvider": "MongoDB",
+      "DefaultProvider": "MongoDB", 
       "MongoDB": {
         "Cluster": {
           "DbConn": "mongodb://localhost:27017",

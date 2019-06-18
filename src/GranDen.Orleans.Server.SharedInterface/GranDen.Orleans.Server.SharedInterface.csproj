@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>GranDen Inc.</Company>
     <Authors>Isak Pao</Authors>
-    <Version>1.0.6</Version>
+    <Version>1.0.8</Version>
     <Description>Package for Orleans (http://dotnet.github.io/orleans ) Grain to provide Dependency Injection implementation interface</Description>
     <Copyright>Copyright (c) 2019 GranDen Corp.(狂點軟體開發)</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -17,9 +17,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageTags>Orleans</PackageTags>
     <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.Server.SharedInterface</PackageProjectUrl>
-    <PackageReleaseNotes>1.0.6 : DI registraction interface changed</PackageReleaseNotes>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
+    <PackageReleaseNotes>1.0.8 : Update Orleans nugets to v2.3.5</PackageReleaseNotes>
+    <AssemblyVersion>1.0.8.0</AssemblyVersion>
+    <FileVersion>1.0.8.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -37,11 +37,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.3.4">
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.3.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.Core" Version="2.3.4" />
+    <PackageReference Include="Microsoft.Orleans.Core" Version="2.3.5" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
   </ItemGroup>
 

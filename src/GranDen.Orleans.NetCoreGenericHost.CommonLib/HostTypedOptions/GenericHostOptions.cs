@@ -24,7 +24,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
     public class OrleansProviderOption
     {
         /// <summary>
-        /// Default Storage Provider's name, currently only "MongoDB"
+        /// Default Storage Provider's name, currently only "MongoDB" and "InMemory"
         /// </summary>
         [Required]
         public string DefaultProvider { get; set; }

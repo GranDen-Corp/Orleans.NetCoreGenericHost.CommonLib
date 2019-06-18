@@ -321,8 +321,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             else
             {
                 var advertisedIp = IPAddress.Parse(siloConfig.AdvertisedIp.Trim());
-                siloBuilder.ConfigureEndpoints(advertisedIp, siloConfig.SiloPort, siloConfig.GatewayPort,
-                    siloConfig.ListenOnAnyHostAddress);
+                siloBuilder.ConfigureEndpoints(advertisedIp, siloConfig.SiloPort, siloConfig.GatewayPort, siloConfig.ListenOnAnyHostAddress);
             }
 
             switch (orleansProvider.DefaultProvider)
@@ -369,8 +368,15 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     });
                     break;
 
+                case "InMemory":
                 default:
-                    siloBuilder.UseLocalhostClustering().UseInMemoryReminderService();
+                    siloBuilder.UseLocalhostClustering(
+                        serviceId: siloConfig.ServiceId, 
+                        clusterId: siloConfig.ClusterId, 
+                        siloPort: siloConfig.SiloPort, 
+                        gatewayPort: siloConfig.GatewayPort)
+                        .AddMemoryGrainStorageAsDefault()
+                        .UseInMemoryReminderService();
                     break;
             }
         }
