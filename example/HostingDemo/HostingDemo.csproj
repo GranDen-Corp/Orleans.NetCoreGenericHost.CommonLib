@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\GranDen.Orleans.NetCoreGenericHost.CommonLib\GranDen.Orleans.NetCoreGenericHost.CommonLib.csproj" />
+    <ProjectReference Include="..\..\src\GranDen.Orleans.NetCoreGenericHost.Serilog\GranDen.Orleans.NetCoreGenericHost.Serilog.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,12 +12,12 @@ using GranDen.Orleans.Server.SharedInterface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.ApplicationParts;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Statistics;
-using Serilog;
 using HostBuilderContext = Microsoft.Extensions.Hosting.HostBuilderContext;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
@@ -31,16 +31,24 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// Create .NET Core Generic HostBuilder using various default configuration
         /// </summary>
         /// <param name="args">Command line arguments</param>
+        /// <param name="logBuilderAction"></param>
         /// <returns></returns>
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            new HostBuilder()
-                .UseHostConfiguration(args)
-                .UseAppConfiguration(args)
-                .UseConfigurationOptions()
-                .ApplyOrleansSettings()
-                .ConfigureLogging(logging => logging.AddSerilog(dispose: true))
-                .UseConsoleLifetime()
-                .UseSerilog();
+        public static IHostBuilder CreateHostBuilder(string[] args, Action<ILoggingBuilder> logBuilderAction = null)
+        {
+            var ret = new HostBuilder()
+                 .UseHostConfiguration(args)
+                 .UseAppConfiguration(args)
+                 .UseConfigurationOptions()
+                 .ApplyOrleansSettings();
+
+            if (logBuilderAction != null)
+            {
+                ret.ConfigureLogging(logBuilderAction);
+            }
+            ret.UseConsoleLifetime();
+            return ret;
+        }
+
 
         /// <summary>
         /// Initialize .NET Core generic host's host configuration
@@ -75,13 +83,13 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// <summary>
         /// Initialize .NET Core generic host's app configuration
         /// </summary>
-        /// <param name="builder"></param>
+        /// <param name="hostBuilder"></param>
         /// <param name="args"></param>
         /// <param name="configureDelegate"></param>
         /// <param name="configEnvironmentPrefix"></param>
         /// <param name="configFilePrefix"></param>
         /// <returns></returns>
-        public static IHostBuilder UseAppConfiguration(this IHostBuilder builder,
+        public static IHostBuilder UseAppConfiguration(this IHostBuilder hostBuilder,
             string[] args,
             Action<HostBuilderContext, IConfigurationBuilder> configureDelegate = null,
             string configEnvironmentPrefix = "ORLEANS_HOST_APP_",
@@ -89,7 +97,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             if (configureDelegate == null)
             {
-                builder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+                hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
                 {
                     var cwdEnv = Environment.CurrentDirectory;
                     var cwd = Directory.GetCurrentDirectory();
@@ -104,9 +112,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             }
             else
             {
-                builder.ConfigureAppConfiguration(configureDelegate);
+                hostBuilder.ConfigureAppConfiguration(configureDelegate);
             }
-            return builder;
+            return hostBuilder;
         }
 
         /// <summary>
@@ -153,60 +161,78 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// <summary>
         /// Config Orleans Silo Builder using default or custom Orleans Host configuration
         /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="configDelegate"></param>
+        /// <param name="hostBuilder"></param>
+        /// <param name="configurationGetterFunc"></param>
         /// <param name="orleansConfigSection"></param>
         /// <param name="siloConfigSection"></param>
         /// <param name="orleansProviderSection"></param>
         /// <param name="grainLoadOptionSection"></param>
         /// <param name="orleansDashboardOptionSection"></param>
         /// <returns></returns>
-        public static IHostBuilder ApplyOrleansSettings(this IHostBuilder builder,
-            Func<HostBuilderContext, IConfigurationSection> configDelegate = null,
+        public static IHostBuilder ApplyOrleansSettings(this IHostBuilder hostBuilder,
+            Func<HostBuilderContext, IConfigurationSection> configurationGetterFunc = null,
             string orleansConfigSection = "Orleans",
             string siloConfigSection = "SiloConfig",
             string orleansProviderSection = "Provider",
             string grainLoadOptionSection = "GrainOption",
             string orleansDashboardOptionSection = "Dashboard")
         {
-            if (configDelegate == null)
-            {
-                builder.UseOrleans((context, siloBuilder) =>
-                {
-                    var orleansSettings = context.Configuration.GetSection(orleansConfigSection);
-                    var siloConfig = orleansSettings.GetTypedConfig<SiloConfigOption>(siloConfigSection);
-                    var orleansProviderConfig =
-                        orleansSettings.GetTypedConfig<OrleansProviderOption>(orleansProviderSection);
-                    var grainLoadOption = orleansSettings.GetTypedConfig<GrainLoadOption>(grainLoadOptionSection);
-                    var orleansDashboardOption =
-                        orleansSettings.GetTypedConfig<OrleansDashboardOption>(orleansDashboardOptionSection);
+            var logger = (new DefaultLoggerHelper()).CreateDefaultLogger<HostBuilder>();
 
-                    ConfigSiloBuilder(siloBuilder, siloConfig, orleansProviderConfig, grainLoadOption, orleansDashboardOption);
+            if (configurationGetterFunc != null)
+            {
+                Action<HostBuilderContext, ISiloBuilder>
+                    ConfigureDelegate(HostBuilderContext context, ISiloBuilder siloBuilder, Func<HostBuilderContext, IConfigurationSection> configGetter)
+                {
+                    var orleansSettings = configGetter(context);
+                    return (hostBuilderContext, iSiloBuilder) =>
+                    {
+                        var siloConfig = orleansSettings.GetTypedConfig<SiloConfigOption>(siloConfigSection);
+                        var orleansProviderConfig = orleansSettings.GetTypedConfig<OrleansProviderOption>(orleansProviderSection);
+                        var grainLoadOption = orleansSettings.GetTypedConfig<GrainLoadOption>(grainLoadOptionSection);
+                        var orleansDashboardOption = orleansSettings.GetTypedConfig<OrleansDashboardOption>(orleansDashboardOptionSection);
+
+                        siloBuilder.ConfigSiloBuilder(siloConfig, orleansProviderConfig, grainLoadOption, orleansDashboardOption, logger);
+                    };
+                }
+
+                hostBuilder.UseOrleans((ctx, siloBuilder) =>
+                {
+                    var configAction = ConfigureDelegate(ctx, siloBuilder, configurationGetterFunc);
+                    configAction(ctx, siloBuilder);
                 });
             }
             else
             {
-                builder.UseOrleans((context, siloBuilder) =>
+                void ConfigSiloBuilderDelegate(HostBuilderContext context, ISiloBuilder siloBuilder)
                 {
-                    var orleansSettings = configDelegate(context);
+                    var orleansSettings = context.Configuration.GetSection(orleansConfigSection);
                     var siloConfig = orleansSettings.GetTypedConfig<SiloConfigOption>(siloConfigSection);
-                    var orleansProviderConfig =
-                        orleansSettings.GetTypedConfig<OrleansProviderOption>(orleansProviderSection);
+                    var orleansProviderConfig = orleansSettings.GetTypedConfig<OrleansProviderOption>(orleansProviderSection);
                     var grainLoadOption = orleansSettings.GetTypedConfig<GrainLoadOption>(grainLoadOptionSection);
-                    var orleansDashboardOption =
-                        orleansSettings.GetTypedConfig<OrleansDashboardOption>(orleansDashboardOptionSection);
+                    var orleansDashboardOption = orleansSettings.GetTypedConfig<OrleansDashboardOption>(orleansDashboardOptionSection);
 
-                    ConfigSiloBuilder(siloBuilder, siloConfig, orleansProviderConfig, grainLoadOption, orleansDashboardOption);
-                });
+                    siloBuilder.ConfigSiloBuilder(siloConfig, orleansProviderConfig, grainLoadOption, orleansDashboardOption, logger);
+                }
+
+                hostBuilder.UseOrleans(ConfigSiloBuilderDelegate);
             }
 
-            return builder;
+            return hostBuilder;
         }
 
-        #region Private Util Methods
-
-        private static void ConfigSiloBuilder(ISiloBuilder siloBuilder,
-            SiloConfigOption siloConfig, OrleansProviderOption orleansProvider, GrainLoadOption grainLoadOption, OrleansDashboardOption orleansDashboard)
+        /// <summary>
+        /// Actual implementation of SiloBuilder various configuration
+        /// </summary>
+        /// <param name="siloBuilder"></param>
+        /// <param name="siloConfig"></param>
+        /// <param name="orleansProvider"></param>
+        /// <param name="grainLoadOption"></param>
+        /// <param name="orleansDashboard"></param>
+        /// <param name="logger"></param>
+        /// <returns></returns>
+        public static ISiloBuilder ConfigSiloBuilder(this ISiloBuilder siloBuilder,
+            SiloConfigOption siloConfig, OrleansProviderOption orleansProvider, GrainLoadOption grainLoadOption, OrleansDashboardOption orleansDashboard, ILogger logger = null)
         {
             if (orleansDashboard.Enable)
             {
@@ -215,7 +241,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     siloBuilder.UseLinuxEnvironmentStatistics();
                 }
 
-                Log.Information($"Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host {orleansDashboard.Port} port");
+                logger.LogInformation($"Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host {orleansDashboard.Port} port");
                 siloBuilder.UseDashboard(options =>
                 {
                     options.Port = orleansDashboard.Port;
@@ -266,35 +292,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 });
             }
 
-            string pathResolver(string path)
-            {
-                if (!path.Contains("{GrainLoadPath}"))
-                {
-                    return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyPath());
-                }
-
-                var loadPathStr = Environment.GetEnvironmentVariable("GrainLoadPath");
-                if (string.IsNullOrEmpty(loadPathStr))
-                {
-                    return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyPath());
-                }
-                var expendedPathStr = path.Replace("{GrainLoadPath}", loadPathStr);
-
-                var ret = expendedPathStr;
-
-                var envCwd = Environment.CurrentDirectory;
-                var cwd = Directory.GetCurrentDirectory();
-
-                if (!Path.IsPathRooted(expendedPathStr))
-                {
-                    ret = !string.IsNullOrEmpty(envCwd)
-                        ? Path.GetFullPath(expendedPathStr, envCwd)
-                        : Path.GetFullPath(ret, cwd);
-                }
-
-                return ret;
-            }
-
             siloBuilder.ConfigureApplicationParts(parts =>
             {
                 parts.AddFromApplicationBaseDirectory().WithReferences();
@@ -307,7 +304,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
             foreach (var serviceConfigAction in GetGrainServiceConfigurationAction(grainLoadOption, pathResolver))
             {
-                Log.Information($"Configure DI using {serviceConfigAction}");
+                logger.LogInformation($"Configure DI using {serviceConfigAction}");
 
                 siloBuilder.ConfigureApplicationParts(serviceConfigAction.AppPartConfigurationAction);
                 siloBuilder.ConfigureServices(serviceConfigAction.ServiceConfigurationAction);
@@ -371,15 +368,52 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 case "InMemory":
                 default:
                     siloBuilder.UseLocalhostClustering(
-                        serviceId: siloConfig.ServiceId, 
-                        clusterId: siloConfig.ClusterId, 
-                        siloPort: siloConfig.SiloPort, 
+                        serviceId: siloConfig.ServiceId,
+                        clusterId: siloConfig.ClusterId,
+                        siloPort: siloConfig.SiloPort,
                         gatewayPort: siloConfig.GatewayPort)
                         .AddMemoryGrainStorageAsDefault()
                         .UseInMemoryReminderService();
                     break;
             }
+
+            return siloBuilder;
+
+            #region Assembly Path Resolver
+
+            string pathResolver(string path)
+            {
+                if (!path.Contains("{GrainLoadPath}"))
+                {
+                    return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyPath());
+                }
+
+                var loadPathStr = Environment.GetEnvironmentVariable("GrainLoadPath");
+                if (string.IsNullOrEmpty(loadPathStr))
+                {
+                    return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyPath());
+                }
+                var expendedPathStr = path.Replace("{GrainLoadPath}", loadPathStr);
+
+                var ret = expendedPathStr;
+
+                var envCwd = Environment.CurrentDirectory;
+                var cwd = Directory.GetCurrentDirectory();
+
+                if (!Path.IsPathRooted(expendedPathStr))
+                {
+                    ret = !string.IsNullOrEmpty(envCwd)
+                        ? Path.GetFullPath(expendedPathStr, envCwd)
+                        : Path.GetFullPath(ret, cwd);
+                }
+
+                return ret;
+            }
+
+            #endregion
         }
+
+        #region Private Util Methods
 
         private static bool IpAddressNotSpecified(string ipString)
         {

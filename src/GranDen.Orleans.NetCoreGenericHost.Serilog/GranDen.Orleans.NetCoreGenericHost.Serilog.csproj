@@ -7,7 +7,7 @@
     <Company>GranDen Inc.</Company>
     <Authors>Isak Pao</Authors>
     <Version>1.1.0</Version>
-    <Description>Package for Orleans (http://dotnet.github.io/orleans ) Grain to provide Dependency Injection implementation interface</Description>
+    <Description>Serilog libraries for GranDen.Orleans.NetCoreGenericHost.CommonLib</Description>
     <Copyright>Copyright (c) 2019 GranDen Corp.(狂點軟體開發)</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
@@ -16,34 +16,33 @@
     <IncludeSymbols>true</IncludeSymbols>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageTags>Orleans</PackageTags>
-    <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.Server.SharedInterface</PackageProjectUrl>
-    <PackageReleaseNotes>1.1.0 : Add additional Helper Class for configure Dependency Injection</PackageReleaseNotes>
+    <PackageTags>Orleans, Serilog</PackageTags>
+    <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.NetCoreGenericHost.CommonLib</PackageProjectUrl>
+    <PackageReleaseNotes>1.1.0 : Bump version to match other packages</PackageReleaseNotes>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>./GranDen.Orleans.Server.SharedInterface.xml</DocumentationFile>
+    <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.Serilog.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>./GranDen.Orleans.Server.SharedInterface.xml</DocumentationFile>
+    <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.Serilog.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="GranDen.Orleans.Server.SharedInterface.xml" />
+    <None Remove="GranDen.Orleans.NetCoreGenericHost.Serilog.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.3.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.Core" Version="2.3.5" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

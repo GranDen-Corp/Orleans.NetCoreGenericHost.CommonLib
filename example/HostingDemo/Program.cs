@@ -27,7 +27,7 @@ namespace HostingDemo
 
             Log.Logger = logConfig.CreateLogger();
 
-            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args);
+            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
 
             try
             {

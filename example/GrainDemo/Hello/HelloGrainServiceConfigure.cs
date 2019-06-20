@@ -6,15 +6,16 @@ using System;
 
 namespace GrainDemo.Hello
 {
-    public class HelloGrainServiceConfigure : IGrainServiceConfigDelegate
+    // ReSharper disable once UnusedMember.Global
+    public class HelloGrainServiceConfigure : AbstractServiceConfigDelegate
     {
-        public Action<IApplicationPartManager> AppPartConfigurationAction =>
+        public override Action<IApplicationPartManager> AppPartConfigurationAction =>
             (part) =>
             {
                 part.AddDynamicPart(typeof(Greeter).Assembly);
             };
 
-        public Action<HostBuilderContext, IServiceCollection> ServiceConfigurationAction =>
+        public override Action<HostBuilderContext, IServiceCollection> ServiceConfigurationAction =>
             (ctx, service) =>
             {
                 service.AddTransient<IGreeter, Greeter>();
