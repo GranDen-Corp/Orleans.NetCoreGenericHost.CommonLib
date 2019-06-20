@@ -21,7 +21,12 @@ namespace DemoClient
         public async Task RunCounter()
         {
             var (clusterInfo, providerOption) = GetConfigSettings();
-            using (var client = OrleansClientBuilder.CreateClient(_logger, clusterInfo, providerOption, new[] { typeof(IHello), typeof(ICounter) }))
+            //using (var client = OrleansClientBuilder.CreateClient(_logger, clusterInfo, providerOption, new[] { typeof(IHello), typeof(ICounter) }))
+            using (var client =
+            OrleansClientBuilder.CreateLocalhostClient(_logger,
+                gatewayPort: 8310,
+                serviceId: clusterInfo.ServiceId,
+                clusterId: clusterInfo.ClusterId))
             {
                 await client.ConnectWithRetryAsync();
                 _logger.LogInformation("Client successfully connect to silo host");
