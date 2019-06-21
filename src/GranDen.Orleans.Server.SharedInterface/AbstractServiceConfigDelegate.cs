@@ -10,14 +10,18 @@ namespace GranDen.Orleans.Server.SharedInterface
     /// </summary>
     public abstract class AbstractServiceConfigDelegate : IGrainServiceConfigDelegate
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// ApplicationPartManager configuration implementation, if Grain project is directly reference from Silo, it is not necessary to implement this method.
+        /// </summary>
         public virtual Action<IApplicationPartManager> AppPartConfigurationAction =>
             (part) =>
             {
                 //default doesn't do anything
             };
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Define Orleans Grain's DI Service registration implementation, if the Grain has using .net core default Microsoft.Extensions.DependencyInjection DI mechanism.
+        /// </summary>
         public abstract Action<HostBuilderContext, IServiceCollection> ServiceConfigurationAction { get; }
     }
 }

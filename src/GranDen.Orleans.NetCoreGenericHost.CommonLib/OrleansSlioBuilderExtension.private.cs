@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
     {
         #region Assembly Path Resolver
 
-        private static string pathResolver(string path)
+        private static string PathResolver(string path)
         {
             if (!path.Contains("{GrainLoadPath}"))
             {

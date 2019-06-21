@@ -24,7 +24,7 @@ namespace GranDen.Orleans.Server.SharedInterface
     public interface IGrainServiceConfigDelegate : IServiceConfigDelegate
     {
         /// <summary>
-        /// ApplicaitonPartManager configuration implementation
+        /// ApplicationPartManager configuration implementation
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Collapsed)]
         Action<IApplicationPartManager> AppPartConfigurationAction { get; }

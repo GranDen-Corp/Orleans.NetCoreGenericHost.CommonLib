@@ -294,11 +294,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
                 var dllPaths = grainLoadOption.LoadPaths;
 
-                ConfigOtherFolderGrainLoad(parts, dllPaths, pathResolver);
+                ConfigOtherFolderGrainLoad(parts, dllPaths, PathResolver);
 
             });
 
-            foreach (var serviceConfigAction in GetGrainServiceConfigurationAction(grainLoadOption, pathResolver))
+            foreach (var serviceConfigAction in GetGrainServiceConfigurationAction(grainLoadOption, PathResolver))
             {
                 logger.LogInformation($"Configure DI using {serviceConfigAction}");
 
