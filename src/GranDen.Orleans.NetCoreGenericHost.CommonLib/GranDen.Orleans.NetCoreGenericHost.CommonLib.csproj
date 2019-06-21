@@ -18,17 +18,19 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageTags>Orleans</PackageTags>
     <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.NetCoreGenericHost.CommonLib</PackageProjectUrl>
-    <PackageReleaseNotes>1.1.0 : Split Serilog to another nuget package &#38; Make ConfigSiloBuilder() to public accessible.</PackageReleaseNotes>
+    <PackageReleaseNotes>1.1.0 : Split Serilog to another nuget package &amp; Make ConfigSiloBuilder() to public accessible.</PackageReleaseNotes>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.CommonLib.xml</DocumentationFile>
+    <OutputPath>../../output/debug</OutputPath>
   </PropertyGroup>    
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.CommonLib.xml</DocumentationFile>
+    <OutputPath>../../output/release</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -53,7 +55,7 @@
     <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Linux" Version="2.3.5" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
     <PackageReference Include="Orleans.Providers.MongoDB" Version="2.4.0" />
-    <PackageReference Include="OrleansDashboard" Version="2.3.4" />
+    <PackageReference Include="OrleansDashboard" Version="2.3.5" />
   </ItemGroup>
 
   <ItemGroup>

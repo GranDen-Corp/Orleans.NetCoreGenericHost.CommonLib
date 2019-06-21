@@ -152,6 +152,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return builder;
         }
 
+        // For default logger label
+        class OrleansSiloBuilder { }
+
         /// <summary>
         /// Config Orleans Silo Builder using default or custom Orleans Host configuration
         /// </summary>
@@ -171,7 +174,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             string grainLoadOptionSection = "GrainOption",
             string orleansDashboardOptionSection = "Dashboard")
         {
-            var logger = (new DefaultLoggerHelper()).CreateDefaultLogger<HostBuilder>();
+            var logger = (new DefaultLoggerHelper()).CreateDefaultLogger<OrleansSiloBuilder>();
 
             if (configurationGetterFunc != null)
             {

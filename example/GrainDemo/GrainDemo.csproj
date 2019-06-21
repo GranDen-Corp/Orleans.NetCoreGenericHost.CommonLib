@@ -6,15 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GranDen.Orleans.Server.SharedInterface" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.3.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    </PackageReference> 
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\GranDen.Orleans.Server.SharedInterface\GranDen.Orleans.Server.SharedInterface.csproj" />
     <ProjectReference Include="..\RpcShareInterface\RpcShareInterface.csproj" />
   </ItemGroup>
 

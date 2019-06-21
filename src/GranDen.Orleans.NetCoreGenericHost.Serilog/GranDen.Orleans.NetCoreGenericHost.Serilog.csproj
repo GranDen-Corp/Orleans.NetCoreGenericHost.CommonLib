@@ -25,10 +25,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.Serilog.xml</DocumentationFile>
+    <OutputPath>../../output/debug</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.Serilog.xml</DocumentationFile>
+    <OutputPath>../../output/release</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

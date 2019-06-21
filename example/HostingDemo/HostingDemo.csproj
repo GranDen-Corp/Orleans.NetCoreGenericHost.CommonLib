@@ -25,8 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\GranDen.Orleans.NetCoreGenericHost.CommonLib\GranDen.Orleans.NetCoreGenericHost.CommonLib.csproj" />
-    <ProjectReference Include="..\..\src\GranDen.Orleans.NetCoreGenericHost.Serilog\GranDen.Orleans.NetCoreGenericHost.Serilog.csproj" />
+    <PackageReference Include="GranDen.Orleans.NetCoreGenericHost.CommonLib" Version="1.1.0" />
+    <PackageReference Include="GranDen.Orleans.NetCoreGenericHost.Serilog" Version="1.1.0" />
+    <PackageReference Include="GranDen.Orleans.Server.SharedInterface" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
