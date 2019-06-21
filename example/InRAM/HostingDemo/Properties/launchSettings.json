@@ -3,7 +3,7 @@
     "HostingDemo": {
       "commandName": "Project",
       "environmentVariables": {
-        "GrainLoadPath": "../../../../"
+        "GrainLoadPath": "../../../../../"
       }
     }
   }

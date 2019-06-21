@@ -10,12 +10,12 @@
             "request": "launch",
             "preLaunchTask": "build demo server",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/example/HostingDemo/bin/Debug/netcoreapp2.2/HostingDemo.dll",
+            "program": "${workspaceFolder}/example/InRAM/HostingDemo/bin/Debug/netcoreapp2.2/HostingDemo.dll",
             "args": [],
             "env": {
                 "GrainLoadPath": "../"
             },
-            "cwd": "${workspaceFolder}/example/HostingDemo",
+            "cwd": "${workspaceFolder}/example/InRAM/HostingDemo",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "integratedTerminal",
             "stopAtEntry": false
@@ -26,9 +26,9 @@
             "request": "launch",
             "preLaunchTask": "build demo client",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/example/DemoClient/bin/Debug/netcoreapp2.2/DemoClient.dll",
+            "program": "${workspaceFolder}/example/InRAM/DemoClient/bin/Debug/netcoreapp2.2/DemoClient.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/example/DemoClient",
+            "cwd": "${workspaceFolder}/example/InRAM/DemoClient",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "externalTerminal",
             "stopAtEntry": false,

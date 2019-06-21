@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RpcShareInterface\RpcShareInterface.csproj" />
+    <ProjectReference Include="..\..\RpcShareInterface\RpcShareInterface.csproj" />
   </ItemGroup>
 
   <ItemGroup>

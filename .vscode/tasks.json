@@ -29,7 +29,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/example/HostingDemo/HostingDemo.csproj"
+                "${workspaceFolder}/example/InRAM/HostingDemo/HostingDemo.csproj"
             ],
             "problemMatcher": "$tsc",
             "dependsOn": [
@@ -43,7 +43,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/example/DemoClient/DemoClient.csproj"
+                "${workspaceFolder}/example/InRAM/DemoClient/DemoClient.csproj"
             ],
             "problemMatcher": "$tsc",
             "group": "build",
