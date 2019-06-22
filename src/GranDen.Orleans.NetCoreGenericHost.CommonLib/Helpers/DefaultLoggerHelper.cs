@@ -13,15 +13,17 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers
         public DefaultLoggerHelper(IServiceCollection serviceCollection = null)
         {
             var serviceCollection1 = serviceCollection ?? new ServiceCollection();
-            serviceCollection1.AddLogging(logBuilder =>
-            {
-                logBuilder.AddConsole();
-                logBuilder.AddDebug();
-                logBuilder.AddEventSourceLogger();
-            });
+            serviceCollection1.AddLogging(DefaultLogAction);
             
             _serviceProvider = serviceCollection1.BuildServiceProvider();
         }
+
+        public static Action<ILoggingBuilder> DefaultLogAction => (logBuilder) =>
+        {
+            logBuilder.AddConsole();
+            logBuilder.AddDebug();
+            logBuilder.AddEventSourceLogger();
+        };
 
         public ILogger<T> CreateDefaultLogger<T>()
         {

@@ -12,6 +12,7 @@ namespace HostingDemo
     {
         static void Main(string[] args)
         {
+            /*
             var logConfig = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .MinimumLevel.Override("Orleans.Runtime.Management.ManagementGrain", LogEventLevel.Warning)
@@ -26,8 +27,9 @@ namespace HostingDemo
                 .WriteTo.Debug();
 
             Log.Logger = logConfig.CreateLogger();
+            */
 
-            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
+            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args); //.ApplySerilog();
 
             try
             {

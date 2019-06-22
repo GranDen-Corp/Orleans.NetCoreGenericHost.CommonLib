@@ -37,14 +37,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                  .UseConfigurationOptions()
                  .ApplyOrleansSettings();
 
-            if (logBuilderAction != null)
-            {
-                ret.ConfigureLogging(logBuilderAction);
-            }
+            ret.ConfigureLogging(logBuilderAction ?? DefaultLoggerHelper.DefaultLogAction);
             ret.UseConsoleLifetime();
             return ret;
         }
-
 
         /// <summary>
         /// Initialize .NET Core generic host's host configuration
