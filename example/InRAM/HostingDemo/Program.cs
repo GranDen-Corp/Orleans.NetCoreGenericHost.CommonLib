@@ -1,10 +1,12 @@
 ﻿using System;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib;
 using Microsoft.Extensions.Hosting;
+/*
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
+*/
 
 namespace HostingDemo
 {
@@ -42,7 +44,8 @@ namespace HostingDemo
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Orleans Silo Host error");
+                //Log.Error(ex, "Orleans Silo Host error");
+                Console.WriteLine($"Orleans Silo Host error:\r\n{ex}");
                 throw;
             }
         }

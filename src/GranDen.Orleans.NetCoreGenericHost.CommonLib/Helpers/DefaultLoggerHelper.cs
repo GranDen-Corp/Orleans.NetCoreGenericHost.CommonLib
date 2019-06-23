@@ -23,6 +23,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers
             logBuilder.AddConsole();
             logBuilder.AddDebug();
             logBuilder.AddEventSourceLogger();
+
+            //because this management grain is very noisy when using Orleans Dashboard
+            logBuilder.AddFilter("Orleans.Runtime.Management.ManagementGrain", LogLevel.Warning)
+                      .AddFilter("Orleans.Runtime.SiloControl", LogLevel.Warning);
         };
 
         public ILogger<T> CreateDefaultLogger<T>()
