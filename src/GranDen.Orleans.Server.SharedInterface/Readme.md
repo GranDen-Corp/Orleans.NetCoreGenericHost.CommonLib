@@ -19,4 +19,6 @@ public class HelloGrainServiceConfigure : IGrainServiceConfigDelegate
             service.AddTransient<IGreeter, Greeter>();
         };
 }
+
+Or you can extend `AbstractServiceConfigDelegate<T>` class, that will only need to implement the `ServiceConfigurationAction`.
 ```

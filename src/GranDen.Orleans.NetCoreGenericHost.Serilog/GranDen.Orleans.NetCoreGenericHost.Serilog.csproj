@@ -16,7 +16,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageTags>Orleans, Serilog</PackageTags>
     <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.NetCoreGenericHost.CommonLib</PackageProjectUrl>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.Serilog.xml</DocumentationFile>

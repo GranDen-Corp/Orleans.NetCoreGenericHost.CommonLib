@@ -7,14 +7,8 @@ using System;
 namespace GrainDemo.Hello
 {
     // ReSharper disable once UnusedMember.Global
-    public class HelloGrainServiceConfigure : AbstractServiceConfigDelegate
+    public class HelloGrainServiceConfigure : AbstractServiceConfigDelegate<Greeter>
     {
-        public override Action<IApplicationPartManager> AppPartConfigurationAction =>
-            (part) =>
-            {
-                part.AddDynamicPart(typeof(Greeter).Assembly);
-            };
-
         public override Action<HostBuilderContext, IServiceCollection> ServiceConfigurationAction =>
             (ctx, service) =>
             {

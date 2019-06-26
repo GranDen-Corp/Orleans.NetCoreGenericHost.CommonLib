@@ -27,17 +27,19 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// Create .NET Core Generic HostBuilder using various default configuration
         /// </summary>
         /// <param name="args">Command line arguments</param>
+        /// <param name="hostEnvPrefix">Configuration Environment variable name prefix, default would be "ORLEANS_HOST_"</param>
         /// <param name="logBuilderAction"></param>
         /// <returns></returns>
-        public static IHostBuilder CreateHostBuilder(string[] args, Action<ILoggingBuilder> logBuilderAction = null)
+        // ReSharper disable once UnusedMember.Global
+        public static IHostBuilder CreateHostBuilder(string[] args, string hostEnvPrefix = "ORLEANS_HOST_", Action<ILoggingBuilder> logBuilderAction = null)
         {
-            var ret = new HostBuilder()
-                 .UseHostConfiguration(args)
-                 .UseAppConfiguration(args)
-                 .UseConfigurationOptions()
-                 .ApplyOrleansSettings();
+            var ret = new HostBuilder();
+            ret.ConfigureLogging(logBuilderAction ?? DefaultLoggerHelper.DefaultLogAction)
+               .UseHostConfiguration(args, hostEnvironmentPrefix: hostEnvPrefix)
+               .UseAppConfiguration(args)
+               .UseConfigurationOptions()
+               .ApplyOrleansSettings();
 
-            ret.ConfigureLogging(logBuilderAction ?? DefaultLoggerHelper.DefaultLogAction);
             ret.UseConsoleLifetime();
             return ret;
         }
@@ -116,6 +118,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// <param name="orleansConfigSection"></param>
         /// <param name="siloConfigSection"></param>
         /// <param name="orleansProviderSection"></param>
+        /// <param name="orleansMultiClusterSection"></param>
         /// <param name="orleansDashboardOptionSection"></param>
         /// <param name="grainLoadOptionSection"></param>
         /// <returns></returns>
@@ -124,6 +127,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             string orleansConfigSection = "Orleans",
             string siloConfigSection = "SiloConfig",
             string orleansProviderSection = "Provider",
+            string orleansMultiClusterSection = "MultiCluster",
             string orleansDashboardOptionSection = "Dashboard",
             string grainLoadOptionSection = "GrainOption")
         {
@@ -138,6 +142,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     services.Configure<SiloConfigOption>(orleansSettings.GetSection(siloConfigSection));
                     services.Configure<GrainLoadOption>(orleansSettings.GetSection(grainLoadOptionSection));
                     services.Configure<OrleansProviderOption>(orleansSettings.GetSection(orleansProviderSection));
+                    services.Configure<MultiClusterOptions>(orleansSettings.GetSection(orleansMultiClusterSection));
                     services.Configure<OrleansDashboardOption>(orleansSettings.GetSection(orleansDashboardOptionSection));
                 });
             }
@@ -224,7 +229,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// <param name="logger"></param>
         /// <returns></returns>
         public static ISiloBuilder ConfigSiloBuilder(this ISiloBuilder siloBuilder,
-            SiloConfigOption siloConfig, OrleansProviderOption orleansProvider, GrainLoadOption grainLoadOption, OrleansDashboardOption orleansDashboard, ILogger logger = null)
+            SiloConfigOption siloConfig, OrleansProviderOption orleansProvider, GrainLoadOption grainLoadOption, OrleansDashboardOption orleansDashboard, ILogger logger)
         {
             if (orleansDashboard.Enable)
             {
@@ -281,6 +286,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     }
 
                     options.GossipChannels = siloConfig.GossipChannels;
+                    options.UseGlobalSingleInstanceByDefault = siloConfig.UseGlobalSingleInstanceByDefault;
                 });
             }
 
@@ -358,6 +364,28 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     break;
 
                 case "InMemory":
+                    siloBuilder.UseDevelopmentClustering(option =>
+                        {
+                            if (IpAddressNotSpecified(siloConfig.AdvertisedIp))
+                            {
+                                option.PrimarySiloEndpoint = new IPEndPoint(IPAddress.Loopback, siloConfig.SiloPort);
+                            }
+                            else
+                            {
+                                var advertisedIp = IPAddress.Parse(siloConfig.AdvertisedIp.Trim());
+                                option.PrimarySiloEndpoint = new IPEndPoint(advertisedIp, siloConfig.SiloPort);
+                            }
+                        })
+                        .Configure<EndpointOptions>(options =>
+                        {
+                            options.AdvertisedIPAddress = IPAddress.Loopback;
+                            options.GatewayPort = siloConfig.GatewayPort;
+                            options.SiloPort = siloConfig.SiloPort;
+                        })
+                        .AddMemoryGrainStorageAsDefault()
+                        .UseInMemoryReminderService();
+                    break;
+
                 default:
                     siloBuilder.UseLocalhostClustering(
                         serviceId: siloConfig.ServiceId,

@@ -19,13 +19,13 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             if (!path.Contains("{GrainLoadPath}"))
             {
-                return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyPath());
+                return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyFolder());
             }
 
             var loadPathStr = Environment.GetEnvironmentVariable("GrainLoadPath");
             if (string.IsNullOrEmpty(loadPathStr))
             {
-                return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyPath());
+                return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyFolder());
             }
             var expendedPathStr = path.Replace("{GrainLoadPath}", loadPathStr);
 
@@ -69,6 +69,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             var dllPaths = grainLoadOption.LoadPaths;
             var excludedTypeFullNames = grainLoadOption.ExcludedTypeFullNames;
+
+            if (grainLoadOption.CallMainExecutionPathServiceConfigDelegate)
+            {
+                dllPaths.Add(AssemblyUtil.GetMainAssemblyPath());
+            }
 
             return GetAllNeedServiceConfigure(dllPaths, excludedTypeFullNames, pathResolveFunc);
         }

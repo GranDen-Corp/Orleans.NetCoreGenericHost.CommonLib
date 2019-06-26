@@ -8,7 +8,12 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
     public class GrainLoadOption
     {
         /// <summary>
-        /// Assembly load pathes, can add <c>{GrainLoadPath}</c> so that will be variable pathes by assign environment varaible "GrainLoadPath"
+        /// Set this to true to run Service Delegate method(s) that are inside the main Silo Execution Assembly
+        /// </summary>
+        public bool CallMainExecutionPathServiceConfigDelegate { get; set; } = false;
+
+        /// <summary>
+        /// Assembly load paths, can add <c>{GrainLoadPath}</c> so that will be variable paths by assign environment variable "GrainLoadPath"
         /// </summary>
         public List<string> LoadPaths { get; } = new List<string>();
 

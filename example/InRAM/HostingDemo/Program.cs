@@ -1,12 +1,10 @@
 ﻿using System;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib;
 using Microsoft.Extensions.Hosting;
-/*
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
-*/
 
 namespace HostingDemo
 {
@@ -14,7 +12,7 @@ namespace HostingDemo
     {
         static void Main(string[] args)
         {
-            /*
+            
             var logConfig = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .MinimumLevel.Override("Orleans.Runtime.Management.ManagementGrain", LogEventLevel.Warning)
@@ -29,9 +27,9 @@ namespace HostingDemo
                 .WriteTo.Debug();
 
             Log.Logger = logConfig.CreateLogger();
-            */
+            
 
-            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args); //.ApplySerilog();
+            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
 
             try
             {

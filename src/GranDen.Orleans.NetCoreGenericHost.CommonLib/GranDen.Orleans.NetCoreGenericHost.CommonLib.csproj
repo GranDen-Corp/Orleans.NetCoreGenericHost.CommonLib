@@ -16,7 +16,8 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageTags>Orleans</PackageTags>
     <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.NetCoreGenericHost.CommonLib</PackageProjectUrl>
-    <Version>1.1.0</Version>
+    <PackageReleaseNotes>1.1.1 : Make Multi-Cluster config effective</PackageReleaseNotes>
+    <Version>1.1.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.NetCoreGenericHost.CommonLib.xml</DocumentationFile>

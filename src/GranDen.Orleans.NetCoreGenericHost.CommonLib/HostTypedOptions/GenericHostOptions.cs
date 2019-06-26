@@ -163,7 +163,12 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
         public Dictionary<string, string> GossipChannels { get; set; }
 
         /// <summary>
-        /// 
+        /// Enable Global-Single-Instance (GSI) Grain Protocol
+        /// </summary>
+        public bool UseGlobalSingleInstanceByDefault { get; set; } = true;
+
+        /// <summary>
+        /// Azure Application Insight logging key
         /// </summary>
         public string AzureApplicationInsightKey { get; set; }
     }

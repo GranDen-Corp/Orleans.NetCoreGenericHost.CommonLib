@@ -7,9 +7,14 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers
 {
     internal static class AssemblyUtil
     {
-        public static string GetCurrentAssemblyPath()
+        public static string GetCurrentAssemblyFolder()
         {
-            return System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            return System.IO.Path.GetDirectoryName(GetMainAssemblyPath());
+        }
+
+        public static string GetMainAssemblyPath()
+        {
+            return Assembly.GetExecutingAssembly().Location;
         }
 
         public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
