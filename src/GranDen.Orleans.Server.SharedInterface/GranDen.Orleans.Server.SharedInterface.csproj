@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -17,9 +17,9 @@
     <PackageTags>Orleans</PackageTags>
     <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.Server.SharedInterface</PackageProjectUrl>
     <PackageReleaseNotes>
-      1.1.1 : Add AbstractServiceConfigDelegate&lt;T&gt; class for easier developing Orleans Grain.
+      1.1.2 : Bump version
     </PackageReleaseNotes>
-    <Version>1.1.1</Version>
+    <Version>1.1.2-beta</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.Server.SharedInterface.xml</DocumentationFile>

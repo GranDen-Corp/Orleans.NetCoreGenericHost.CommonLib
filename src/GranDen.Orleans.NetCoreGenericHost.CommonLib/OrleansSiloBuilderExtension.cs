@@ -231,6 +231,21 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         public static ISiloBuilder ConfigSiloBuilder(this ISiloBuilder siloBuilder,
             SiloConfigOption siloConfig, OrleansProviderOption orleansProvider, GrainLoadOption grainLoadOption, OrleansDashboardOption orleansDashboard, ILogger logger)
         {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                var onDockerFlag = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");
+
+                if (onDockerFlag != null && onDockerFlag.ToLower().Equals("true"))
+                {
+                    // Default config will cause bug when running on Linux Docker Container:
+                    // https://github.com/dotnet/orleans/issues/5552#issuecomment-486938815
+                    siloBuilder.Configure<ProcessExitHandlingOptions>(options =>
+                    {
+                        options.FastKillOnProcessExit = false;
+                    });
+                }
+            }
+
             if (orleansDashboard.Enable)
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))

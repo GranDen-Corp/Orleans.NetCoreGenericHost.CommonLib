@@ -20,7 +20,7 @@
                 "build",
                 "${workspaceFolder}/example/GrainDemo/GrainDemo.csproj"
             ],
-            "problemMatcher": "$tsc",
+            "problemMatcher": "$msCompile",
             "group": "build"
         },
         {
@@ -31,7 +31,7 @@
                 "build",
                 "${workspaceFolder}/example/InRAM/HostingDemo/HostingDemo.csproj"
             ],
-            "problemMatcher": "$tsc",
+            "problemMatcher": "$msCompile",
             "dependsOn": [
                 "build demo grain"
             ],
@@ -45,7 +45,7 @@
                 "build",
                 "${workspaceFolder}/example/InRAM/DemoClient/DemoClient.csproj"
             ],
-            "problemMatcher": "$tsc",
+            "problemMatcher": "$msCompile",
             "group": "build",
             "dependsOn": [
                 "build demo server"
