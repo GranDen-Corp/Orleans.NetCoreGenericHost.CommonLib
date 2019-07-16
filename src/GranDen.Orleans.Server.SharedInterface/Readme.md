@@ -20,5 +20,5 @@ public class HelloGrainServiceConfigure : IGrainServiceConfigDelegate
         };
 }
 ```
-Or you can extend `AbstractServiceConfigDelegate<T>` class, that will only need to implement the `ServiceConfigurationAction`.
+Or you can extend `AbstractServiceConfigDelegate <T>` class, that will only need to implement the `ServiceConfigurationAction`.
 
