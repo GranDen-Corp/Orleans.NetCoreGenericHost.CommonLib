@@ -19,7 +19,7 @@
     <PackageReleaseNotes>
       1.1.2 : Bump version
     </PackageReleaseNotes>
-    <Version>1.1.2-beta</Version>
+    <Version>1.1.2</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.Server.SharedInterface.xml</DocumentationFile>
