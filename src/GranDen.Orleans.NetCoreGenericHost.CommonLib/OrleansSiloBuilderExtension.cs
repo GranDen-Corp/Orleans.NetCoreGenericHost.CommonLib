@@ -239,6 +239,8 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 {
                     // Default config will cause bug when running on Linux Docker Container:
                     // https://github.com/dotnet/orleans/issues/5552#issuecomment-486938815
+
+                    logger.LogInformation("Running in Linux Container, turn off \"FastKillOnProcessExit\" setting.");
                     siloBuilder.Configure<ProcessExitHandlingOptions>(options =>
                     {
                         options.FastKillOnProcessExit = false;
