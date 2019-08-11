@@ -254,6 +254,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 {
                     siloBuilder.UseLinuxEnvironmentStatistics();
                 }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    siloBuilder.UsePerfCounterEnvironmentStatistics();
+                }
 
                 logger.LogInformation($"Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host {orleansDashboard.Port} port");
                 siloBuilder.UseDashboard(options =>
@@ -332,8 +336,15 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             }
             else
             {
-                var advertisedIp = IPAddress.Parse(siloConfig.AdvertisedIp.Trim());
-                siloBuilder.ConfigureEndpoints(advertisedIp, siloConfig.SiloPort, siloConfig.GatewayPort, siloConfig.ListenOnAnyHostAddress);
+                try
+                {
+                    var advertisedIp = IPAddress.Parse(siloConfig.AdvertisedIp.Trim());
+                    siloBuilder.ConfigureEndpoints(advertisedIp, siloConfig.SiloPort, siloConfig.GatewayPort, siloConfig.ListenOnAnyHostAddress);
+                }
+                catch (FormatException)
+                {
+                    siloBuilder.ConfigureEndpoints(Dns.GetHostName(), siloConfig.SiloPort, siloConfig.GatewayPort, listenOnAnyHostAddress: siloConfig.ListenOnAnyHostAddress);
+                }
             }
 
             switch (orleansProvider.DefaultProvider)
