@@ -233,18 +233,37 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                var onDockerFlag = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");
-
-                if (onDockerFlag != null && onDockerFlag.ToLower().Equals("true"))
+                if (IsRunningOnContainer())
                 {
                     // Default config will cause bug when running on Linux Docker Container:
                     // https://github.com/dotnet/orleans/issues/5552#issuecomment-486938815
-
                     logger.LogInformation("Running in Linux Container, turn off \"FastKillOnProcessExit\" setting.");
                     siloBuilder.Configure<ProcessExitHandlingOptions>(options =>
                     {
                         options.FastKillOnProcessExit = false;
                     });
+                }
+            }
+
+            if (IsRunningOnContainer())
+            {
+                logger.LogInformation("Running in Container, use autodetect Dns Host Name instead of configuration");
+                siloBuilder.ConfigureEndpoints(Dns.GetHostName(), siloConfig.SiloPort, siloConfig.GatewayPort, listenOnAnyHostAddress: siloConfig.ListenOnAnyHostAddress);
+            }
+            else if (IpAddressNotSpecified(siloConfig.AdvertisedIp))
+            {
+                siloBuilder.ConfigureEndpoints(siloConfig.SiloPort, siloConfig.GatewayPort, listenOnAnyHostAddress: siloConfig.ListenOnAnyHostAddress);
+            }
+            else
+            {
+                try
+                {
+                    var advertisedIp = IPAddress.Parse(siloConfig.AdvertisedIp.Trim());
+                    siloBuilder.ConfigureEndpoints(advertisedIp, siloConfig.SiloPort, siloConfig.GatewayPort, siloConfig.ListenOnAnyHostAddress);
+                }
+                catch (FormatException)
+                {
+                    siloBuilder.ConfigureEndpoints(Dns.GetHostName(), siloConfig.SiloPort, siloConfig.GatewayPort, listenOnAnyHostAddress: siloConfig.ListenOnAnyHostAddress);
                 }
             }
 
@@ -327,24 +346,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
                 siloBuilder.ConfigureApplicationParts(serviceConfigAction.AppPartConfigurationAction);
                 siloBuilder.ConfigureServices(serviceConfigAction.ServiceConfigurationAction);
-            }
-
-            if (IpAddressNotSpecified(siloConfig.AdvertisedIp))
-            {
-                siloBuilder.ConfigureEndpoints(siloConfig.SiloPort, siloConfig.GatewayPort,
-                    listenOnAnyHostAddress: siloConfig.ListenOnAnyHostAddress);
-            }
-            else
-            {
-                try
-                {
-                    var advertisedIp = IPAddress.Parse(siloConfig.AdvertisedIp.Trim());
-                    siloBuilder.ConfigureEndpoints(advertisedIp, siloConfig.SiloPort, siloConfig.GatewayPort, siloConfig.ListenOnAnyHostAddress);
-                }
-                catch (FormatException)
-                {
-                    siloBuilder.ConfigureEndpoints(Dns.GetHostName(), siloConfig.SiloPort, siloConfig.GatewayPort, listenOnAnyHostAddress: siloConfig.ListenOnAnyHostAddress);
-                }
             }
 
             switch (orleansProvider.DefaultProvider)

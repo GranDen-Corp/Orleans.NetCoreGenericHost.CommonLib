@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.1.4 : &#xD;&#xA;1. update Orleans to v2.4.0&#xD;&#xA;2. Orleans Dashboard support windows environment instrumentation</PackageReleaseNotes>
-        <Version>1.1.4</Version>
+        <PackageReleaseNotes>1.1.5 : Use auto detect Dns Host Name when hosting in docker container</PackageReleaseNotes>
+        <Version>1.1.5</Version>
     </PropertyGroup>
 </Project>

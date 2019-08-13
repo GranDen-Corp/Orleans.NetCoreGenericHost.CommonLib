@@ -48,6 +48,13 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
         #region Private Util Methods
 
+        private static bool IsRunningOnContainer()
+        {
+            var onDockerFlag = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");
+
+            return onDockerFlag != null && onDockerFlag.ToLower().Equals("true");
+        }
+
         private static bool IpAddressNotSpecified(string ipString)
         {
             if (ipString == null) { return true; }
