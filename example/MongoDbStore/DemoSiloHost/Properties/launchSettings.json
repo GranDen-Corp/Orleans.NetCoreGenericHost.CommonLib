@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DemoSiloHost": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GrainLoadPath": "../../../../../"
+      }
+    }
+  }
+}
