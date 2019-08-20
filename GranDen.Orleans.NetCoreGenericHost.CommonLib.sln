@@ -30,9 +30,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InRAM", "InRAM", "{67714432
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MongoDbStore", "MongoDbStore", "{60FD1EBD-7C82-45FC-A1E7-FB5BDCA9B0BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoSiloHost", "example\MongoDbStore\DemoSiloHost\DemoSiloHost.csproj", "{61EC37E2-A7F1-4DE3-847E-1C662B53671D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoSiloHost", "example\MongoDbStore\DemoSiloHost\DemoSiloHost.csproj", "{61EC37E2-A7F1-4DE3-847E-1C662B53671D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{901DF80A-D38A-4655-B2A7-B540B2D3A49C} = {901DF80A-D38A-4655-B2A7-B540B2D3A49C}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoConsoleClient", "example\MongoDbStore\DemoConsoleClient\DemoConsoleClient.csproj", "{E6C119C8-1EDF-427E-B29E-3A9447A10F75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoConsoleClient", "example\MongoDbStore\DemoConsoleClient\DemoConsoleClient.csproj", "{E6C119C8-1EDF-427E-B29E-3A9447A10F75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
