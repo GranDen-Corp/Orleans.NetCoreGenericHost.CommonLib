@@ -33,6 +33,9 @@ namespace DemoConsoleClient
             {
                 var demo = serviceProvider.GetService<AccessCounterDemo>();
                 await demo.RunCounter();
+
+                var demo2 = serviceProvider.GetService<CallGrainWith3rdPartyLibDemo>();
+                await demo2.TestRpc();
             }
             catch (Exception ex)
             {
@@ -49,9 +52,10 @@ namespace DemoConsoleClient
             services.AddLogging(configure => configure.AddSerilog());
 
             services.AddTransient<AccessCounterDemo>();
+            services.AddTransient<CallGrainWith3rdPartyLibDemo>();
         }
 
-        private static ILogger<T> GetLogger<T>(ServiceProvider serviceProvider)
+        private static ILogger<T> GetLogger<T>(IServiceProvider serviceProvider)
         {
             return serviceProvider.GetService<ILogger<T>>();
         }

@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\IGrainWith3rdPartyLib\IGrainWith3rdPartyLib.csproj" />
     <ProjectReference Include="..\..\RpcShareInterface\RpcShareInterface.csproj" />
   </ItemGroup>
 
