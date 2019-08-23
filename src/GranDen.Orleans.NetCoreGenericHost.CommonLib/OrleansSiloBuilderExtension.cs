@@ -345,7 +345,13 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 logger.LogInformation($"Configure DI using {serviceConfigAction}");
 
                 siloBuilder.ConfigureApplicationParts(serviceConfigAction.AppPartConfigurationAction);
-                siloBuilder.ConfigureServices(serviceConfigAction.ServiceConfigurationAction);
+
+                var diConfigAction = serviceConfigAction.ServiceConfigurationAction;
+
+                if (diConfigAction != null)
+                {
+                    siloBuilder.ConfigureServices(diConfigAction);
+                }
             }
 
             switch (orleansProvider.DefaultProvider)

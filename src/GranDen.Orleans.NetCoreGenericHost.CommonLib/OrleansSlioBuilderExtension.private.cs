@@ -7,6 +7,8 @@ using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
 using GranDen.Orleans.Server.SharedInterface;
+using McMaster.NETCore.Plugins;
+using McMaster.NETCore.Plugins.Loader;
 using Orleans.ApplicationParts;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
@@ -66,8 +68,8 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             foreach (var path in pathsList)
             {
-                var dllFileInfo = new FileInfo(pathResolveFunc(path));
-                var assembly = Assembly.LoadFile(dllFileInfo.FullName);
+                var fullPath = pathResolveFunc(path);
+                var assembly = GetAssemblyUsingMcMasterPlugin(fullPath);
                 applicationPartManager.AddDynamicPart(assembly);
             }
         }
@@ -91,19 +93,37 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             foreach (var path in pathsList)
             {
                 var fullPath = pathResolveFunc(path);
-                var dllFileInfo = new FileInfo(fullPath);
+                var assemblyDll = GetAssemblyUsingMcMasterPlugin(fullPath);
 
-                var assemblyDll = Assembly.LoadFrom(dllFileInfo.FullName);
                 var types = assemblyDll.GetLoadableTypes();
+
+                //List<Type> needServiceConfigureClasses = new List<Type>();
+
+                //foreach (var type in assemblyDll.GetLoadableTypes())
+                //{
+                //    if (type.GetInterface(nameof(IGrainServiceConfigDelegate)) != null)
+                //    {
+                //        if (type.IsClass && !type.IsAbstract)
+                //        {
+                //            if (!excludedTypeFullNames.Contains(type.FullName))
+                //            {
+                //                needServiceConfigureClasses.Add(type);
+                //            }
+                //        }
+                //    }
+
+                //}
 
                 var needServiceConfigureClasses = types.Where(x =>
                         typeof(IGrainServiceConfigDelegate).IsAssignableFrom(x)
                         && !x.IsAbstract
-                        && !x.IsInterface
+                        && x.IsClass
                         && !excludedTypeFullNames.Contains(x.FullName)).ToList();
 
                 foreach (var serviceConfigureClass in needServiceConfigureClasses)
                 {
+                    //var serviceConfigDelegate = (IGrainServiceConfigDelegate) Activator.CreateInstance(serviceConfigureClass);
+
                     if (!(Activator.CreateInstance(serviceConfigureClass) is IGrainServiceConfigDelegate serviceConfigDelegate))
                     {
                         throw new LoadGrainDllFailedException(serviceConfigureClass.FullName);
@@ -113,6 +133,24 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 }
             }
             return ret;
+        }
+
+        private static Assembly GetAssemblyUsingMcMasterPlugin(string path)
+        {
+            var extensionDllFolder = Path.GetDirectoryName(path);
+            var extensionDepJsonPath = Path.Combine(extensionDllFolder, Path.GetFileNameWithoutExtension(path) + ".deps.json");
+
+            var assemblyLoader = (new AssemblyLoadContextBuilder())
+                .SetBaseDirectory(AssemblyUtil.GetMainAssemblyPath())
+                .AddProbingPath(extensionDllFolder)
+                .AddDependencyContext(extensionDepJsonPath)
+                
+                .PreferDefaultLoadContext(true)
+                .Build();
+
+            var assembly = assemblyLoader.LoadFromAssemblyPath(path);
+
+            return assembly;
         }
 
         #endregion

@@ -31,8 +31,8 @@ namespace DemoConsoleClient
 
             try
             {
-                var demo = serviceProvider.GetService<AccessCounterDemo>();
-                await demo.RunCounter();
+                //var demo = serviceProvider.GetService<AccessCounterDemo>();
+                //await demo.RunCounter();
 
                 var demo2 = serviceProvider.GetService<CallGrainWith3rdPartyLibDemo>();
                 await demo2.TestRpc();

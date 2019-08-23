@@ -19,7 +19,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers
 
         public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
         {
-            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (assembly == null) { throw new ArgumentNullException(nameof(assembly)); }
             try
             {
                 return assembly.GetTypes();

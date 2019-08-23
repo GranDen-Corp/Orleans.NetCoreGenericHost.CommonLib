@@ -33,17 +33,18 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoSiloHost", "example\MongoDbStore\DemoSiloHost\DemoSiloHost.csproj", "{61EC37E2-A7F1-4DE3-847E-1C662B53671D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{901DF80A-D38A-4655-B2A7-B540B2D3A49C} = {901DF80A-D38A-4655-B2A7-B540B2D3A49C}
+		{0745DF25-A73B-4FB5-906E-5830D6C16AF1} = {0745DF25-A73B-4FB5-906E-5830D6C16AF1}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoConsoleClient", "example\MongoDbStore\DemoConsoleClient\DemoConsoleClient.csproj", "{E6C119C8-1EDF-427E-B29E-3A9447A10F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainWith3rdPartyLib", "example\GrainWith3rdPartyLib\GrainWith3rdPartyLib.csproj", "{0745DF25-A73B-4FB5-906E-5830D6C16AF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainWith3rdPartyLib", "example\GrainWith3rdPartyLib\GrainWith3rdPartyLib.csproj", "{0745DF25-A73B-4FB5-906E-5830D6C16AF1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RPC_Interface", "RPC_Interface", "{64C41AE6-C447-4139-8C05-6A03ACB26052}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grains_Impl", "Grains_Impl", "{F07CB3DE-1B43-4377-A871-E775185C6C06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGrainWith3rdPartyLib", "example\IGrainWith3rdPartyLib\IGrainWith3rdPartyLib.csproj", "{DB02CEF0-A851-45EF-BF01-977CFDBAB799}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGrainWith3rdPartyLib", "example\IGrainWith3rdPartyLib\IGrainWith3rdPartyLib.csproj", "{DB02CEF0-A851-45EF-BF01-977CFDBAB799}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
