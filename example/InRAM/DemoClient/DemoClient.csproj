@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GranDen.Orleans.Client.CommonLib" Version="1.1.7" />
+    <PackageReference Include="GranDen.Orleans.Client.CommonLib" Version="1.1.8" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\IGrainWith3rdPartyLib\IGrainWith3rdPartyLib.csproj" />
     <ProjectReference Include="..\..\RpcShareInterface\RpcShareInterface.csproj" />
   </ItemGroup>
 

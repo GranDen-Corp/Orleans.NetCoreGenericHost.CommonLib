@@ -20,7 +20,7 @@ namespace DemoClient
 
         public async Task RunCounter()
         {
-            var (clusterInfo, providerOption) = GetConfigSettings();
+            var (clusterInfo, providerOption) = ConfigUtil.GetConfigSettings();
             //using (var client = OrleansClientBuilder.CreateClient(_logger, clusterInfo, providerOption, new[] { typeof(IHello), typeof(ICounter) }))
             using (var client =
             OrleansClientBuilder.CreateLocalhostClient(_logger,
@@ -54,15 +54,6 @@ namespace DemoClient
                 await client.Close();
                 _logger.LogInformation("Client successfully close connection to silo host");
             }
-        }
-
-        private static (ClusterInfoOption, OrleansProviderOption) GetConfigSettings()
-        {
-            IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-
-            var configRoot = builder.Build();
-
-            return configRoot.GetSiloSettings();
         }
     }
 }

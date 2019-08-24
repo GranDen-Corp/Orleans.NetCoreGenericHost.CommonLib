@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Orleans;
 using Orleans.ApplicationParts;
 
 namespace GranDen.Orleans.Server.SharedInterface
@@ -29,7 +30,7 @@ namespace GranDen.Orleans.Server.SharedInterface
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class AbstractServiceConfigDelegate<T> : AbstractServiceConfigDelegate
+    public abstract class AbstractServiceConfigDelegate<T> : AbstractServiceConfigDelegate where T : Grain 
     {
         /// <summary>
         /// Default ApplicationPartManager configuration implementation
@@ -37,7 +38,9 @@ namespace GranDen.Orleans.Server.SharedInterface
         public override Action<IApplicationPartManager> AppPartConfigurationAction =>
             part =>
             {
-                part.AddDynamicPart(typeof(T).Assembly);
+                var assembly = typeof(T).Assembly;
+
+                part.AddDynamicPart(assembly);
             };
     }
 }

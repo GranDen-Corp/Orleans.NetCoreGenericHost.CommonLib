@@ -3,18 +3,69 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
 using GranDen.Orleans.Server.SharedInterface;
-using McMaster.NETCore.Plugins;
-using McMaster.NETCore.Plugins.Loader;
-using Orleans.ApplicationParts;
+using Microsoft.Extensions.Logging;
+using Orleans;
+using Orleans.Hosting;
+using Orleans.Statistics;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 {
+    /// <summary>
+    /// AssemblyLoadContext cache for plugin dll
+    /// </summary>
+    public class AssemblyResolveCache
+    {
+        /// <summary>
+        /// PlugIn's <code>AssemblyLoadContext</code>
+        /// </summary>
+        public AssemblyLoadContext AssemblyLoadContext { get; set; }
+
+        /// <summary>
+        /// Event handler for hook on Default AssemblyLoadContext's <code>Resolving</code> event handler
+        /// </summary>
+        public Func<AssemblyLoadContext, AssemblyName, Assembly> ResolvingHandler { get; set; }
+
+    }
+
     public static partial class OrleansSiloBuilderExtension
     {
+        /// <summary>
+        /// AssemblyLoadContext References for non-Main Executable folder assemblies.
+        /// </summary>
+        public static Dictionary<string, AssemblyResolveCache> PluginAssemblyLoadContextCache { get; private set; }
+
+        
+
+        #region SiloBuilder Internal Configuration Methods
+
+        private static ISiloBuilder ApplyOrleansDashboard(this ISiloBuilder siloBuilder, OrleansDashboardOption orleansDashboard, ILogger logger)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                siloBuilder.UseLinuxEnvironmentStatistics();
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                siloBuilder.UsePerfCounterEnvironmentStatistics();
+            }
+
+            logger.LogInformation($"Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host {orleansDashboard.Port} port");
+            siloBuilder.UseDashboard(options =>
+            {
+                options.Port = orleansDashboard.Port;
+            });
+
+            return siloBuilder;
+        }
+
+        #endregion
+
         #region Assembly Path Resolver
 
         private static string PathResolver(string path)
@@ -64,16 +115,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return string.IsNullOrEmpty(ipString.Trim()) || "*".Equals(ipString.Trim());
         }
 
-        private static void ConfigOtherFolderGrainLoad(IApplicationPartManager applicationPartManager, IEnumerable<string> pathsList, Func<string, string> pathResolveFunc)
-        {
-            foreach (var path in pathsList)
-            {
-                var fullPath = pathResolveFunc(path);
-                var assembly = GetAssemblyUsingMcMasterPlugin(fullPath);
-                applicationPartManager.AddDynamicPart(assembly);
-            }
-        }
-
         private static IEnumerable<IGrainServiceConfigDelegate> GetGrainServiceConfigurationAction(GrainLoadOption grainLoadOption, Func<string, string> pathResolveFunc)
         {
             var dllPaths = grainLoadOption.LoadPaths;
@@ -93,26 +134,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             foreach (var path in pathsList)
             {
                 var fullPath = pathResolveFunc(path);
-                var assemblyDll = GetAssemblyUsingMcMasterPlugin(fullPath);
+                var assemblyDll = GetNonMainExeFolderAssembly(fullPath);
 
                 var types = assemblyDll.GetLoadableTypes();
-
-                //List<Type> needServiceConfigureClasses = new List<Type>();
-
-                //foreach (var type in assemblyDll.GetLoadableTypes())
-                //{
-                //    if (type.GetInterface(nameof(IGrainServiceConfigDelegate)) != null)
-                //    {
-                //        if (type.IsClass && !type.IsAbstract)
-                //        {
-                //            if (!excludedTypeFullNames.Contains(type.FullName))
-                //            {
-                //                needServiceConfigureClasses.Add(type);
-                //            }
-                //        }
-                //    }
-
-                //}
 
                 var needServiceConfigureClasses = types.Where(x =>
                         typeof(IGrainServiceConfigDelegate).IsAssignableFrom(x)
@@ -122,8 +146,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
                 foreach (var serviceConfigureClass in needServiceConfigureClasses)
                 {
-                    //var serviceConfigDelegate = (IGrainServiceConfigDelegate) Activator.CreateInstance(serviceConfigureClass);
-
                     if (!(Activator.CreateInstance(serviceConfigureClass) is IGrainServiceConfigDelegate serviceConfigDelegate))
                     {
                         throw new LoadGrainDllFailedException(serviceConfigureClass.FullName);
@@ -135,20 +157,40 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return ret;
         }
 
-        private static Assembly GetAssemblyUsingMcMasterPlugin(string path)
+        private static Assembly GetNonMainExeFolderAssembly(string fullPath)
         {
-            var extensionDllFolder = Path.GetDirectoryName(path);
-            var extensionDepJsonPath = Path.Combine(extensionDllFolder, Path.GetFileNameWithoutExtension(path) + ".deps.json");
-
-            var assemblyLoader = (new AssemblyLoadContextBuilder())
-                .SetBaseDirectory(AssemblyUtil.GetMainAssemblyPath())
-                .AddProbingPath(extensionDllFolder)
-                .AddDependencyContext(extensionDepJsonPath)
+            AssemblyLoadContext assemblyLoadContext;
+            if (!PluginAssemblyLoadContextCache.ContainsKey(fullPath))
+            {
+                assemblyLoadContext = AssemblyUtil.GetPluginAssemblyLoadContext(fullPath);
                 
-                .PreferDefaultLoadContext(true)
-                .Build();
+                var defaultContext = AssemblyLoadContext.Default;
 
-            var assembly = assemblyLoader.LoadFromAssemblyPath(path);
+                Assembly OnResolving(AssemblyLoadContext context, AssemblyName name)
+                {
+                    var targetAssembly = context.LoadFromAssemblyPath(fullPath);
+                    if (targetAssembly == null)
+                    {
+                        targetAssembly = assemblyLoadContext.LoadFromAssemblyPath(fullPath);
+                    }
+
+                    return targetAssembly;
+                }
+
+                defaultContext.Resolving += OnResolving;
+
+                PluginAssemblyLoadContextCache.TryAdd(fullPath, new AssemblyResolveCache
+                {
+                    AssemblyLoadContext = assemblyLoadContext,
+                    ResolvingHandler = OnResolving,
+                });
+            }
+            else
+            {
+                assemblyLoadContext = PluginAssemblyLoadContextCache[fullPath].AssemblyLoadContext;
+            }
+
+            var assembly = assemblyLoadContext.LoadFromAssemblyPath(fullPath);
 
             return assembly;
         }

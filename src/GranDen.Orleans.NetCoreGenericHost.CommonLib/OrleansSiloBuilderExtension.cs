@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
+using GranDen.Orleans.Server.SharedInterface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,7 +16,6 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using Orleans.Statistics;
 using HostBuilderContext = Microsoft.Extensions.Hosting.HostBuilderContext;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
@@ -33,15 +35,15 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         // ReSharper disable once UnusedMember.Global
         public static IHostBuilder CreateHostBuilder(string[] args, string hostEnvPrefix = "ORLEANS_HOST_", Action<ILoggingBuilder> logBuilderAction = null)
         {
-            var ret = new HostBuilder();
-            ret.ConfigureLogging(logBuilderAction ?? DefaultLoggerHelper.DefaultLogAction)
+            var hostBuilder = new HostBuilder();
+            hostBuilder.ConfigureLogging(logBuilderAction ?? DefaultLoggerHelper.DefaultLogAction)
                .UseHostConfiguration(args, hostEnvironmentPrefix: hostEnvPrefix)
                .UseAppConfiguration(args)
                .UseConfigurationOptions()
                .ApplyOrleansSettings();
 
-            ret.UseConsoleLifetime();
-            return ret;
+            hostBuilder.UseConsoleLifetime();
+            return hostBuilder;
         }
 
         /// <summary>
@@ -154,6 +156,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         }
 
         // For default logger label
+        // ReSharper disable once ClassNeverInstantiated.Local
         class OrleansSiloBuilder { }
 
         /// <summary>
@@ -202,7 +205,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             }
             else
             {
-                void ConfigSiloBuilderDelegate(HostBuilderContext context, ISiloBuilder siloBuilder)
+                hostBuilder.UseOrleans((context, siloBuilder) =>
                 {
                     var orleansSettings = context.Configuration.GetSection(orleansConfigSection);
                     var siloConfig = orleansSettings.GetTypedConfig<SiloConfigOption>(siloConfigSection);
@@ -211,9 +214,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     var orleansDashboardOption = orleansSettings.GetTypedConfig<OrleansDashboardOption>(orleansDashboardOptionSection);
 
                     siloBuilder.ConfigSiloBuilder(siloConfig, orleansProviderConfig, grainLoadOption, orleansDashboardOption, logger);
-                }
-
-                hostBuilder.UseOrleans(ConfigSiloBuilderDelegate);
+                });
             }
             return hostBuilder;
         }
@@ -269,20 +270,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
             if (orleansDashboard.Enable)
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    siloBuilder.UseLinuxEnvironmentStatistics();
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    siloBuilder.UsePerfCounterEnvironmentStatistics();
-                }
-
-                logger.LogInformation($"Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host {orleansDashboard.Port} port");
-                siloBuilder.UseDashboard(options =>
-                {
-                    options.Port = orleansDashboard.Port;
-                });
+                siloBuilder.ApplyOrleansDashboard(orleansDashboard, logger);
             }
 
             if (!string.IsNullOrEmpty(siloConfig.SiloName))
@@ -330,14 +318,23 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 });
             }
 
+            var dllPaths = grainLoadOption.LoadPaths.Select(PathResolver).ToList();
+            if (dllPaths.Count > 0)
+            {
+                PluginAssemblyLoadContextCache = new Dictionary<string, AssemblyResolveCache>(dllPaths.Count);
+            }
+
             siloBuilder.ConfigureApplicationParts(parts =>
             {
                 parts.AddFromApplicationBaseDirectory().WithReferences();
 
-                var dllPaths = grainLoadOption.LoadPaths;
-
-                ConfigOtherFolderGrainLoad(parts, dllPaths, PathResolver);
-
+                if (dllPaths.Count > 0)
+                {
+                    foreach (var assembly in dllPaths.Select(GetNonMainExeFolderAssembly))
+                    {
+                        parts.AddDynamicPart(assembly);
+                    }
+                }
             });
 
             foreach (var serviceConfigAction in GetGrainServiceConfigurationAction(grainLoadOption, PathResolver))

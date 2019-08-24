@@ -6,7 +6,7 @@ using System;
 namespace GrainDemo.Hello
 {
     // ReSharper disable once UnusedMember.Global
-    public class HelloGrainServiceConfigure : AbstractServiceConfigDelegate<Greeter>
+    public class HelloGrainServiceConfigure : AbstractServiceConfigDelegate<HelloGrain>
     {
         public override Action<HostBuilderContext, IServiceCollection> ServiceConfigurationAction =>
             (ctx, service) =>

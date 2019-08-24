@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Loader;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -28,12 +30,12 @@ namespace HostingDemo
 
             Log.Logger = logConfig.CreateLogger();
             
-
             var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
 
             try
             {
                 var genericHost = genericHostBuilder.Build();
+                PluginCache = OrleansSiloBuilderExtension.PluginAssemblyLoadContextCache;
                 genericHost.Run();
             }
             catch (OperationCanceledException)
@@ -42,10 +44,19 @@ namespace HostingDemo
             }
             catch (Exception ex)
             {
-                //Log.Error(ex, "Orleans Silo Host error");
-                Console.WriteLine($"Orleans Silo Host error:\r\n{ex}");
+                Log.Error(ex, "Orleans Silo Host error");
                 throw;
             }
+            finally
+            {
+                var defaultAssemblyLoadContext = AssemblyLoadContext.Default;
+                foreach (var assemblyResolveCache in PluginCache)
+                {
+                    defaultAssemblyLoadContext.Resolving -= assemblyResolveCache.Value.ResolvingHandler;
+                }
+            }
         }
+
+        public static Dictionary<string, AssemblyResolveCache> PluginCache { get; set; }
     }
 }
