@@ -1,10 +1,7 @@
 ﻿using GranDen.Orleans.Client.CommonLib;
-using GranDen.Orleans.Client.CommonLib.TypedOptions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RpcShareInterface;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace DemoClient
@@ -20,39 +17,47 @@ namespace DemoClient
 
         public async Task RunCounter()
         {
-            var (clusterInfo, providerOption) = ConfigUtil.GetConfigSettings();
+            var (clusterInfo, _) = ConfigUtil.GetConfigSettings();
             //using (var client = OrleansClientBuilder.CreateClient(_logger, clusterInfo, providerOption, new[] { typeof(IHello), typeof(ICounter) }))
-            using (var client =
-            OrleansClientBuilder.CreateLocalhostClient(_logger,
-                gatewayPort: 8310,
-                serviceId: clusterInfo.ServiceId,
-                clusterId: clusterInfo.ClusterId))
+            try
             {
-                await client.ConnectWithRetryAsync();
-                _logger.LogInformation("Client successfully connect to silo host");
+                using (var client =
+                    OrleansClientBuilder.CreateLocalhostClient(_logger,
+                        gatewayPort: 8310,
+                        serviceId: clusterInfo.ServiceId,
+                        clusterId: clusterInfo.ClusterId))
+                {
+                    await client.ConnectWithRetryAsync();
+                    _logger.LogInformation("Client successfully connect to silo host");
 
-                var helloGrain = client.GetGrain<IHello>(0);
-                _logger.LogInformation("Get greeting grain, start calling RPC method...");
+                    var helloGrain = client.GetGrain<IHello>(0);
+                    _logger.LogInformation("Get greeting grain, start calling RPC method...");
 
-                var returnValue = await helloGrain.SayHello("Hello Orleans");
-                _logger.LogInformation($"RPC method return value is \r\n\r\n{{{returnValue}}}\r\n\r\n");
+                    var returnValue = await helloGrain.SayHello("Hello Orleans");
+                    _logger.LogInformation($"RPC method return value is \r\n\r\n{{{returnValue}}}\r\n\r\n");
 
-                var counterGrain = client.GetGrain<ICounter>(0);
+                    var counterGrain = client.GetGrain<ICounter>(0);
 
-                _logger.LogInformation("Get counter grain, start calling RPC methods...");
+                    _logger.LogInformation("Get counter grain, start calling RPC methods...");
 
-                await counterGrain.Add(1);
-                await Task.Delay(new TimeSpan(0, 0, 1));
+                    await counterGrain.Add(1);
+                    await Task.Delay(new TimeSpan(0, 0, 1));
 
-                await counterGrain.Add(2);
-                await Task.Delay(new TimeSpan(0, 0, 1));
+                    await counterGrain.Add(2);
+                    await Task.Delay(new TimeSpan(0, 0, 1));
 
-                await counterGrain.Add(3);
-                var current = await counterGrain.CurrentValue();
-                _logger.LogInformation("Current counter value is '{0}'", current);
+                    await counterGrain.Add(3);
+                    var current = await counterGrain.CurrentValue();
+                    _logger.LogInformation("Current counter value is '{0}'", current);
 
-                await client.Close();
-                _logger.LogInformation("Client successfully close connection to silo host");
+                    await client.Close();
+                    _logger.LogInformation("Client successfully close connection to silo host");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "call RunCounter() error");
+                throw;
             }
         }
     }

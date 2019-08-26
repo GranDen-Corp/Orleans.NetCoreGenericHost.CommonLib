@@ -9,6 +9,7 @@ using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
 using GranDen.Orleans.Server.SharedInterface;
+using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Hosting;
@@ -16,31 +17,12 @@ using Orleans.Statistics;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 {
-    /// <summary>
-    /// AssemblyLoadContext cache for plugin dll
-    /// </summary>
-    public class AssemblyResolveCache
-    {
-        /// <summary>
-        /// PlugIn's <code>AssemblyLoadContext</code>
-        /// </summary>
-        public AssemblyLoadContext AssemblyLoadContext { get; set; }
-
-        /// <summary>
-        /// Event handler for hook on Default AssemblyLoadContext's <code>Resolving</code> event handler
-        /// </summary>
-        public Func<AssemblyLoadContext, AssemblyName, Assembly> ResolvingHandler { get; set; }
-
-    }
-
     public static partial class OrleansSiloBuilderExtension
     {
         /// <summary>
-        /// AssemblyLoadContext References for non-Main Executable folder assemblies.
+        /// PlugIn Loader References for non-Main Executable folder assemblies.
         /// </summary>
-        public static Dictionary<string, AssemblyResolveCache> PluginAssemblyLoadContextCache { get; private set; }
-
-        
+        public static Dictionary<string, PluginLoader> PlugInLoaderCache { get; private set; }
 
         #region SiloBuilder Internal Configuration Methods
 
@@ -72,13 +54,13 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             if (!path.Contains("{GrainLoadPath}"))
             {
-                return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyFolder());
+                return Path.GetFullPath(path, AssemblyUtil.GetMainAssemblyFolder());
             }
 
             var loadPathStr = Environment.GetEnvironmentVariable("GrainLoadPath");
             if (string.IsNullOrEmpty(loadPathStr))
             {
-                return Path.GetFullPath(path, AssemblyUtil.GetCurrentAssemblyFolder());
+                return Path.GetFullPath(path, AssemblyUtil.GetMainAssemblyFolder());
             }
             var expendedPathStr = path.Replace("{GrainLoadPath}", loadPathStr);
 
@@ -159,38 +141,21 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
         private static Assembly GetNonMainExeFolderAssembly(string fullPath)
         {
-            AssemblyLoadContext assemblyLoadContext;
-            if (!PluginAssemblyLoadContextCache.ContainsKey(fullPath))
+            PluginLoader loader;
+            if (!PlugInLoaderCache.ContainsKey(fullPath))
             {
-                assemblyLoadContext = AssemblyUtil.GetPluginAssemblyLoadContext(fullPath);
-                
-                var defaultContext = AssemblyLoadContext.Default;
-
-                Assembly OnResolving(AssemblyLoadContext context, AssemblyName name)
+                loader = PluginLoader.CreateFromAssemblyFile(fullPath, loaderOption =>
                 {
-                    var targetAssembly = context.LoadFromAssemblyPath(fullPath);
-                    if (targetAssembly == null)
-                    {
-                        targetAssembly = assemblyLoadContext.LoadFromAssemblyPath(fullPath);
-                    }
-
-                    return targetAssembly;
-                }
-
-                defaultContext.Resolving += OnResolving;
-
-                PluginAssemblyLoadContextCache.TryAdd(fullPath, new AssemblyResolveCache
-                {
-                    AssemblyLoadContext = assemblyLoadContext,
-                    ResolvingHandler = OnResolving,
+                    loaderOption.PreferSharedTypes = true;
                 });
+                PlugInLoaderCache.TryAdd(fullPath, loader);
             }
             else
             {
-                assemblyLoadContext = PluginAssemblyLoadContextCache[fullPath].AssemblyLoadContext;
+                loader = PlugInLoaderCache[fullPath];
             }
 
-            var assembly = assemblyLoadContext.LoadFromAssemblyPath(fullPath);
+            var assembly = loader.LoadAssemblyFromPath(fullPath);
 
             return assembly;
         }

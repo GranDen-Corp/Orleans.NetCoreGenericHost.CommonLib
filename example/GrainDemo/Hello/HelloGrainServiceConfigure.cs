@@ -2,7 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Orleans.CodeGeneration;
+using RpcShareInterface;
 
+[assembly: KnownAssembly(typeof(IHello))]
 namespace GrainDemo.Hello
 {
     // ReSharper disable once UnusedMember.Global

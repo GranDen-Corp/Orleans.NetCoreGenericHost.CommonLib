@@ -1,8 +1,11 @@
 ﻿using System;
 using GranDen.Orleans.Server.SharedInterface;
+using IGrainWith3rdPartyLib;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Orleans.CodeGeneration;
 
+[assembly: KnownAssembly(typeof(IUtilityGrain))]
 namespace GrainWith3rdPartyLib
 {
     // ReSharper disable once UnusedMember.Global

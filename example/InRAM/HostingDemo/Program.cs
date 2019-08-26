@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Loader;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib;
+using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
@@ -25,7 +26,6 @@ namespace HostingDemo
                 .Enrich.WithThreadId()
                 .Enrich.WithExceptionDetails()
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-                .WriteTo.Trace()
                 .WriteTo.Debug();
 
             Log.Logger = logConfig.CreateLogger();
@@ -35,7 +35,7 @@ namespace HostingDemo
             try
             {
                 var genericHost = genericHostBuilder.Build();
-                PluginCache = OrleansSiloBuilderExtension.PluginAssemblyLoadContextCache;
+                PluginCache = OrleansSiloBuilderExtension.PlugInLoaderCache;
                 genericHost.Run();
             }
             catch (OperationCanceledException)
@@ -49,14 +49,13 @@ namespace HostingDemo
             }
             finally
             {
-                var defaultAssemblyLoadContext = AssemblyLoadContext.Default;
-                foreach (var assemblyResolveCache in PluginCache)
+                foreach (var kv in PluginCache)
                 {
-                    defaultAssemblyLoadContext.Resolving -= assemblyResolveCache.Value.ResolvingHandler;
+                    kv.Value.Dispose();
                 }
             }
         }
 
-        public static Dictionary<string, AssemblyResolveCache> PluginCache { get; set; }
+        public static Dictionary<string, PluginLoader> PluginCache { get; set; }
     }
 }

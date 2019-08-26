@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Runtime.Loader;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
 using GranDen.Orleans.Server.SharedInterface;
+using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -321,7 +321,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             var dllPaths = grainLoadOption.LoadPaths.Select(PathResolver).ToList();
             if (dllPaths.Count > 0)
             {
-                PluginAssemblyLoadContextCache = new Dictionary<string, AssemblyResolveCache>(dllPaths.Count);
+                PlugInLoaderCache = new Dictionary<string, PluginLoader>(dllPaths.Count);
             }
 
             siloBuilder.ConfigureApplicationParts(parts =>

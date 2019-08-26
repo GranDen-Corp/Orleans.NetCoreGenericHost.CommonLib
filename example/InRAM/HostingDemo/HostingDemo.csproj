@@ -18,16 +18,11 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
     <PackageReference Include="Serilog.Sinks.Trace" Version="2.1.0" />
-    
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\GranDen.Orleans.NetCoreGenericHost.CommonLib\GranDen.Orleans.NetCoreGenericHost.CommonLib.csproj" />
     <ProjectReference Include="..\..\..\src\GranDen.Orleans.NetCoreGenericHost.Serilog\GranDen.Orleans.NetCoreGenericHost.Serilog.csproj" />
-    
-    <!-- RPC interface reference-->
-    <ProjectReference Include="..\..\IGrainWith3rdPartyLib\IGrainWith3rdPartyLib.csproj" />
-    <ProjectReference Include="..\..\RpcShareInterface\RpcShareInterface.csproj" />
   </ItemGroup>
 
   <ItemGroup>

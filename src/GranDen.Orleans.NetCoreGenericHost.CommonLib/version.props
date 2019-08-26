@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.1.7 : update Orleans.Providers.MongoDB to v2.7.0</PackageReleaseNotes>
-        <Version>1.1.7</Version>
+        <PackageReleaseNotes>1.1.8 : fix 3rd-party lib loading bug</PackageReleaseNotes>
+        <Version>1.1.8</Version>
     </PropertyGroup>
 </Project>

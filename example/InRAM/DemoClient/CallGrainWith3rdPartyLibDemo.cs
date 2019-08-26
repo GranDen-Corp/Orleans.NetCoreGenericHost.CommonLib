@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DemoClient
 {
-    public class CallGrainWith3rdPartyLibDemo
+    class CallGrainWith3rdPartyLibDemo
     {
         private readonly ILogger<CallGrainWith3rdPartyLibDemo> _logger;
 
@@ -29,9 +29,9 @@ namespace DemoClient
                     await client.ConnectWithRetryAsync();
                     _logger.LogInformation("Client successfully connect to silo host");
 
-                    var grain = client.GetGrain<IUtilityGrain>("test");
+                    var grain = client.GetGrain<IUtilityGrain>("demo2");
 
-                    var testInput = new { Name = "Alice", Email = "alice@example.com" };
+                    var testInput = new InputDTO { Name = "Alice", Email = "alice@example.com" };
 
                     var jsonStr = await grain.OutputJsonStr(testInput);
                     _logger.LogInformation($"Client side get OutputJsonStr() result= {jsonStr}");
@@ -43,9 +43,9 @@ namespace DemoClient
                     _logger.LogInformation("Client successfully close connection to silo host");
                 }
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                _logger.LogError(exception, "call TestRpc() error");
+                _logger.LogError(ex, "call TestRpc() error");
                 throw;
             }
         }
