@@ -20,5 +20,7 @@ public class HelloGrainServiceConfigure : IGrainServiceConfigDelegate
         };
 }
 ```
-Or you can extend `AbstractServiceConfigDelegate <T>` class, that will only need to implement the `ServiceConfigurationAction`.
 
+Or you can extend `AbstractServiceConfigDelegate< GrainClass >` class, that will only need to implement the `ServiceConfigurationAction` lambada function property.
+
+See [example](../../example) projects for usage.
