@@ -1,10 +1,10 @@
-﻿using GranDen.Orleans.Client.CommonLib;
+﻿using System;
+using System.Threading.Tasks;
+using GranDen.Orleans.Client.CommonLib;
 using Microsoft.Extensions.Logging;
 using RpcShareInterface;
-using System;
-using System.Threading.Tasks;
 
-namespace DemoClient
+namespace MongoDemoConsoleClient
 {
     class AccessCounterDemo
     {
@@ -17,15 +17,15 @@ namespace DemoClient
 
         public async Task RunCounter()
         {
-            var (clusterInfo, _) = ConfigUtil.GetConfigSettings();
-            
+            var (clusterInfo, providerOption) = ConfigUtil.GetConfigSettings();
+
             try
             {
-                using (var client =
-                    OrleansClientBuilder.CreateLocalhostClient(_logger,
-                        gatewayPort: 8310,
-                        serviceId: clusterInfo.ServiceId,
-                        clusterId: clusterInfo.ClusterId))
+                using (var client = 
+                    OrleansClientBuilder.CreateClient(_logger, 
+                        clusterInfo, 
+                        providerOption, 
+                        new[] { typeof(IHello), typeof(ICounter) }))
                 {
                     await client.ConnectWithRetryAsync();
                     _logger.LogInformation("Client successfully connect to silo host");

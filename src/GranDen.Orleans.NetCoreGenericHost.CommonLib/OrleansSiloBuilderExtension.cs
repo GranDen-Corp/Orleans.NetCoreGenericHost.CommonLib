@@ -35,6 +35,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         // ReSharper disable once UnusedMember.Global
         public static IHostBuilder CreateHostBuilder(string[] args, string hostEnvPrefix = "ORLEANS_HOST_", Action<ILoggingBuilder> logBuilderAction = null)
         {
+            if (PlugInLoaderCache != null)
+            {
+                PlugInLoaderCache = null;
+            }
+
             var hostBuilder = new HostBuilder();
             hostBuilder.ConfigureLogging(logBuilderAction ?? DefaultLoggerHelper.DefaultLogAction)
                .UseHostConfiguration(args, hostEnvironmentPrefix: hostEnvPrefix)

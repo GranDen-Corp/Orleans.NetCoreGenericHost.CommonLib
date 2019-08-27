@@ -3,38 +3,53 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace DemoConsoleClient
+namespace MongoDemoConsoleClient
 {
     class Program
     {
         static async Task Main(string[] arg)
         {
-            Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).CreateLogger();
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .Enrich.WithProcessId()
+                .Enrich.WithProcessName()
+                .Enrich.WithThreadId()
+                .Enrich.WithExceptionDetails()
+                .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                .WriteTo.Debug()
+                .CreateLogger();
 
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
+            var demo = serviceProvider.GetService<AccessCounterDemo>();
+            var demo2 = serviceProvider.GetService<CallGrainWith3rdPartyLibDemo>();
+            
             var logger = GetLogger<Program>(serviceProvider);
 
             logger.LogInformation("Press space key to start demo");
-            do
-            {
-                while (!Console.KeyAvailable)
-                {
-                    //wait
-                }
-            } while (Console.ReadKey(true).Key != ConsoleKey.Spacebar);
+            WaitForKeyAsync(ConsoleKey.Spacebar);
 
             try
             {
-                var demo = serviceProvider.GetService<AccessCounterDemo>();
                 await demo.RunCounter();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "error occured!");
+                throw;
+            }
 
-                var demo2 = serviceProvider.GetService<CallGrainWith3rdPartyLibDemo>();
+            logger.LogInformation("\r\n===\r\nPress space key to Run 2nd Demo\r\n===");
+            WaitForKeyAsync(ConsoleKey.Spacebar);
+
+            try
+            {
                 await demo2.TestRpc();
             }
             catch (Exception ex)
@@ -45,6 +60,18 @@ namespace DemoConsoleClient
 
             logger.LogInformation("Press enter to exit");
             Console.ReadLine();
+        }
+
+        private static void WaitForKeyAsync(ConsoleKey key)
+        {
+            do
+            {
+                while (!Console.KeyAvailable)
+                {
+                    //wait
+                    Task.Delay(new TimeSpan(0, 0, 1)).Wait();
+                }
+            } while (Console.ReadKey(true).Key != key);
         }
 
         private static void ConfigureServices(ServiceCollection services)

@@ -33,14 +33,7 @@ namespace DemoClient
             var logger = GetLogger<Program>(serviceProvider);
 
             logger.LogInformation("Press space key to start demo");
-            do
-            {
-                while (!Console.KeyAvailable)
-                {
-                    //wait
-                    await Task.Delay(new TimeSpan(0, 0, 1));
-                }
-            } while (Console.ReadKey(true).Key != ConsoleKey.Spacebar);
+            WaitForKey(ConsoleKey.Spacebar);
 
             try
             {
@@ -53,15 +46,7 @@ namespace DemoClient
             }
 
             logger.LogInformation("\r\n===\r\nPress space key to Run 2nd Demo\r\n===");
-
-            do
-            {
-                while (!Console.KeyAvailable)
-                {
-                    //wait
-                    await Task.Delay(new TimeSpan(0, 0, 1));
-                }
-            } while (Console.ReadKey(true).Key != ConsoleKey.Spacebar);
+            WaitForKey(ConsoleKey.Spacebar);
 
             try
             {
@@ -75,6 +60,18 @@ namespace DemoClient
 
             logger.LogInformation("Press enter to exit");
             Console.ReadLine();
+        }
+
+        private static void WaitForKey(ConsoleKey key)
+        {
+            do
+            {
+                while (!Console.KeyAvailable)
+                {
+                    //wait
+                    Task.Delay(new TimeSpan(0, 0, 1)).Wait();
+                }
+            } while (Console.ReadKey(true).Key != key);
         }
 
         private static void ConfigureServices(ServiceCollection services)

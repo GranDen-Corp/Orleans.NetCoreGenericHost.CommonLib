@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib;
+using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace DemoSiloHost
+namespace MongoDemoSiloHost
 {
     class Program
     {
@@ -28,11 +30,12 @@ namespace DemoSiloHost
 
             Log.Logger = logConfig.CreateLogger();
 
-            var hostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
+            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
 
             try
             {
-                var genericHost = hostBuilder.Build();
+                var genericHost = genericHostBuilder.Build();
+                PluginCache = OrleansSiloBuilderExtension.PlugInLoaderCache;
                 genericHost.Run();
             }
             catch (OperationCanceledException)
@@ -44,6 +47,15 @@ namespace DemoSiloHost
                 Log.Error(ex, "Orleans Silo Host error");
                 throw;
             }
+            finally
+            {
+                foreach (var kv in PluginCache)
+                {
+                    kv.Value.Dispose();
+                }
+            }
         }
+
+        public static Dictionary<string, PluginLoader> PluginCache { get; set; }
     }
 }

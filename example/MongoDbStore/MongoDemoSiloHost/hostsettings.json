@@ -31,9 +31,8 @@
     },
     "GrainOption": {
       "LoadPaths": [
-        "{GrainLoadPath}/GrainDemo/bin/Debug/netstandard2.0/GrainDemo.dll"
-        //,
-        //"{GrainLoadPath}/GrainWith3rdPartyLib/bin/Debug/netstandard2.0/GrainWith3rdPartyLib.dll"
+        "{GrainLoadPath}/GrainDemo/bin/Debug/netstandard2.0/GrainDemo.dll",
+        "{GrainLoadPath}/GrainWith3rdPartyLib/bin/Debug/netstandard2.0/GrainWith3rdPartyLib.dll"
       ],
       "ExcludedTypeFullNames": []
     }
