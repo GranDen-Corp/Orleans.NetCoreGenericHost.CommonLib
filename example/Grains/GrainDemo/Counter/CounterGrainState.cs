@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GrainDemo
+namespace GrainDemo.Counter
 {
     public class CounterGrainState
     {

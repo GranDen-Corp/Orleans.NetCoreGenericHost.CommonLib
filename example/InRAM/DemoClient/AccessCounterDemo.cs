@@ -1,8 +1,8 @@
 ﻿using GranDen.Orleans.Client.CommonLib;
 using Microsoft.Extensions.Logging;
-using RpcShareInterface;
 using System;
 using System.Threading.Tasks;
+using IGrainDemo;
 
 namespace DemoClient
 {

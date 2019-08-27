@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace RpcShareInterface
+namespace IGrainDemo
 {
     public interface IHello : Orleans.IGrainWithIntegerKey
     {

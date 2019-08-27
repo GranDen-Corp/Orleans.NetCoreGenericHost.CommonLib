@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostingDemo", "example\InRA
 		{933FB5A2-DECE-4B89-ABD3-4289DCF27FEC} = {933FB5A2-DECE-4B89-ABD3-4289DCF27FEC}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainDemo", "example\GrainDemo\GrainDemo.csproj", "{901DF80A-D38A-4655-B2A7-B540B2D3A49C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainDemo", "example\Grains\GrainDemo\GrainDemo.csproj", "{901DF80A-D38A-4655-B2A7-B540B2D3A49C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RpcShareInterface", "example\RpcShareInterface\RpcShareInterface.csproj", "{20BE9778-A985-44A5-B861-FF3B08AB985C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGrainDemo", "example\IGrainDemo\IGrainDemo.csproj", "{20BE9778-A985-44A5-B861-FF3B08AB985C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoClient", "example\InRAM\DemoClient\DemoClient.csproj", "{BE573A54-9FAA-475F-AC7F-C5AEDE7F2DDA}"
 EndProject
@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDemoSiloHost", "exampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDemoConsoleClient", "example\MongoDbStore\MongoDemoConsoleClient\MongoDemoConsoleClient.csproj", "{E6C119C8-1EDF-427E-B29E-3A9447A10F75}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainWith3rdPartyLib", "example\GrainWith3rdPartyLib\GrainWith3rdPartyLib.csproj", "{0745DF25-A73B-4FB5-906E-5830D6C16AF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainWith3rdPartyLib", "example\Grains\GrainWith3rdPartyLib\GrainWith3rdPartyLib.csproj", "{0745DF25-A73B-4FB5-906E-5830D6C16AF1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RPC_Interface", "RPC_Interface", "{64C41AE6-C447-4139-8C05-6A03ACB26052}"
 EndProject

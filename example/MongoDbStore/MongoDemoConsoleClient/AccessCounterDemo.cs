@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GranDen.Orleans.Client.CommonLib;
+using IGrainDemo;
 using Microsoft.Extensions.Logging;
-using RpcShareInterface;
 
 namespace MongoDemoConsoleClient
 {

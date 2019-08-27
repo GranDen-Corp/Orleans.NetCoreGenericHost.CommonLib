@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using IGrainDemo;
 using Orleans.CodeGeneration;
-using RpcShareInterface;
 
 [assembly: KnownAssembly(typeof(IHello))]
 namespace GrainDemo.Hello

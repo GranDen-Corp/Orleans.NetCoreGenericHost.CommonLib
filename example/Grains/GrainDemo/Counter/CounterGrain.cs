@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-using Orleans;
-using RpcShareInterface;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Orleans;
 
-namespace GrainDemo
+namespace GrainDemo.Counter
 {
-    public class CounterGrain : Grain<CounterGrainState>, ICounter
+    public class CounterGrain : Grain<CounterGrainState>, IGrainDemo.ICounter
     {
         private readonly ILogger<CounterGrain> _logger;
 

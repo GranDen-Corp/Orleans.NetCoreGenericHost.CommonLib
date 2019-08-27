@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using RpcShareInterface;
 using System.Threading.Tasks;
+using IGrainDemo;
 
 namespace GrainDemo.Hello
 {
