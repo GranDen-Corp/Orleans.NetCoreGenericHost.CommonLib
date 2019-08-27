@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\IGrainWith3rdPartyLib\IGrainWith3rdPartyLib.csproj" />
-    <ProjectReference Include="..\..\IGrainDemo\IGrainDemo.csproj" />
+    <ProjectReference Include="..\..\RPC_Interface\IGrainWith3rdPartyLib\IGrainWith3rdPartyLib.csproj" />
+    <ProjectReference Include="..\..\RPC_Interface\IGrainDemo\IGrainDemo.csproj" />
   </ItemGroup>
 
   <ItemGroup>

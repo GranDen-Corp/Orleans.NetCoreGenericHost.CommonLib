@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\GranDen.Orleans.Server.SharedInterface\GranDen.Orleans.Server.SharedInterface.csproj" />
-    <ProjectReference Include="..\..\IGrainDemo\IGrainDemo.csproj" />
+    <ProjectReference Include="..\..\RPC_Interface\IGrainDemo\IGrainDemo.csproj" />
   </ItemGroup>
 
 </Project>

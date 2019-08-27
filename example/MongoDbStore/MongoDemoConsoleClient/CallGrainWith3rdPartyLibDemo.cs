@@ -38,7 +38,7 @@ namespace MongoDemoConsoleClient
                     _logger.LogInformation($"Client side get OutputJsonStr() result= {jsonStr}");
 
                     var bsonDoc = await grain.ToBson(testInput);
-                    _logger.LogInformation("Client side get ToBson() result= {@BsonDoc}", bsonDoc);
+                    _logger.LogInformation($"Client side get ToBson() result= {bsonDoc}");
 
                     await client.Close();
                     _logger.LogInformation("Client successfully close connection to silo host");
