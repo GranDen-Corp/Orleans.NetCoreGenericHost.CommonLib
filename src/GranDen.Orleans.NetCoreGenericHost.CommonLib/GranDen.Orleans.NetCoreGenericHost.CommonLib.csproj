@@ -42,9 +42,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.AI" Version="2.4.1" />
-    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Counters" Version="2.4.1" />
-    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Linux" Version="2.4.1" />
+    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.AI" Version="2.4.2" />
+    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Counters" Version="2.4.2" />
+    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Linux" Version="2.4.2" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
     <PackageReference Include="Orleans.Providers.MongoDB" Version="2.7.0" />
     <PackageReference Include="OrleansDashboard" Version="2.4.4" />

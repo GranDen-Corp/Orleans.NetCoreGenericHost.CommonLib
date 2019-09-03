@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.1.8 : fix 3rd-party lib loading bug</PackageReleaseNotes>
-        <Version>1.1.8</Version>
+        <PackageReleaseNotes>1.1.9 : Update Orleans to v2.4.2</PackageReleaseNotes>
+        <Version>1.1.9</Version>
     </PropertyGroup>
 </Project>

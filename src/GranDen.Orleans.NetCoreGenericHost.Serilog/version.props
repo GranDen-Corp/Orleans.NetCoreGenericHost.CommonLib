@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.1.8 : bump version</PackageReleaseNotes>
-        <Version>1.1.8</Version>
+        <PackageReleaseNotes>1.1.9 : Match version with other associated libraries</PackageReleaseNotes>
+        <Version>1.1.9</Version>
     </PropertyGroup>
 </Project>
