@@ -32,7 +32,7 @@
     <None Remove="GranDen.Orleans.NetCoreGenericHost.CommonLib.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.0-beta.75" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.0-rc.86" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
@@ -47,7 +47,7 @@
     <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Linux" Version="2.4.2" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
     <PackageReference Include="Orleans.Providers.MongoDB" Version="2.7.0" />
-    <PackageReference Include="OrleansDashboard" Version="2.4.4" />
+    <PackageReference Include="OrleansDashboard" Version="2.4.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GranDen.Orleans.Server.SharedInterface\GranDen.Orleans.Server.SharedInterface.csproj" />

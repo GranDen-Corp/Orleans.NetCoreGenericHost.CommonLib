@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.1.9 : Update Orleans to v2.4.2</PackageReleaseNotes>
-        <Version>1.1.9</Version>
+        <PackageReleaseNotes>1.1.10 : Bump version</PackageReleaseNotes>
+        <Version>1.1.10</Version>
     </PropertyGroup>
 </Project>
