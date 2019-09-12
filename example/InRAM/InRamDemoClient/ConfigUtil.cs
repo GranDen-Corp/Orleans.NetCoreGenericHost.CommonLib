@@ -3,7 +3,7 @@ using GranDen.Orleans.Client.CommonLib;
 using GranDen.Orleans.Client.CommonLib.TypedOptions;
 using Microsoft.Extensions.Configuration;
 
-namespace DemoClient
+namespace InRamDemoClient
 {
     public static class ConfigUtil
     {

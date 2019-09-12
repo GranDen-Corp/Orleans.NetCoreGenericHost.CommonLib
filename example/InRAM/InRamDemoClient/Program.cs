@@ -6,7 +6,7 @@ using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace DemoClient
+namespace InRamDemoClient
 {
     class Program
     {

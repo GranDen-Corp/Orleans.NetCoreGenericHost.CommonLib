@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using IGrainDemo;
 
-namespace DemoClient
+namespace InRamDemoClient
 {
     class AccessCounterDemo
     {

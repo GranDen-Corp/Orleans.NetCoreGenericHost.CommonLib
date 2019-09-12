@@ -8,7 +8,7 @@ using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace HostingDemo
+namespace InRamDemoHost
 {
     class Program
     {

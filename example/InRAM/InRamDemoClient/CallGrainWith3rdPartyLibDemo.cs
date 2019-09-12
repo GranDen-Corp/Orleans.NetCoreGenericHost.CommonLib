@@ -4,7 +4,7 @@ using GranDen.Orleans.Client.CommonLib;
 using IGrainWith3rdPartyLib;
 using Microsoft.Extensions.Logging;
 
-namespace DemoClient
+namespace InRamDemoClient
 {
     class CallGrainWith3rdPartyLibDemo
     {
