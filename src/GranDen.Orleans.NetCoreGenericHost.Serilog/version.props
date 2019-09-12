@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.1.10 : Bump version</PackageReleaseNotes>
-        <Version>1.1.10</Version>
+        <PackageReleaseNotes>1.1.11 : Can customize log configure action</PackageReleaseNotes>
+        <Version>1.1.11</Version>
     </PropertyGroup>
 </Project>

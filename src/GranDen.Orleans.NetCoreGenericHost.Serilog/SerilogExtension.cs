@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
@@ -15,17 +16,29 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// </summary>
         /// <param name="hostBuilder"></param>
         /// <returns></returns>
-        // ReSharper disable once UnusedMember.Global
         public static IHostBuilder ApplySerilog(this IHostBuilder hostBuilder)
         {
-            return hostBuilder.ConfigureLogging(logBuilder => 
-            {
-                //because this management grain is very noisy when using Orleans Dashboard
-                logBuilder.AddFilter("Orleans.Runtime.Management.ManagementGrain", LogLevel.Warning)
-                          .AddFilter("Orleans.Runtime.SiloControl", LogLevel.Warning);
+            return hostBuilder.ConfigureLogging(DefaultConfigureLoggingBuilderAction).UseSerilog();
+        }
 
-                logBuilder.AddSerilog(dispose: true);
-            }).UseSerilog();
+        /// <summary>
+        /// Make HostBuilder use Serilog
+        /// </summary>
+        /// <param name="hostBuilder"></param>
+        /// <param name="configureLoggingBuilderAction"></param>
+        /// <returns></returns>
+        public static IHostBuilder ApplySerilog(this IHostBuilder hostBuilder, Action<ILoggingBuilder> configureLoggingBuilderAction)
+        {
+            return hostBuilder.ConfigureLogging(configureLoggingBuilderAction).UseSerilog();
+        }
+
+        private static void DefaultConfigureLoggingBuilderAction(ILoggingBuilder logBuilder)
+        {
+            //because this management grain is very noisy when using Orleans Dashboard
+            logBuilder.AddFilter("Orleans.Runtime.Management.ManagementGrain", LogLevel.Warning)
+                      .AddFilter("Orleans.Runtime.SiloControl", LogLevel.Warning);
+
+            logBuilder.AddSerilog(dispose: true);
         }
     }
 }
