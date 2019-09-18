@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
+using Serilog.Formatting.Json;
 using Serilog.Sinks.SystemConsole.Themes;
 
 namespace MongoDemoSiloHost
@@ -16,6 +17,7 @@ namespace MongoDemoSiloHost
         {
             var logConfig = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Orleans.RuntimeSiloLogStatistics", LogEventLevel.Warning)
                 .MinimumLevel.Override("Orleans.Runtime.Management.ManagementGrain", LogEventLevel.Warning)
                 .MinimumLevel.Override("Orleans.Runtime.SiloControl", LogEventLevel.Warning)
                 .MinimumLevel.Override("Orleans.Runtime.MembershipService.MembershipTableManager", LogEventLevel.Warning)
@@ -31,6 +33,10 @@ namespace MongoDemoSiloHost
             Log.Logger = logConfig.CreateLogger();
 
             var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
+
+#if DEBUG
+            genericHostBuilder.UseEnvironment(EnvironmentName.Development);
+#endif
 
             try
             {

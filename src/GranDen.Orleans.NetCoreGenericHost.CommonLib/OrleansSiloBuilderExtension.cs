@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Orleans.Runtime.Configuration;
 using HostBuilderContext = Microsoft.Extensions.Hosting.HostBuilderContext;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
@@ -283,6 +284,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 siloBuilder.Configure<SiloOptions>(options => { options.SiloName = siloConfig.SiloName; });
             }
 
+            siloBuilder.Configure<StatisticsOptions>(options =>
+            {
+                options.CollectionLevel = StatisticsLevel.Critical;
+            });
+
             siloBuilder.Configure<SiloMessagingOptions>(options =>
             {
                 options.ResponseTimeout = TimeSpan.FromMinutes(siloConfig.ResponseTimeoutMinutes);
@@ -397,6 +403,23 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                         {
                             options.CollectionPrefix = reminder.CollectionPrefix;
                         }
+                    });
+                    break;
+
+                case "SQLDB":
+                    var sqlDbConfig = orleansProvider.SQLDB;
+                    siloBuilder.UseAdoNetClustering(options =>
+                    {
+                        options.Invariant = sqlDbConfig.Cluster.Invariant;
+                        options.ConnectionString = sqlDbConfig.Cluster.DbConn;
+                    }).AddAdoNetGrainStorageAsDefault(options =>
+                    {
+                        options.Invariant = sqlDbConfig.Storage.Invariant;
+                        options.ConnectionString = sqlDbConfig.Storage.DbConn;
+                    }).UseAdoNetReminderService(options =>
+                    {
+                        options.Invariant = sqlDbConfig.Reminder.Invariant;
+                        options.ConnectionString = sqlDbConfig.Reminder.DbConn;
                     });
                     break;
 

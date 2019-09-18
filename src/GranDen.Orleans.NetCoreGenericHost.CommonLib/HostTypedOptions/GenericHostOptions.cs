@@ -24,7 +24,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
     public class OrleansProviderOption
     {
         /// <summary>
-        /// Default Storage Provider's name, currently only "MongoDB" and "InMemory"
+        /// Default Storage Provider's name, currently only "MongoDB", "SQLDB" and "InMemory"
         /// </summary>
         [Required]
         public string DefaultProvider { get; set; }
@@ -33,6 +33,67 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
         /// Top level MongoDB provider setting
         /// </summary>
         public MongoDbProviderSettings MongoDB { get; set; }
+
+        /// <summary>
+        /// Top level SQL DB provider setting
+        /// </summary>
+        public AdoNetProviderSettings SQLDB { get; set; }
+    }
+
+    /// <summary>
+    /// SQL DB Provider typed configuration class
+    /// </summary>
+    public class AdoNetProviderSettings
+    {
+        /// <summary>
+        /// Silo Cluster SQL DB provider setting
+        /// </summary>
+        public AdoNetProviderClusterSettings Cluster { get; set; }
+
+        /// <summary>
+        /// Silo Storage SQL DB provider setting
+        /// </summary>
+        public AdoNetProviderStorageSettings Storage { get; set; }
+
+        /// <summary>
+        /// Silo Reminder SQL DB provider setting
+        /// </summary>
+        public AdoNetProviderReminderSettings Reminder { get; set; }
+    }
+
+    /// <summary>
+    /// Silo Cluster SQL DB Provider typed configuration class
+    /// </summary>
+    public class AdoNetProviderClusterSettings : AbstractAdoNetSettings
+    {}
+
+    /// <summary>
+    /// Grain Storage SQL DB Provider typed configuration class
+    /// </summary>
+    public class AdoNetProviderStorageSettings : AbstractAdoNetSettings
+    {}
+
+    /// <summary>
+    /// Grain Reminder SQL DB Provider typed configuration class
+    /// </summary>
+    public class AdoNetProviderReminderSettings : AbstractAdoNetSettings
+    {}
+
+    /// <summary>
+    /// Common POCO class for MongoDB connection setting
+    /// </summary>
+    public abstract class AbstractAdoNetSettings
+    {
+        /// <summary>
+        /// SQL DB connection string
+        /// </summary>
+        [Required]
+        public string DbConn { get; set; }
+
+        /// <summary>
+        /// ADO.NET driver assembly, default is <code>System.Data.SqlClient</code>
+        /// </summary>
+        public string Invariant { get; set; } = "System.Data.SqlClient";
     }
 
     /// <summary>
@@ -87,14 +148,14 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
     }
 
     /// <summary>
-    /// Grain Storage Provider typed configuration class
+    /// Grain Storage MongoDB Provider typed configuration class
     /// </summary>
     public class MongoDbProviderStorageSettings : AbstractMongoDBSetting
     {
     }
 
     /// <summary>
-    /// Grain Reminder Provider typed configuration class
+    /// Grain Reminder MongoDB Provider typed configuration class
     /// </summary>
     public class MongoDbProviderReminderSettings : AbstractMongoDBSetting
     {

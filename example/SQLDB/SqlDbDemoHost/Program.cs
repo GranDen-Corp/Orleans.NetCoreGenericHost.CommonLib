@@ -6,10 +6,9 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
-using Serilog.Formatting.Json;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace InRamDemoHost
+namespace SqlDbDemoHost
 {
     class Program
     {
@@ -20,18 +19,23 @@ namespace InRamDemoHost
                 .MinimumLevel.Override("Orleans.RuntimeSiloLogStatistics", LogEventLevel.Warning)
                 .MinimumLevel.Override("Orleans.Runtime.Management.ManagementGrain", LogEventLevel.Warning)
                 .MinimumLevel.Override("Orleans.Runtime.SiloControl", LogEventLevel.Warning)
+                .MinimumLevel.Override("Orleans.Runtime.MembershipService.MembershipTableManager", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()
                 .Enrich.WithThreadId()
                 .Enrich.WithExceptionDetails()
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                .WriteTo.Trace()
                 .WriteTo.Debug();
 
             Log.Logger = logConfig.CreateLogger();
-            
+
             var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
 
+#if DEBUG
+            genericHostBuilder.UseEnvironment(EnvironmentName.Development);
+#endif
             try
             {
                 var genericHost = genericHostBuilder.Build();

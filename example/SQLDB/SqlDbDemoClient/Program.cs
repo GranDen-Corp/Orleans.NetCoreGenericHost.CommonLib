@@ -7,11 +7,11 @@ using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace MongoDemoConsoleClient
+namespace SqlDbDemoClient
 {
     class Program
     {
-        static async Task Main(string[] arg)
+        public static async Task Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Orleans.RuntimeClientLogStatistics", LogEventLevel.Warning)
@@ -31,7 +31,7 @@ namespace MongoDemoConsoleClient
 
             var demo = serviceProvider.GetService<AccessCounterDemo>();
             var demo2 = serviceProvider.GetService<CallGrainWith3rdPartyLibDemo>();
-            
+
             var logger = GetLogger<Program>(serviceProvider);
 
             logger.LogInformation("Press space key to start demo");

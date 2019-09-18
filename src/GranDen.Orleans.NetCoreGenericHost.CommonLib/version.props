@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.1.10 : Update 3rd party nugets</PackageReleaseNotes>
-        <Version>1.1.10</Version>
+      <PackageReleaseNotes>1.1.11 : Support SQL Server Provider for Orleans Cluster, Storage, Reminder</PackageReleaseNotes>
+        <Version>1.1.11</Version>
     </PropertyGroup>
 </Project>

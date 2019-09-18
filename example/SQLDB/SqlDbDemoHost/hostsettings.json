@@ -1,0 +1,38 @@
+{
+  "Orleans": {
+    "SiloConfig": {
+      "ClusterId": "demo-host-server",
+      "ServiceId": "demo-service",
+      "AdvertisedIp": "*",
+      "ListenOnAnyHostAddress": true,
+      "SiloPort": 8320,
+      "GatewayPort": 8310
+    },
+    "Provider": {
+      "DefaultProvider": "SQLDB",
+      "SQLDB": {
+        "Cluster": {
+          "DbConn": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Orleans_Cluster;Integrated Security=True;Pooling=False;Max Pool Size=200;MultipleActiveResultSets=True"
+        },
+        "Storage": {
+          "DbConn": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Orleans_Storage;Integrated Security=True;Pooling=False;Max Pool Size=200;MultipleActiveResultSets=True"
+
+        },
+        "Reminder": {
+          "DbConn": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Orleans_Reminder;Integrated Security=True;Pooling=False;Max Pool Size=200;MultipleActiveResultSets=True"
+        }
+      }
+    },
+    "Dashboard": {
+      "enable": true,
+      "port": 8210
+    },
+    "GrainOption": {
+      "LoadPaths": [
+        "{GrainLoadPath}/GrainDemo/bin/Debug/netstandard2.0/GrainDemo.dll",
+        "{GrainLoadPath}/GrainWith3rdPartyLib/bin/Debug/netstandard2.0/GrainWith3rdPartyLib.dll"
+      ],
+      "ExcludedTypeFullNames": []
+    }
+  }
+}

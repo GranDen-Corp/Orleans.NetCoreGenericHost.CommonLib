@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -13,6 +14,7 @@ namespace InRamDemoClient
         static async Task Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Orleans.RuntimeClientLogStatistics", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()

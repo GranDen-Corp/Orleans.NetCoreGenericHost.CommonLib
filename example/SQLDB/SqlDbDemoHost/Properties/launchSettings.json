@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SqlDbDemoHost": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GrainLoadPath": "../../../../../Grains"
+      }
+    }
+  }
+}
