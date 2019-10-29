@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MySqlDemoHost": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GrainLoadPath": "../../../../../Grains"
+      }
+    }
+  }
+}

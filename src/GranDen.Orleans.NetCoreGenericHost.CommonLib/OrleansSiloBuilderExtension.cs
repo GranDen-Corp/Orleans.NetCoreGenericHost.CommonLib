@@ -410,16 +410,33 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     var sqlDbConfig = orleansProvider.SQLDB;
                     siloBuilder.UseAdoNetClustering(options =>
                     {
-                        options.Invariant = sqlDbConfig.Cluster.Invariant;
+                        options.Invariant = sqlDbConfig.Cluster.Invariant ?? @"System.Data.SqlClient";
                         options.ConnectionString = sqlDbConfig.Cluster.DbConn;
                     }).AddAdoNetGrainStorageAsDefault(options =>
                     {
-                        options.Invariant = sqlDbConfig.Storage.Invariant;
+                        options.Invariant = sqlDbConfig.Storage.Invariant ?? @"System.Data.SqlClient";
                         options.ConnectionString = sqlDbConfig.Storage.DbConn;
                     }).UseAdoNetReminderService(options =>
                     {
-                        options.Invariant = sqlDbConfig.Reminder.Invariant;
+                        options.Invariant = sqlDbConfig.Reminder.Invariant ?? @"System.Data.SqlClient";
                         options.ConnectionString = sqlDbConfig.Reminder.DbConn;
+                    });
+                    break;
+
+                case "MYSQL":
+                    var mysqlConfig = orleansProvider.SQLDB;
+                    siloBuilder.UseAdoNetClustering(options =>
+                    {
+                        options.Invariant = mysqlConfig.Cluster.Invariant ?? @"MySql.Data.MySqlClient";
+                        options.ConnectionString = mysqlConfig.Cluster.DbConn;
+                    }).AddAdoNetGrainStorageAsDefault(options =>
+                    {
+                        options.Invariant = mysqlConfig.Storage.Invariant ?? @"MySql.Data.MySqlClient";
+                        options.ConnectionString = mysqlConfig.Storage.DbConn;
+                    }).UseAdoNetReminderService(options =>
+                    {
+                        options.Invariant = mysqlConfig.Reminder.Invariant ?? @"MySql.Data.MySqlClient";
+                        options.ConnectionString = mysqlConfig.Reminder.DbConn;
                     });
                     break;
 

@@ -24,7 +24,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
     public class OrleansProviderOption
     {
         /// <summary>
-        /// Default Storage Provider's name, currently only "MongoDB", "SQLDB" and "InMemory"
+        /// Default Storage Provider's name, currently only "MongoDB", "SQLDB", "MYSQL" and "InMemory"
         /// </summary>
         [Required]
         public string DefaultProvider { get; set; }
@@ -91,9 +91,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
         public string DbConn { get; set; }
 
         /// <summary>
-        /// ADO.NET driver assembly, default is <code>System.Data.SqlClient</code>
+        /// ADO.NET driver assembly
         /// </summary>
-        public string Invariant { get; set; } = "System.Data.SqlClient";
+        public string Invariant { get; set; }
     }
 
     /// <summary>

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using GranDen.Orleans.NetCoreGenericHost.CommonLib;
+﻿using GranDen.Orleans.NetCoreGenericHost.CommonLib;
 using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
-using Serilog.Formatting.Json;
 using Serilog.Sinks.SystemConsole.Themes;
+using System;
+using System.Collections.Generic;
 
-namespace MongoDemoSiloHost
+namespace MySqlDemoHost
 {
     class Program
     {
@@ -37,7 +36,6 @@ namespace MongoDemoSiloHost
 #if DEBUG
             genericHostBuilder.UseEnvironment(Environments.Development);
 #endif
-
             try
             {
                 var genericHost = genericHostBuilder.Build();
