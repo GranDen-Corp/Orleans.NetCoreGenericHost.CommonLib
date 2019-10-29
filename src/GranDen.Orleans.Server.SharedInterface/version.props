@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.1.11 : Get rid off lenthy Orleans Statistic log.</PackageReleaseNotes>
-        <Version>1.1.11</Version>
+        <PackageReleaseNotes>1.2.0 : Upgrade Orleans to v3.0</PackageReleaseNotes>
+        <Version>1.2.0</Version>
     </PropertyGroup>
 </Project>
