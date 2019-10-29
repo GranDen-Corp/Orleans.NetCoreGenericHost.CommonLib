@@ -34,7 +34,7 @@ namespace SqlDbDemoHost
             var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
 
 #if DEBUG
-            genericHostBuilder.UseEnvironment(EnvironmentName.Development);
+            genericHostBuilder.UseEnvironment(Environments.Development);
 #endif
             try
             {
@@ -42,9 +42,10 @@ namespace SqlDbDemoHost
                 PluginCache = OrleansSiloBuilderExtension.PlugInLoaderCache;
                 genericHost.Run();
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException ex)
             {
                 //do nothing
+                Log.Information(ex, "Temporary error occurred.");
             }
             catch (Exception ex)
             {

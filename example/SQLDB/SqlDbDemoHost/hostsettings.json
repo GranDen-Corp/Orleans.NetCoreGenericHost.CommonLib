@@ -16,7 +16,6 @@
         },
         "Storage": {
           "DbConn": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Orleans_Storage;Integrated Security=True;Pooling=False;Max Pool Size=200;MultipleActiveResultSets=True"
-
         },
         "Reminder": {
           "DbConn": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Orleans_Reminder;Integrated Security=True;Pooling=False;Max Pool Size=200;MultipleActiveResultSets=True"
