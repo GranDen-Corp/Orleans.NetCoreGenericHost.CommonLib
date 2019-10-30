@@ -52,7 +52,7 @@
     <PackageReference Include="Orleans.Providers.MongoDB" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ref\OrleansDashboard\OrleansDashboard.csproj" />
+    <ProjectReference Include="..\dashboard\GranDen.Orleans.NetCoreGenericHost.OrleansDashboard\GranDen.Orleans.NetCoreGenericHost.OrleansDashboard.csproj" />
     <ProjectReference Include="..\GranDen.Orleans.Server.SharedInterface\GranDen.Orleans.Server.SharedInterface.csproj" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyVersion>$(DashboardVersion)</AssemblyVersion>
+    <Company>GranDen Inc.</Company>
+    <Authors>Isak Pao</Authors>
+    <Copyright>Copyright © 2019</Copyright>
+    <Description>Admin dashboard for Microsoft Orleans Server build from GranDen.Orleans.NetCoreGenericHost.CommonLib</Description>
+    <FileVersion>$(DashboardVersion)</FileVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageIcon>OrleansLogo.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.NetCoreGenericHost.OrleansDashboard.Core</PackageProjectUrl>
+    <PackageTags>orleans dashboard metrics monitor</PackageTags>
+    <RepositoryUrl>https://github.com/GranDen-Corp/Orleans.NetCoreGenericHost.CommonLib.git</RepositoryUrl>
+    <RootNamespace>GranDen.Orleans.NetCoreGenericHost.OrleansDashboard</RootNamespace>
+    <Version>$(DashboardVersion)</Version>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>../../../output/debug</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>../../../output/release</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Orleans.Client" Version="$(OrleansPackageVersion)" />
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="$(OrleansPackageVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OrleansLogo.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

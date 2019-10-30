@@ -1,0 +1,9 @@
+﻿namespace GranDen.Orleans.NetCoreGenericHost.OrleansDashboard.Model
+{
+    public sealed class ReminderResponse
+    {
+        public int Count { get; set; }
+
+        public ReminderInfo[] Reminders { get; set; }
+    }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "OrleansDashboardApp",
+  "version": "1.0.0",
+  "description": "An admin dashboard for Microsoft Orleans",
+  "repository": "github:OrleansContrib/OrleansDashboard",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run lint && npm run test && npm run browserify",
+    "lint": "eslint . --ext .js --ext .jsx",
+    "test": "mocha",
+    "browserify": "cross-env BABEL_ENV=production browserify index.jsx -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress warnings=false --mangle > ../OrleansDashboard/index.min.js",
+    "watch": "cross-env BABEL_ENV=development watchify index.jsx -t babelify -g [ envify --NODE_ENV development ] -o ../Tests/TestHosts/TestHost/index.min.js"
+  },
+  "dependencies": {
+    "chart.js": "^2.7.2",
+    "eventthing": "^1.0.7",
+    "humanize-duration": "^3.15.1",
+    "react": "^15.6.2",
+    "react-chartjs": "git://github.com/reactjs/react-chartjs.git#chartjs-v2",
+    "react-dom": "^15.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "babelify": "^9.0.0",
+    "browserify": "^16.2.3",
+    "cross-env": "^5.2.0",
+    "envify": "^4.1.0",
+    "eslint": "^5.14.1",
+    "eslint-plugin-react": "^7.11.1",
+    "mocha": "^5.2.0",
+    "uglify-js": "^3.4.8",
+    "uglifyify": "^5.0.1",
+    "watchify": "^3.11.1"
+  },
+  "author": "Richard Astbury",
+  "license": "MIT"
+}

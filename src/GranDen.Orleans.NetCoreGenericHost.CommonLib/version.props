@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-      <PackageReleaseNotes>1.2.0 : 1. Upgrade Orleans to v3.0, 2.Support MySQL Provider for Orleans Cluster, Storage, Reminder</PackageReleaseNotes>
-        <Version>1.2.0</Version>
+      <PackageReleaseNotes>1.2.1 : Fix nuget dependency</PackageReleaseNotes>
+        <Version>1.2.1</Version>
     </PropertyGroup>
 </Project>
