@@ -1,6 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::Match($(NETCoreSdkVersion),'^2\.\d+\.[\w-]+').Success)">
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::Match($(NETCoreSdkVersion),'^3\.\d+\.[\w-]+').Success)">
+    <TargetFrameworks>netcoreapp2.2;netcoreapp3.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>GranDen Inc.</Company>
@@ -49,7 +59,7 @@
     <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.0.0" />
     <PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
-    <PackageReference Include="Orleans.Providers.MongoDB" Version="3.0.0" />
+    <PackageReference Include="Orleans.Providers.MongoDB" Version="3.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dashboard\GranDen.Orleans.NetCoreGenericHost.OrleansDashboard\GranDen.Orleans.NetCoreGenericHost.OrleansDashboard.csproj" />

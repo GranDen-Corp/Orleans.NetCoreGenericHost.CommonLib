@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-      <PackageReleaseNotes>1.2.1 : Fix nuget dependency</PackageReleaseNotes>
-        <Version>1.2.1</Version>
+      <PackageReleaseNotes>1.2.2 : support both .NET Core 2.x &amp; 3.0 SDK</PackageReleaseNotes>
+        <Version>1.2.2</Version>
     </PropertyGroup>
 </Project>

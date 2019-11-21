@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.2.1 : Bump version</PackageReleaseNotes>
-        <Version>1.2.1</Version>
+        <PackageReleaseNotes>1.2.2 : Support .NET Core 3.0</PackageReleaseNotes>
+        <Version>1.2.2</Version>
     </PropertyGroup>
 </Project>
