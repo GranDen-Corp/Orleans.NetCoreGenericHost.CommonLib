@@ -36,7 +36,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 siloBuilder.UsePerfCounterEnvironmentStatistics();
             }
 
-            logger.LogInformation($"Enable Orleans Dashboard (https://github.com/OrleansContrib/OrleansDashboard) on this host {orleansDashboard.Port} port");
+            logger.LogInformation($"Enable Orleans Dashboard on this host {orleansDashboard.Port} port");
             siloBuilder.UseDashboard(options =>
             {
                 options.Port = orleansDashboard.Port;

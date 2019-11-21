@@ -366,39 +366,52 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             {
                 case "MongoDB":
                     var mongoDbConfig = orleansProvider.MongoDB;
-                    siloBuilder.UseMongoDBClient(mongoDbConfig.Cluster.DbConn).UseMongoDBClustering(options =>
+
+                    var mongoDbClusterConfig = mongoDbConfig.Cluster;
+                    var mongoDbStorageConfig = mongoDbConfig.Storage;
+                    var mongoDbReminderConfig = mongoDbConfig.Reminder;
+
+                    if(!string.IsNullOrEmpty(mongoDbClusterConfig.DbConn))
                     {
-                        var cluster = mongoDbConfig.Cluster;
+                        siloBuilder.UseMongoDBClient(mongoDbClusterConfig.DbConn);
+                    }
+                    else if(!string.IsNullOrEmpty(mongoDbStorageConfig.DbConn))
+                    {
+                        siloBuilder.UseMongoDBClient(mongoDbStorageConfig.DbConn);
+                    }
+                    else if(!string.IsNullOrEmpty(mongoDbReminderConfig.DbConn))
+                    {
+                        siloBuilder.UseMongoDBClient(mongoDbReminderConfig.DbConn);
+                    }
 
-                        options.DatabaseName = cluster.DbName;
+                    siloBuilder.UseMongoDBClustering(options =>
+                    {
+                        options.DatabaseName = mongoDbClusterConfig.DbName;
 
-                        if (!string.IsNullOrEmpty(cluster.CollectionPrefix))
+                        if (!string.IsNullOrEmpty(mongoDbClusterConfig.CollectionPrefix))
                         {
-                            options.CollectionPrefix = cluster.CollectionPrefix;
+                            options.CollectionPrefix = mongoDbClusterConfig.CollectionPrefix;
                         }
                     })
                     .AddMongoDBGrainStorageAsDefault(optionsBuilder =>
                     {
-                        var storage = mongoDbConfig.Storage;
                         optionsBuilder.Configure(options =>
                         {
-                            options.DatabaseName = storage.DbName;
+                            options.DatabaseName = mongoDbStorageConfig.DbName;
 
-                            if (!string.IsNullOrEmpty(storage.CollectionPrefix))
+                            if (!string.IsNullOrEmpty(mongoDbStorageConfig.CollectionPrefix))
                             {
-                                options.CollectionPrefix = storage.CollectionPrefix;
+                                options.CollectionPrefix = mongoDbStorageConfig.CollectionPrefix;
                             }
                         });
                     })
                     .UseMongoDBReminders(options =>
                     {
-                        var reminder = mongoDbConfig.Reminder;
+                        options.DatabaseName = mongoDbReminderConfig.DbName;
 
-                        options.DatabaseName = reminder.DbName;
-
-                        if (!string.IsNullOrEmpty(reminder.CollectionPrefix))
+                        if (!string.IsNullOrEmpty(mongoDbReminderConfig.CollectionPrefix))
                         {
-                            options.CollectionPrefix = reminder.CollectionPrefix;
+                            options.CollectionPrefix = mongoDbReminderConfig.CollectionPrefix;
                         }
                     });
                     break;
