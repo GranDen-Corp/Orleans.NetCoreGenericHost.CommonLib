@@ -366,11 +366,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             {
                 case "MongoDB":
                     var mongoDbConfig = orleansProvider.MongoDB;
-                    siloBuilder.UseMongoDBClustering(options =>
+                    siloBuilder.UseMongoDBClient(mongoDbConfig.Cluster.DbConn).UseMongoDBClustering(options =>
                     {
                         var cluster = mongoDbConfig.Cluster;
 
-                        options.ConnectionString = cluster.DbConn;
                         options.DatabaseName = cluster.DbName;
 
                         if (!string.IsNullOrEmpty(cluster.CollectionPrefix))
@@ -383,7 +382,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                         var storage = mongoDbConfig.Storage;
                         optionsBuilder.Configure(options =>
                         {
-                            options.ConnectionString = storage.DbConn;
                             options.DatabaseName = storage.DbName;
 
                             if (!string.IsNullOrEmpty(storage.CollectionPrefix))
@@ -396,7 +394,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     {
                         var reminder = mongoDbConfig.Reminder;
 
-                        options.ConnectionString = reminder.DbConn;
                         options.DatabaseName = reminder.DbName;
 
                         if (!string.IsNullOrEmpty(reminder.CollectionPrefix))

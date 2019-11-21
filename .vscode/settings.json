@@ -1,0 +1,6 @@
+{
+    "omnisharp.enableEditorConfigSupport": true,
+    "files.exclude": {
+        "**/obj": true
+    }
+}
