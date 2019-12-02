@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.2.2 : Support .NET Core 3.0</PackageReleaseNotes>
-        <Version>1.2.2</Version>
+        <PackageReleaseNotes>1.2.3 : Update Orleans</PackageReleaseNotes>
+        <Version>1.2.3</Version>
     </PropertyGroup>
 </Project>
