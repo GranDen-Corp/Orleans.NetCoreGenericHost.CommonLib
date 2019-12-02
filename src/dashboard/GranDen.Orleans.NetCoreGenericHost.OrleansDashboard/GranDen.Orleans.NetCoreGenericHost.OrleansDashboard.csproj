@@ -50,7 +50,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
     <PackageReference Include="Microsoft.Orleans.Core" Version="$(OrleansPackageVersion)" />
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.4.3"
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.4.4"
                       Condition="$([System.Text.RegularExpressions.Regex]::Match($(NETCoreSdkVersion),'^2\.\d+\.[\w-]+').Success)"
                       PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

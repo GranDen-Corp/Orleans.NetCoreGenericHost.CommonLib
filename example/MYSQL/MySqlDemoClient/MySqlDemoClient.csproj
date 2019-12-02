@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GranDen.Orleans.Client.CommonLib" Version="1.2.2" />
+    <PackageReference Include="GranDen.Orleans.Client.CommonLib" Version="1.2.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.1" />
     <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
