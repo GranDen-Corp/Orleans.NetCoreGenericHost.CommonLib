@@ -31,8 +31,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Orleans.Client" Version="$(OrleansPackageVersion)" />
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="$(OrleansPackageVersion)">
-      <PrivateAssets>all</PrivateAssets>
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.4.4"
+                      PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
