@@ -10,7 +10,13 @@ using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
 using GranDen.Orleans.Server.SharedInterface;
 using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Logging;
+
+#if NETCOREAPP2_1
 using GranDen.Orleans.NetCoreGenericHost.OrleansDashboard;
+#else
+using Orleans;
+#endif
+
 using Orleans.Hosting;
 using Orleans.Statistics;
 
@@ -23,7 +29,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// </summary>
         public static Dictionary<string, PluginLoader> PlugInLoaderCache { get; private set; }
 
-        #region SiloBuilder Internal Configuration Methods
+#region SiloBuilder Internal Configuration Methods
 
         private static ISiloBuilder ApplyOrleansDashboard(this ISiloBuilder siloBuilder, OrleansDashboardOption orleansDashboard, ILogger logger)
         {
@@ -45,9 +51,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return siloBuilder;
         }
 
-        #endregion
+#endregion
 
-        #region Assembly Path Resolver
+#region Assembly Path Resolver
 
         private static string PathResolver(string path)
         {
@@ -78,9 +84,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return ret;
         }
 
-        #endregion
+#endregion
 
-        #region Private Util Methods
+#region Private Util Methods
 
         private static bool IsRunningOnContainer()
         {
@@ -159,6 +165,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return assembly;
         }
 
-        #endregion
+#endregion
     }
 }
