@@ -27,10 +27,10 @@ namespace GranDen.Orleans.Server.SharedInterface
     }
 
     /// <summary>
-    /// 
+    /// Abstract class for easier configure Orleans's DI
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class AbstractServiceConfigDelegate<T> : AbstractServiceConfigDelegate where T : Grain 
+    public abstract class AbstractServiceConfigDelegate<T> : AbstractServiceConfigDelegate where T : Grain
     {
         /// <summary>
         /// Default ApplicationPartManager configuration implementation

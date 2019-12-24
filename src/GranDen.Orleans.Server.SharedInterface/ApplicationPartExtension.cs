@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.ApplicationParts;
+using Orleans.Hosting;
 
 namespace GranDen.Orleans.Server.SharedInterface
 {

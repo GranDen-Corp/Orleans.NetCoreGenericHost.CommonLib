@@ -14,22 +14,13 @@ namespace InRamDemoHost
     {
         static void Main(string[] args)
         {
-            var logConfig = new LoggerConfiguration()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Orleans.RuntimeSiloLogStatistics", LogEventLevel.Warning)
-                .MinimumLevel.Override("Orleans.Runtime.Management.ManagementGrain", LogEventLevel.Warning)
-                .MinimumLevel.Override("Orleans.Runtime.SiloControl", LogEventLevel.Warning)
-                .Enrich.FromLogContext()
-                .Enrich.WithProcessId()
-                .Enrich.WithProcessName()
-                .Enrich.WithThreadId()
-                .Enrich.WithExceptionDetails()
-                .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-                .WriteTo.Debug();
-
-            Log.Logger = logConfig.CreateLogger();
+            Log.Logger = CreateLogConfig().CreateLogger();
             
             var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
+
+#if DEBUG
+            genericHostBuilder.UseEnvironment(Environments.Development);
+#endif
 
             try
             {
@@ -54,6 +45,22 @@ namespace InRamDemoHost
                 }
             }
         }
+
+        private static LoggerConfiguration CreateLogConfig() =>
+            new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Orleans.RuntimeSiloLogStatistics", LogEventLevel.Warning)
+                .MinimumLevel.Override("Orleans.Runtime.Management.ManagementGrain", LogEventLevel.Warning)
+                .MinimumLevel.Override("Orleans.Runtime.SiloControl", LogEventLevel.Warning)
+                .MinimumLevel.Override("Orleans.Runtime.MembershipService.MembershipTableManager", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .Enrich.WithProcessId()
+                .Enrich.WithProcessName()
+                .Enrich.WithThreadId()
+                .Enrich.WithExceptionDetails()
+                .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                .WriteTo.Trace()
+                .WriteTo.Debug();
 
         public static Dictionary<string, PluginLoader> PluginCache { get; set; }
     }

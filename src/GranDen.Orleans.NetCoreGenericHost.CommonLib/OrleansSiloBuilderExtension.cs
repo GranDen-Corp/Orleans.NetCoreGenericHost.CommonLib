@@ -188,8 +188,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
             if (configurationGetterFunc != null)
             {
-                Action<HostBuilderContext, ISiloBuilder>
-                    ConfigureDelegate(HostBuilderContext context, ISiloBuilder siloBuilder, Func<HostBuilderContext, IConfigurationSection> configGetter)
+                Action<HostBuilderContext, ISiloBuilder> ConfigureDelegate(HostBuilderContext context, ISiloBuilder siloBuilder, Func<HostBuilderContext, IConfigurationSection> configGetter)
                 {
                     var orleansSettings = configGetter(context);
                     return (hostBuilderContext, iSiloBuilder) =>
@@ -343,7 +342,15 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 {
                     foreach (var assembly in dllPaths.Select(GetNonMainExeFolderAssembly))
                     {
-                        parts.AddDynamicPart(assembly);
+                        if (assembly.GetTypes().Select(t => t.Namespace).Any(x => x == "OrleansGeneratedCode"))
+                        {
+                            parts.AddDynamicPart(assembly);
+                        }
+                        else
+                        {
+                            logger.LogInformation($"Generate {assembly.GetName()}'s orleans support code");
+                            parts.AddApplicationPart(assembly).WithCodeGeneration();
+                        }
                     }
                 }
             });
@@ -371,15 +378,15 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     var mongoDbStorageConfig = mongoDbConfig.Storage;
                     var mongoDbReminderConfig = mongoDbConfig.Reminder;
 
-                    if(!string.IsNullOrEmpty(mongoDbClusterConfig.DbConn))
+                    if (!string.IsNullOrEmpty(mongoDbClusterConfig.DbConn))
                     {
                         siloBuilder.UseMongoDBClient(mongoDbClusterConfig.DbConn);
                     }
-                    else if(!string.IsNullOrEmpty(mongoDbStorageConfig.DbConn))
+                    else if (!string.IsNullOrEmpty(mongoDbStorageConfig.DbConn))
                     {
                         siloBuilder.UseMongoDBClient(mongoDbStorageConfig.DbConn);
                     }
-                    else if(!string.IsNullOrEmpty(mongoDbReminderConfig.DbConn))
+                    else if (!string.IsNullOrEmpty(mongoDbReminderConfig.DbConn))
                     {
                         siloBuilder.UseMongoDBClient(mongoDbReminderConfig.DbConn);
                     }
@@ -451,24 +458,34 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     break;
 
                 case "InMemory":
-                    siloBuilder.UseDevelopmentClustering(option =>
+
+                    if (IpAddressNotSpecified(siloConfig.AdvertisedIp))
+                    {
+                        siloBuilder.UseDevelopmentClustering(option =>
                         {
-                            if (IpAddressNotSpecified(siloConfig.AdvertisedIp))
-                            {
-                                option.PrimarySiloEndpoint = new IPEndPoint(IPAddress.Loopback, siloConfig.SiloPort);
-                            }
-                            else
-                            {
-                                var advertisedIp = IPAddress.Parse(siloConfig.AdvertisedIp.Trim());
-                                option.PrimarySiloEndpoint = new IPEndPoint(advertisedIp, siloConfig.SiloPort);
-                            }
-                        })
-                        .Configure<EndpointOptions>(options =>
+                            option.PrimarySiloEndpoint = new IPEndPoint(IPAddress.Loopback, siloConfig.SiloPort);
+                        });
+
+                        if (string.IsNullOrEmpty(siloConfig.AdvertisedIp.Trim()) || siloConfig.AdvertisedIp == "*")
                         {
-                            options.AdvertisedIPAddress = IPAddress.Loopback;
-                            options.GatewayPort = siloConfig.GatewayPort;
-                            options.SiloPort = siloConfig.SiloPort;
+                            siloBuilder.ConfigureEndpoints("localhost", siloConfig.SiloPort, siloConfig.GatewayPort, listenOnAnyHostAddress: siloConfig.ListenOnAnyHostAddress);
+                        }
+                        else
+                        {
+                            siloBuilder.ConfigureEndpoints(siloConfig.AdvertisedIp, siloConfig.SiloPort, siloConfig.GatewayPort, listenOnAnyHostAddress: siloConfig.ListenOnAnyHostAddress);
+                        }
+                    }
+                    else
+                    {
+                        var advertisedIp = IPAddress.Parse(siloConfig.AdvertisedIp.Trim());
+                        siloBuilder.UseDevelopmentClustering(option =>
+                        {
+                            option.PrimarySiloEndpoint = new IPEndPoint(advertisedIp, siloConfig.SiloPort);
                         })
+                        .ConfigureEndpoints(advertisedIp, siloConfig.SiloPort, siloConfig.GatewayPort, siloConfig.ListenOnAnyHostAddress);
+                    }
+
+                    siloBuilder
                         .AddMemoryGrainStorageAsDefault()
                         .UseInMemoryReminderService();
                     break;
