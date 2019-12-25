@@ -348,8 +348,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                         }
                         else
                         {
-                            logger.LogInformation($"Generate {assembly.GetName()}'s orleans support code");
-                            parts.AddApplicationPart(assembly).WithCodeGeneration();
+                            throw new OrleansSiloHostConfigException($"Module \'{dllPaths}\' has no orleans support code gen");
                         }
                     }
                 }
@@ -367,6 +366,13 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 {
                     siloBuilder.ConfigureServices(diConfigAction);
                 }
+            }
+
+            if(siloConfig.ExlcudeGrains.Any())
+            {
+                siloBuilder.Configure<GrainClassOptions>(options => {
+                    options.ExcludedGrainTypes.AddRange(siloConfig.ExlcudeGrains);
+                });
             }
 
             switch (orleansProvider.DefaultProvider)

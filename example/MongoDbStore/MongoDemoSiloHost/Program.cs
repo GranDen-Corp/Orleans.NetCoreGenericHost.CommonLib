@@ -17,11 +17,9 @@ namespace MongoDemoSiloHost
             Log.Logger = CreateLogConfig().CreateLogger();
 
             var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
-
 #if DEBUG
             genericHostBuilder.UseEnvironment(Environments.Development);
 #endif
-
             try
             {
                 var genericHost = genericHostBuilder.Build();
@@ -40,10 +38,7 @@ namespace MongoDemoSiloHost
             }
             finally
             {
-                foreach (var kv in PluginCache)
-                {
-                    kv.Value.Dispose();
-                }
+                PluginCache.Dispose();
             }
         }
 

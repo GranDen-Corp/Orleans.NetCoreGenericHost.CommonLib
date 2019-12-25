@@ -7,8 +7,13 @@ using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Collections.Generic;
+using Orleans;
+using Orleans.Hosting;
+using HelloNetStandard2_1.Grains;
+using GranDen.Orleans.Server.SharedInterface;
+using Microsoft.Extensions.Logging;
 
-namespace MySqlDemoHost
+namespace StubCodeGenLocalSiloHost
 {
     class Program
     {
@@ -16,7 +21,16 @@ namespace MySqlDemoHost
         {
             Log.Logger = CreateLogConfig().CreateLogger();
 
-            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
+            var genericHostBuilder =
+                OrleansSiloBuilderExtension.CreateHostBuilder(args)
+                .ApplySerilog()
+                .UseOrleans(siloBuilder =>
+                {
+                    siloBuilder.ConfigureApplicationParts(parts =>
+                    {
+                        parts.AddDynamicPart(typeof(HelloGrain).Assembly).WithCodeGeneration(LoggerFactory.Create(builder => { builder.AddSerilog(dispose: true); }));
+                    });
+                });
 #if DEBUG
             genericHostBuilder.UseEnvironment(Environments.Development);
 #endif
@@ -26,10 +40,9 @@ namespace MySqlDemoHost
                 PluginCache = OrleansSiloBuilderExtension.PlugInLoaderCache;
                 genericHost.Run();
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException)
             {
                 //do nothing
-                Log.Information(ex, "Temporary error occurred.");
             }
             catch (Exception ex)
             {

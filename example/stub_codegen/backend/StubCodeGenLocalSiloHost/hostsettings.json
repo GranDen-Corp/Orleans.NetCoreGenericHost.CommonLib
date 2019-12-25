@@ -1,0 +1,26 @@
+{
+  "Orleans": {
+    "SiloConfig": {
+      "ClusterId": "demo-host-server",
+      "ServiceId": "demo-service",
+      "AdvertisedIp": "*",
+      "ListenOnAnyHostAddress": true,
+      "SiloPort": 8320,
+      "GatewayPort": 8310
+    },
+    "Provider": {
+      "DefaultProvider": "InMemory" 
+    },
+    "Dashboard": {
+      "enable": true,
+      "port": 8210
+    }
+    ,
+    "GrainOption": {
+      "LoadPaths": [
+        //"{GrainLoadPath}/HelloNetStandard2_1.Grains/bin/Debug/netstandard2.0/HelloNetStandard2_1.Grains.dll"
+      ],
+      "ExcludedTypeFullNames": []
+    }
+  }
+}

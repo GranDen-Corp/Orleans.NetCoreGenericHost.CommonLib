@@ -31,5 +31,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers
         {
             return _serviceProvider.GetService<ILogger<T>>();
         }
+
+        public ILoggerFactory CreateDefaultLoggerFactory()
+        {
+            return LoggerFactory.Create(DefaultLogAction);
+        }
     }
 }

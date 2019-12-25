@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
-using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.ApplicationParts;
-using Orleans.Hosting;
 
 namespace GranDen.Orleans.Server.SharedInterface
 {
@@ -16,9 +14,10 @@ namespace GranDen.Orleans.Server.SharedInterface
         /// </summary>
         /// <param name="applicationPartManager"></param>
         /// <param name="assembly"></param>
-        public static void AddDynamicPart(this IApplicationPartManager applicationPartManager, Assembly assembly)
+        /// <returns></returns>
+        public static IApplicationPartManagerWithAssemblies AddDynamicPart(this IApplicationPartManager applicationPartManager, Assembly assembly)
         {
-            applicationPartManager.AddApplicationPart(assembly).WithReferences();
+            return applicationPartManager.AddApplicationPart(assembly).WithReferences();
         }
     }
 }

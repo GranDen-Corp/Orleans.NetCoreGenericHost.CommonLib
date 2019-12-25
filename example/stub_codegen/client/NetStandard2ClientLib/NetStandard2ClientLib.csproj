@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GranDen.Orleans.Client.CommonLib" Version="1.2.4" />
+    <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\netstandard_mixed\HelloNetStandard.ShareInterface\HelloNetStandard.ShareInterface.csproj" />
+  </ItemGroup>
+
+</Project>

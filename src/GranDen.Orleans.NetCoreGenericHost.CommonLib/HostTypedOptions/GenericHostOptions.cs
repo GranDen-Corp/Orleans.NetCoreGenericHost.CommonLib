@@ -209,6 +209,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions
         public double ResponseTimeoutMinutes { get; set; } = 3.0;
 
         /// <summary>
+        /// Full Name of excluded grain classes
+        /// </summary>
+        public IList<string> ExlcudeGrains { get; set; } = new List<string>();
+
+        /// <summary>
         /// Set to true if using in Multi-Cluster configuration
         /// </summary>
         public bool? IsMultiCluster { get; set; }

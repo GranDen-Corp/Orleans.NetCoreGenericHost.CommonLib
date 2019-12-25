@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "StubCodeGenLocalSiloHost": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GrainLoadPath": "../../../.."
+      }
+    }
+  }
+}

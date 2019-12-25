@@ -39,10 +39,7 @@ namespace InRamDemoHost
             }
             finally
             {
-                foreach (var kv in PluginCache)
-                {
-                    kv.Value.Dispose();
-                }
+                PluginCache.Dispose();
             }
         }
 

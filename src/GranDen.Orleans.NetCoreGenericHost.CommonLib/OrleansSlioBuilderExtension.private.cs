@@ -149,9 +149,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             PluginLoader loader;
             if (!PlugInLoaderCache.ContainsKey(fullPath))
             {
-                loader = PluginLoader.CreateFromAssemblyFile(fullPath, loaderOption =>
+                loader = PluginLoader.CreateFromAssemblyFile(fullPath, pluginConfig =>
                 {
-                    loaderOption.PreferSharedTypes = true;
+                    pluginConfig.PreferSharedTypes = true;
                 });
                 PlugInLoaderCache.TryAdd(fullPath, loader);
             }

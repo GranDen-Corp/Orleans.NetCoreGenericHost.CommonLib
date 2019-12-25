@@ -23,4 +23,28 @@ This folder contains demo project for using GranDen Orleans Server & Client proj
   | Project path  | Purpose |
   | ----------------- | ------------- |
   | MongoDbStore\\MongoDemoConsoleClient | Orleans Client running on console |
-  | InRAM\\MongoDemoSiloHost | Oreleans Silo Host hosting via [.NET Core Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host) |  
+  | MongoDbStore\\MongoDemoSiloHost | Oreleans Silo Host hosting via [.NET Core Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host) |  
+
+- Hosting via MySQL membership store:
+
+  | Project path  | Purpose |
+  | ----------------- | ------------- |
+  | MYSQL\\MySqlDemoClient | Orleans Client running on console |
+  | MYSQL\\MySqlDemoHost | Oreleans Silo Host hosting via [.NET Core Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host) |  
+
+- Hosting via MS SQL Server membership store:
+
+  | Project path  | Purpose |
+  | ----------------- | ------------- |
+  | SQLDB\\SqlDbDemoClient | Orleans Client running on console |
+  | SQLDB\\SqlDbDemoHost | Oreleans Silo Host hosting via [.NET Core Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host) |  
+
+- Demo using [Orleans code generation when start-up](http://dotnet.github.io/orleans/Documentation/grains/code_generation.html#during-initialization):
+
+  | Project path  | Purpose |
+  | ----------------- | ------------- |
+  | stub_codegen\\netstandard_mixed\\HelloNetStandard.ShareInterface | Shared Orleans RPC Interface project |
+  | stub_codegen\\client\\NetStandard2ClientLib | .NET Standard 2.0 RPC caller library |
+  | stub_codegen\\client\\StubCodeGenDemoClient | Orleans Client running on console |
+  | stub_codegen\\backend\\HelloNetStandard2_1.Grains | .NET Standard 2.1 Orleans grain project | 
+  | stub_codegen\\backend\\StubCodeGenLocalSiloHost | Oreleans Silo Host hosting via [.NET Core Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host) |  
