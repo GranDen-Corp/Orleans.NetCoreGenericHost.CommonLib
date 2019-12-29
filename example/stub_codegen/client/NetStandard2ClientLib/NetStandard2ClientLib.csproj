@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GranDen.Orleans.Client.CommonLib" Version="1.2.4" />
+    <PackageReference Include="GranDen.Orleans.Client.CommonLib" Version="1.2.5" />
     <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.0.2" />
   </ItemGroup>
 

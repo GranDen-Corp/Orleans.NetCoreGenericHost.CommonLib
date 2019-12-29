@@ -15,7 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.4.4"
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="2.4.5"
                       Condition="$([System.Text.RegularExpressions.Regex]::Match($(NETCoreSdkVersion),'^2\.\d+\.[\w-]+').Success)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

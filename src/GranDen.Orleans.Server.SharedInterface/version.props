@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.2.4 : &#xD;&#xA;
-        1. Build with .NET Core 3.1 SDK &#xD;&#xA;
-        2. Update Orleans to v3.0.2&#xD;&#xA;
-        3. Make silo host freedom to chose different Orleans Code generation mechanism</PackageReleaseNotes>
-        <Version>1.2.4</Version>
+        <PackageReleaseNotes>1.2.5 : &#xD;&#xA;Update .NET Core SDK</PackageReleaseNotes>
+        <Version>1.2.5</Version>
     </PropertyGroup>
 </Project>
