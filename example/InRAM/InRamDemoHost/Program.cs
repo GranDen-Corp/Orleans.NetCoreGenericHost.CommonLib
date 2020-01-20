@@ -15,8 +15,8 @@ namespace InRamDemoHost
         static void Main(string[] args)
         {
             Log.Logger = CreateLogConfig().CreateLogger();
-            
-            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args).ApplySerilog();
+
+            var genericHostBuilder = OrleansSiloBuilderExtension.CreateHostBuilder(args, configFilePrefix: "appsettings").ApplySerilog();
 
 #if DEBUG
             genericHostBuilder.UseEnvironment(Environments.Development);

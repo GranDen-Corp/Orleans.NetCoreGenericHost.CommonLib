@@ -88,6 +88,13 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
 #region Private Util Methods
 
+        private static string GetContextCwd()
+        {
+            var cwdEnv = Environment.CurrentDirectory;
+            var cwd = Directory.GetCurrentDirectory();
+            return string.IsNullOrEmpty(cwdEnv) ? cwd : cwdEnv;
+        }
+
         private static bool IsRunningOnContainer()
         {
             var onDockerFlag = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");

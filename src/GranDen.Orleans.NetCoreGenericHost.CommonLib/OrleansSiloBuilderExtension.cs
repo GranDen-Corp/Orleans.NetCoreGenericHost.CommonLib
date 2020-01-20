@@ -26,15 +26,26 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
     /// </summary>
     public static partial class OrleansSiloBuilderExtension
     {
+        private const string HostEnvPrefix = "ORLEANS_HOST_";
+        private const string AppEnvPrefix = "ORLEANS_HOST_APP_";
+        private const string ConfigFilePrefix = "hostsettings";
+
         /// <summary>
         /// Create .NET Core Generic HostBuilder using various default configuration
         /// </summary>
         /// <param name="args">Command line arguments</param>
         /// <param name="hostEnvPrefix">Configuration Environment variable name prefix, default would be "ORLEANS_HOST_"</param>
+        /// <param name="appEnvPrefix"></param>
+        /// <param name="configFilePrefix"></param>
         /// <param name="logBuilderAction"></param>
         /// <returns></returns>
         // ReSharper disable once UnusedMember.Global
-        public static IHostBuilder CreateHostBuilder(string[] args, string hostEnvPrefix = "ORLEANS_HOST_", Action<ILoggingBuilder> logBuilderAction = null)
+        public static IHostBuilder CreateHostBuilder(
+            string[] args,
+            string hostEnvPrefix = HostEnvPrefix,
+            string appEnvPrefix = AppEnvPrefix,
+            string configFilePrefix = ConfigFilePrefix,
+            Action<ILoggingBuilder> logBuilderAction = null)
         {
             if (PlugInLoaderCache != null)
             {
@@ -44,7 +55,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             var hostBuilder = new HostBuilder();
             hostBuilder.ConfigureLogging(logBuilderAction ?? DefaultLoggerHelper.DefaultLogAction)
                .UseHostConfiguration(args, hostEnvironmentPrefix: hostEnvPrefix)
-               .UseAppConfiguration(args)
+               .UseAppConfiguration(args, configEnvironmentPrefix: appEnvPrefix, configFilePrefix: configFilePrefix)
                .UseConfigurationOptions()
                .ApplyOrleansSettings();
 
@@ -63,7 +74,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         public static IHostBuilder UseHostConfiguration(this IHostBuilder builder,
             string[] args,
             Action<IConfigurationBuilder> configureDelegate = null,
-            string hostEnvironmentPrefix = "ORLEANS_HOST_")
+            string hostEnvironmentPrefix = HostEnvPrefix)
         {
             if (configureDelegate == null)
             {
@@ -93,19 +104,16 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         public static IHostBuilder UseAppConfiguration(this IHostBuilder hostBuilder,
             string[] args,
             Action<HostBuilderContext, IConfigurationBuilder> configureDelegate = null,
-            string configEnvironmentPrefix = "ORLEANS_HOST_APP_",
-            string configFilePrefix = "hostsettings")
+            string configEnvironmentPrefix = AppEnvPrefix,
+            string configFilePrefix = ConfigFilePrefix)
         {
             if (configureDelegate == null)
             {
                 hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
                 {
-                    var cwdEnv = Environment.CurrentDirectory;
-                    var cwd = Directory.GetCurrentDirectory();
-
                     configurationBuilder
-                        .SetBasePath(string.IsNullOrEmpty(cwdEnv) ? cwd : cwdEnv)
-                        .AddJsonFile($"{configFilePrefix}.json", optional: false)
+                        .SetBasePath(GetContextCwd())
+                        .AddJsonFile($"{configFilePrefix}.json", optional: true)
                         .AddJsonFile($"{configFilePrefix}.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true)
                         .AddEnvironmentVariables(prefix: configEnvironmentPrefix)
                         .AddCommandLine(args);
@@ -368,9 +376,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 }
             }
 
-            if(siloConfig.ExlcudeGrains.Any())
+            if (siloConfig.ExlcudeGrains.Any())
             {
-                siloBuilder.Configure<GrainClassOptions>(options => {
+                siloBuilder.Configure<GrainClassOptions>(options =>
+                {
                     options.ExcludedGrainTypes.AddRange(siloConfig.ExlcudeGrains);
                 });
             }

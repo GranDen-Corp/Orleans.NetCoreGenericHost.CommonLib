@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -22,12 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\GranDen.Orleans.NetCoreGenericHost.CommonLib\GranDen.Orleans.NetCoreGenericHost.CommonLib.csproj" />
     <ProjectReference Include="..\..\..\src\GranDen.Orleans.NetCoreGenericHost.Serilog\GranDen.Orleans.NetCoreGenericHost.Serilog.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="hostsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
