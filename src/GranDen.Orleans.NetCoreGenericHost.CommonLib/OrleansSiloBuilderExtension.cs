@@ -109,14 +109,19 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             if (configureDelegate == null)
             {
-                hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+                hostBuilder.ConfigureAppConfiguration((hostBuilderContext, configurationBuilder) =>
                 {
                     configurationBuilder
                         .SetBasePath(GetContextCwd())
                         .AddJsonFile($"{configFilePrefix}.json", optional: true)
-                        .AddJsonFile($"{configFilePrefix}.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true)
+                        .AddJsonFile($"{configFilePrefix}.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true)
                         .AddEnvironmentVariables(prefix: configEnvironmentPrefix)
                         .AddCommandLine(args);
+
+                    if (hostBuilderContext.HostingEnvironment.IsDevelopment())
+                    {
+                        configurationBuilder.AddUserSecrets(AssemblyUtil.GetMainAssembly());
+                    }
                 });
             }
             else
@@ -210,10 +215,10 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     };
                 }
 
-                hostBuilder.UseOrleans((ctx, siloBuilder) =>
+                hostBuilder.UseOrleans((hostBuilderContext, siloBuilder) =>
                 {
-                    var configAction = ConfigureDelegate(ctx, siloBuilder, configurationGetterFunc);
-                    configAction(ctx, siloBuilder);
+                    var configAction = ConfigureDelegate(hostBuilderContext, siloBuilder, configurationGetterFunc);
+                    configAction(hostBuilderContext, siloBuilder);
                 });
             }
             else

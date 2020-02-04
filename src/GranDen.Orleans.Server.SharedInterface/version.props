@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-        <PackageReleaseNotes>1.2.5 : &#xD;&#xA;Update .NET Core SDK</PackageReleaseNotes>
-        <Version>1.2.5</Version>
+        <PackageReleaseNotes>1.3.0 : &#xD;&#xA;Bump version</PackageReleaseNotes>
+        <Version>1.3.0</Version>
     </PropertyGroup>
 </Project>

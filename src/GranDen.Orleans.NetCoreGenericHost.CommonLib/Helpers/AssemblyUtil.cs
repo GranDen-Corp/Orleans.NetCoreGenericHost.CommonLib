@@ -12,6 +12,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers
             return System.IO.Path.GetDirectoryName(GetMainAssemblyPath());
         }
 
+        public static Assembly GetMainAssembly()
+        {
+            return Assembly.GetExecutingAssembly();
+        }
+
         public static string GetMainAssemblyPath()
         {
             return Assembly.GetExecutingAssembly().Location;

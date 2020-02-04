@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-      <PackageReleaseNotes>1.2.5 : &#xD;&#xA;1. Update .NET Core SDK&#xD;&#xA;2. Add optional arguments for adapting .NET Core 3.x worker service</PackageReleaseNotes>
-        <Version>1.2.5</Version>
+      <PackageReleaseNotes>1.3.0 : &#xD;&#xA;Support using ASP.NET Core User Secrets</PackageReleaseNotes>
+        <Version>1.3.0</Version>
     </PropertyGroup>
 </Project>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using GranDen.CallExtMethodLib;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.Logging;
 #if NETCOREAPP2_1
 using GranDen.Orleans.NetCoreGenericHost.OrleansDashboard;
 #else
-using Orleans;
+//using Orleans;
 #endif
 
 using Orleans.Hosting;
@@ -43,10 +44,15 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             }
 
             logger.LogInformation($"Enable Orleans Dashboard on this host {orleansDashboard.Port} port");
-            siloBuilder.UseDashboard(options =>
+
+            //var extMethodInvoker = new ExtMethodInvoker("OrleansDashboard");
+
+            Action<DashboardOptions> configDashboardAction = options =>
             {
                 options.Port = orleansDashboard.Port;
-            });
+            };
+
+            siloBuilder.UseDashboard(configDashboardAction);
 
             return siloBuilder;
         }

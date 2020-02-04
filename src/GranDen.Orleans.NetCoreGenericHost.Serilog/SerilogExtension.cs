@@ -32,13 +32,13 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return hostBuilder.ConfigureLogging(configureLoggingBuilderAction).UseSerilog();
         }
 
-        private static void DefaultConfigureLoggingBuilderAction(ILoggingBuilder logBuilder)
+        private static void DefaultConfigureLoggingBuilderAction(ILoggingBuilder loggingBuilder)
         {
             //because this management grain is very noisy when using Orleans Dashboard
-            logBuilder.AddFilter("Orleans.Runtime.Management.ManagementGrain", LogLevel.Warning)
+            loggingBuilder.AddFilter("Orleans.Runtime.Management.ManagementGrain", LogLevel.Warning)
                       .AddFilter("Orleans.Runtime.SiloControl", LogLevel.Warning);
 
-            logBuilder.AddSerilog(dispose: true);
+            loggingBuilder.AddSerilog(dispose: true);
         }
     }
 }
