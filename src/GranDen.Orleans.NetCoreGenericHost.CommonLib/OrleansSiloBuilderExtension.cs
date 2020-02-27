@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
@@ -10,6 +11,7 @@ using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
 using GranDen.Orleans.Server.SharedInterface;
 using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -120,7 +122,12 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
                     if (hostBuilderContext.HostingEnvironment.IsDevelopment())
                     {
-                        configurationBuilder.AddUserSecrets(AssemblyUtil.GetMainAssembly());
+                        var mainAssembly = AssemblyUtil.GetMainAssembly();
+                        var userSecretsAttribute = mainAssembly.GetCustomAttribute<UserSecretsIdAttribute>();
+                        if(userSecretsAttribute != null)
+                        {
+                            configurationBuilder.AddUserSecrets(AssemblyUtil.GetMainAssembly());
+                        }
                     }
                 });
             }

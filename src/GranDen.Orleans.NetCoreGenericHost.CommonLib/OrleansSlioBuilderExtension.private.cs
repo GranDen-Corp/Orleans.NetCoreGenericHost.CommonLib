@@ -11,13 +11,6 @@ using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
 using GranDen.Orleans.Server.SharedInterface;
 using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Logging;
-
-#if NETCOREAPP2_1
-using GranDen.Orleans.NetCoreGenericHost.OrleansDashboard;
-#else
-//using Orleans;
-#endif
-
 using Orleans.Hosting;
 using Orleans.Statistics;
 
@@ -30,7 +23,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         /// </summary>
         public static Dictionary<string, PluginLoader> PlugInLoaderCache { get; private set; }
 
-#region SiloBuilder Internal Configuration Methods
+        #region SiloBuilder Internal Configuration Methods
 
         private static ISiloBuilder ApplyOrleansDashboard(this ISiloBuilder siloBuilder, OrleansDashboardOption orleansDashboard, ILogger logger)
         {
@@ -45,21 +38,31 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
             logger.LogInformation($"Enable Orleans Dashboard on this host {orleansDashboard.Port} port");
 
-            //var extMethodInvoker = new ExtMethodInvoker("OrleansDashboard");
-
-            Action<DashboardOptions> configDashboardAction = options =>
+            try
             {
-                options.Port = orleansDashboard.Port;
-            };
+#if NETCOREAPP2_1
+            var helper = new ExtMethodInvoker("GranDen.Orleans.NetCoreGenericHost.OrleansDashboard");
+            var dashboardOptionsType = helper.ExtensionLibAssembly.GetType("GranDen.Orleans.NetCoreGenericHost.OrleansDashboard.DashboardOptions", true);
+#else
+                var helper = new ExtMethodInvoker("OrleansDashboard");
+                var dashboardOptionsType = helper.ExtensionLibAssembly.GetType("OrleansDashboard.DashboardOptions", true);
+#endif
+                var configAction =
+                    CreateDelegateHelper.CreateAssignValueAction(dashboardOptionsType, "options", new Dictionary<string, object> { ["Port"] = orleansDashboard.Port });
 
-            siloBuilder.UseDashboard(configDashboardAction);
+                var ret = helper.Invoke<ISiloBuilder>(new ExtMethodInfo { MethodName = "UseDashboard", ExtendedType = typeof(ISiloBuilder) }, siloBuilder, configAction);
 
-            return siloBuilder;
+                return ret;
+            }
+            catch (Exception exception)
+            {
+                throw new DashboardLoadFailedException(exception);
+            }
         }
 
-#endregion
+        #endregion
 
-#region Assembly Path Resolver
+        #region Assembly Path Resolver
 
         private static string PathResolver(string path)
         {
@@ -90,9 +93,9 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return ret;
         }
 
-#endregion
+        #endregion
 
-#region Private Util Methods
+        #region Private Util Methods
 
         private static string GetContextCwd()
         {
@@ -178,6 +181,6 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             return assembly;
         }
 
-#endregion
+        #endregion
     }
 }
