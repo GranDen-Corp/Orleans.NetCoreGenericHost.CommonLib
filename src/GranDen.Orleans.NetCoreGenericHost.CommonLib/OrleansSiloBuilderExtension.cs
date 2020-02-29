@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using GranDen.CallExtMethodLib;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Exceptions;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.Helpers;
 using GranDen.Orleans.NetCoreGenericHost.CommonLib.HostTypedOptions;
@@ -124,7 +125,7 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     {
                         var mainAssembly = AssemblyUtil.GetMainAssembly();
                         var userSecretsAttribute = mainAssembly.GetCustomAttribute<UserSecretsIdAttribute>();
-                        if(userSecretsAttribute != null)
+                        if (userSecretsAttribute != null)
                         {
                             configurationBuilder.AddUserSecrets(AssemblyUtil.GetMainAssembly());
                         }
@@ -405,49 +406,79 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                     var mongoDbStorageConfig = mongoDbConfig.Storage;
                     var mongoDbReminderConfig = mongoDbConfig.Reminder;
 
+                    var helper = new ExtMethodInvoker("Orleans.Providers.MongoDB");
+
                     if (!string.IsNullOrEmpty(mongoDbClusterConfig.DbConn))
                     {
-                        siloBuilder.UseMongoDBClient(mongoDbClusterConfig.DbConn);
+                        siloBuilder = helper.Invoke<ISiloBuilder>(new ExtMethodInfo { MethodName = "UseMongoDBClient", ExtendedType = typeof(ISiloBuilder) },
+                            siloBuilder, mongoDbClusterConfig.DbConn);
                     }
                     else if (!string.IsNullOrEmpty(mongoDbStorageConfig.DbConn))
                     {
-                        siloBuilder.UseMongoDBClient(mongoDbStorageConfig.DbConn);
+                        siloBuilder = helper.Invoke<ISiloBuilder>(new ExtMethodInfo { MethodName = "UseMongoDBClient", ExtendedType = typeof(ISiloBuilder) },
+                            siloBuilder, mongoDbStorageConfig.DbConn);
                     }
                     else if (!string.IsNullOrEmpty(mongoDbReminderConfig.DbConn))
                     {
-                        siloBuilder.UseMongoDBClient(mongoDbReminderConfig.DbConn);
+                        siloBuilder = helper.Invoke<ISiloBuilder>(new ExtMethodInfo { MethodName = "UseMongoDBClient", ExtendedType = typeof(ISiloBuilder) },
+                            siloBuilder, mongoDbReminderConfig.DbConn);
                     }
 
-                    siloBuilder.UseMongoDBClustering(options =>
+                    var mongoDBMembershipTableOptionsType =
+                        helper.ExtensionLibAssembly.GetType("Orleans.Providers.MongoDB.Configuration.MongoDBMembershipTableOptions", true);
+                    var mongoDBMembershipTableOptionsValue = new Dictionary<string, object>
                     {
-                        options.DatabaseName = mongoDbClusterConfig.DbName;
-
-                        if (!string.IsNullOrEmpty(mongoDbClusterConfig.CollectionPrefix))
-                        {
-                            options.CollectionPrefix = mongoDbClusterConfig.CollectionPrefix;
-                        }
-                    })
-                    .AddMongoDBGrainStorageAsDefault(optionsBuilder =>
+                        ["DatabaseName"] = mongoDbClusterConfig.DbName
+                    };
+                    if (!string.IsNullOrEmpty(mongoDbClusterConfig.CollectionPrefix))
                     {
-                        optionsBuilder.Configure(options =>
-                        {
-                            options.DatabaseName = mongoDbStorageConfig.DbName;
+                        mongoDBMembershipTableOptionsValue["CollectionPrefix"] = mongoDbClusterConfig.CollectionPrefix;
+                    }
+                    var configMongoDBClusteringAction =
+                        CreateDelegateHelper.CreateAssignValueAction(mongoDBMembershipTableOptionsType, "options", mongoDBMembershipTableOptionsValue);
 
-                            if (!string.IsNullOrEmpty(mongoDbStorageConfig.CollectionPrefix))
-                            {
-                                options.CollectionPrefix = mongoDbStorageConfig.CollectionPrefix;
-                            }
-                        });
-                    })
-                    .UseMongoDBReminders(options =>
+                    siloBuilder = helper.Invoke<ISiloBuilder>(
+                        new ExtMethodInfo { MethodName = "UseMongoDBClustering", ExtendedType = typeof(ISiloBuilder) },
+                        siloBuilder, configMongoDBClusteringAction);
+
+                    var mongoDBGrainStorageOptionsType =
+                        helper.ExtensionLibAssembly.GetType("Orleans.Providers.MongoDB.Configuration.MongoDBGrainStorageOptions", true);
+                    var mongoDBGrainStorageOptionsValue = new Dictionary<string, object>
                     {
-                        options.DatabaseName = mongoDbReminderConfig.DbName;
+                        ["DatabaseName"] = mongoDbStorageConfig.DbName,
+                    };
+                    if (!string.IsNullOrEmpty(mongoDbStorageConfig.CollectionPrefix))
+                    {
+                        mongoDBGrainStorageOptionsValue["CollectionPrefix"] = mongoDbStorageConfig.CollectionPrefix;
+                    }
 
-                        if (!string.IsNullOrEmpty(mongoDbReminderConfig.CollectionPrefix))
-                        {
-                            options.CollectionPrefix = mongoDbReminderConfig.CollectionPrefix;
-                        }
-                    });
+                    var configMongoDBGrainStorageAction =
+                        CreateDelegateHelper.CreateAssignValueAction(mongoDBGrainStorageOptionsType, "options",
+                            mongoDBGrainStorageOptionsValue);
+
+                    siloBuilder = helper.Invoke<ISiloBuilder>(
+                        new ExtMethodInfo { MethodName = "AddMongoDBGrainStorage", ExtendedType = typeof(ISiloBuilder) },
+                        siloBuilder, "Default", configMongoDBGrainStorageAction);
+
+                    var mongoDBRemindersOptionsType =
+                        helper.ExtensionLibAssembly.GetType("Orleans.Providers.MongoDB.Configuration.MongoDBRemindersOptions", true);
+                    var mongoDBRemindersOptionsValue = new Dictionary<string, object>
+                    {
+                        ["DatabaseName"] = mongoDbReminderConfig.DbName
+                    };
+                    if (!string.IsNullOrEmpty(mongoDbReminderConfig.CollectionPrefix))
+                    {
+                        mongoDBRemindersOptionsValue["CollectionPrefix"] = mongoDbReminderConfig.CollectionPrefix;
+                    }
+
+                    var configMongoDBRemindersAction =
+                        CreateDelegateHelper.CreateAssignValueAction(mongoDBRemindersOptionsType, "options",
+                            mongoDBRemindersOptionsValue);
+
+                    siloBuilder = helper.Invoke<ISiloBuilder>(
+                        new ExtMethodInfo { MethodName = "UseMongoDBReminders", ExtendedType = typeof(ISiloBuilder) },
+                        siloBuilder, configMongoDBRemindersAction);
+
                     break;
 
                 case "SQLDB":
