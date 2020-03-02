@@ -16,7 +16,7 @@
     <Company>GranDen Inc.</Company>
     <Authors>Isak Pao</Authors>
     <Description>Package for Orleans (http://dotnet.github.io/orleans ) Grain to provide Dependency Injection implementation interface</Description>
-    <Copyright>Copyright (c) 2019 GranDen Corp.(狂點軟體開發)</Copyright>
+    <Copyright>Copyright (c) 2020 GranDen Corp.(狂點軟體開發)</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/GranDen-Corp/Orleans.NetCoreGenericHost.CommonLib.git</RepositoryUrl>

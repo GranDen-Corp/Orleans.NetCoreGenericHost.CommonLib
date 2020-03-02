@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 
 namespace StubCodeGenDemoClient
@@ -15,7 +16,13 @@ namespace StubCodeGenDemoClient
             Log.Logger = new LoggerConfiguration()
                 //Turn off Orleans Statistics: ^^^ noisy logs
                 .MinimumLevel.Override("Orleans.RuntimeClientLogStatistics", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .Enrich.WithProcessId()
+                .Enrich.WithProcessName()
+                .Enrich.WithThreadId()
+                .Enrich.WithExceptionDetails()
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                .WriteTo.Debug()
                 .CreateLogger();
 
             var serviceCollection = new ServiceCollection();
@@ -25,13 +32,7 @@ namespace StubCodeGenDemoClient
             var logger = GetLogger<Program>(serviceProvider);
 
             logger.LogInformation("Press space key to start demo");
-            do
-            {
-                while (!Console.KeyAvailable)
-                {
-                    //wait
-                }
-            } while (Console.ReadKey(true).Key != ConsoleKey.Spacebar);
+            WaitForKey(ConsoleKey.Spacebar);
 
             try
             {
@@ -46,6 +47,18 @@ namespace StubCodeGenDemoClient
 
             logger.LogInformation("Press enter to exit");
             Console.ReadLine();
+        }
+
+        private static void WaitForKey(ConsoleKey key)
+        {
+            do
+            {
+                while (!Console.KeyAvailable)
+                {
+                    //wait
+                    Task.Delay(new TimeSpan(0, 0, 1)).Wait();
+                }
+            } while (Console.ReadKey(true).Key != key);
         }
 
         private static void ConfigureServices(ServiceCollection services)

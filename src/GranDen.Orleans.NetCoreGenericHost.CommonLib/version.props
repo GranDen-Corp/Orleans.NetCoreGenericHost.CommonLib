@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-      <PackageReleaseNotes>1.3.0 : &#xD;&#xA;Support using ASP.NET Core User Secrets</PackageReleaseNotes>
+      <PackageReleaseNotes>1.3.0 : 
+      &#xD;&#xA;1. Support using ASP.NET Core User Secrets
+      &#xD;&#xA;2. Reduce various nuget packages dependencies
+      </PackageReleaseNotes>
         <Version>1.3.0</Version>
     </PropertyGroup>
 </Project>

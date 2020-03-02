@@ -3,7 +3,7 @@
     "SqlDbDemoHost": {
       "commandName": "Project",
       "environmentVariables": {
-        "GrainLoadPath": "../../../../../Grains"
+        "GrainLoadPath": "../../Grains"
       }
     }
   }

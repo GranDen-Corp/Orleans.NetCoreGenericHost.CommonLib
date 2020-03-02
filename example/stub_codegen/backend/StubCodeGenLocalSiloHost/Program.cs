@@ -22,7 +22,7 @@ namespace StubCodeGenLocalSiloHost
             Log.Logger = CreateLogConfig().CreateLogger();
 
             var genericHostBuilder =
-                OrleansSiloBuilderExtension.CreateHostBuilder(args)
+                OrleansSiloBuilderExtension.CreateHostBuilder(args, configFilePrefix: "appsettings")
                 .ApplySerilog()
                 .UseOrleans(siloBuilder =>
                 {
