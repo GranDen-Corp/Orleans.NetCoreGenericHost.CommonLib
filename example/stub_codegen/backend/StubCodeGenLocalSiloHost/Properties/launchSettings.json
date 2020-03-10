@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "StubCodeGenLocalSiloHost": {
+    "CodeGenDemo_server": {
       "commandName": "Project",
       "environmentVariables": {
         "GrainLoadPath": "../../../.."

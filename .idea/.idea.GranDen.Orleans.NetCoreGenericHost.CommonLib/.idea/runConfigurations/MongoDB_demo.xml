@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MongoDB_demo" type="CompoundRunConfigurationType">
+    <toRun name="MongoDB client" type="LaunchSettings" />
+    <toRun name="MongoDB server" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>

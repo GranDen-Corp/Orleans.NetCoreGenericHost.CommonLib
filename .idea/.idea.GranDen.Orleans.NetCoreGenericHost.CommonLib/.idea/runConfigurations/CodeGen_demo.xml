@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CodeGen_demo" type="CompoundRunConfigurationType">
+    <toRun name="CodeGenDemo client" type="LaunchSettings" />
+    <toRun name="CodeGenDemo server" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>

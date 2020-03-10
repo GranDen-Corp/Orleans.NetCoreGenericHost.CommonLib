@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "HostingDemo": {
+    "InRamHostingDemo_server": {
       "commandName": "Project",
       "environmentVariables": {
         "GrainLoadPath": "../../Grains"

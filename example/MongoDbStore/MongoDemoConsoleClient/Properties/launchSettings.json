@@ -1,9 +1,8 @@
 {
   "profiles": {
-    "MongoDbDemo_server": {
+    "MongoDbDemo_client": {
       "commandName": "Project",
       "environmentVariables": {
-        "GrainLoadPath": "../../Grains"
       }
     }
   }
