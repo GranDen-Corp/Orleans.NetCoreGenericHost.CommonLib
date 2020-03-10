@@ -2,53 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0773e0e9-ca26-4c12-aa6e-4c7a98d0e934" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/contentModel.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/CodeGenDemo_client.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/CodeGenDemo_server.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/InRAM_client.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/InRAM_demo.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/InRAM_server.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/MongoDB_client.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/MongoDB_demo.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/MongoDB_server.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/SqlDbDemo_client.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/SqlDbDemo_server.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/runConfigurations/SqlDb_demo.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/riderModule.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example/InRAM/InRamDemoClient/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example/MYSQL/MySqlDemoClient/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example/MongoDbStore/MongoDemoConsoleClient/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example/SQLDB/SqlDbDemoClient/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example/stub_codegen/client/StubCodeGenDemoClient/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/InRAM/InRamDemoClient/InRamDemoClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/InRAM/InRamDemoClient/InRamDemoClient.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/InRAM/InRamDemoHost/InRamDemoHost.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/InRAM/InRamDemoHost/InRamDemoHost.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/InRAM/InRamDemoHost/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/InRAM/InRamDemoHost/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/MYSQL/MySqlDemoClient/MySqlDemoClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/MYSQL/MySqlDemoClient/MySqlDemoClient.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/MYSQL/MySqlDemoHost/MySqlDemoHost.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/MYSQL/MySqlDemoHost/MySqlDemoHost.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/MYSQL/MySqlDemoHost/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/MYSQL/MySqlDemoHost/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/MongoDbStore/MongoDemoConsoleClient/MongoDemoConsoleClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/MongoDbStore/MongoDemoConsoleClient/MongoDemoConsoleClient.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/MongoDbStore/MongoDemoSiloHost/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/MongoDbStore/MongoDemoSiloHost/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/RPC_Interface/IGrainDemo/IGrainDemo.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/RPC_Interface/IGrainDemo/IGrainDemo.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/RPC_Interface/IGrainWith3rdPartyLib/IGrainWith3rdPartyLib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/RPC_Interface/IGrainWith3rdPartyLib/IGrainWith3rdPartyLib.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/SQLDB/SqlDbDemoClient/SqlDbDemoClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/SQLDB/SqlDbDemoClient/SqlDbDemoClient.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/SQLDB/SqlDbDemoHost/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/SQLDB/SqlDbDemoHost/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/SQLDB/SqlDbDemoHost/SqlDbDemoHost.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/SQLDB/SqlDbDemoHost/SqlDbDemoHost.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/stub_codegen/backend/HelloNetStandard2_1.Grains/HelloNetStandard2_1.Grains.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/stub_codegen/backend/HelloNetStandard2_1.Grains/HelloNetStandard2_1.Grains.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/stub_codegen/backend/StubCodeGenLocalSiloHost/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/stub_codegen/backend/StubCodeGenLocalSiloHost/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/stub_codegen/backend/StubCodeGenLocalSiloHost/StubCodeGenLocalSiloHost.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/stub_codegen/backend/StubCodeGenLocalSiloHost/StubCodeGenLocalSiloHost.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/stub_codegen/client/NetStandard2ClientLib/NetStandard2ClientLib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/stub_codegen/client/NetStandard2ClientLib/NetStandard2ClientLib.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/stub_codegen/netstandard_mixed/HelloNetStandard.ShareInterface/HelloNetStandard.ShareInterface.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/stub_codegen/netstandard_mixed/HelloNetStandard.ShareInterface/HelloNetStandard.ShareInterface.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GranDen.Orleans.NetCoreGenericHost.CommonLib/GranDen.Orleans.NetCoreGenericHost.CommonLib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/GranDen.Orleans.NetCoreGenericHost.CommonLib/GranDen.Orleans.NetCoreGenericHost.CommonLib.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GranDen.Orleans.Server.SharedInterface/GranDen.Orleans.Server.SharedInterface.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/GranDen.Orleans.Server.SharedInterface/GranDen.Orleans.Server.SharedInterface.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GranDen.Orleans.NetCoreGenericHost.CommonLib/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GranDen.Orleans.NetCoreGenericHost.CommonLib/OrleansSiloBuilderExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GranDen.Orleans.NetCoreGenericHost.CommonLib/OrleansSiloBuilderExtension.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +14,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/GranDen.Orleans.NetCoreGenericHost.CommonLib/OrleansSiloBuilderExtension.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/example/InRAM/InRamDemoHost/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/example/MongoDbStore/MongoDemoSiloHost/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.cs" root0="FORCE_HIGHLIGHTING" />
@@ -70,6 +26,10 @@
         <option value="$PROJECT_DIR$/example/MongoDbStore/MongoDemoSiloHost/Properties/launchSettings.json" />
         <option value="$PROJECT_DIR$/example/MongoDbStore/MongoDemoConsoleClient/MongoDemoConsoleClient.csproj" />
         <option value="$PROJECT_DIR$/example/SQLDB/SqlDbDemoClient/SqlDbDemoClient.csproj" />
+        <option value="$PROJECT_DIR$/src/GranDen.Orleans.NetCoreGenericHost.CommonLib/version.props" />
+        <option value="$PROJECT_DIR$/src/GranDen.Orleans.NetCoreGenericHost.Serilog/version.props" />
+        <option value="$PROJECT_DIR$/src/GranDen.Orleans.Server.SharedInterface/version.props" />
+        <option value="$PROJECT_DIR$/src/GranDen.Orleans.NetCoreGenericHost.CommonLib/OrleansSiloBuilderExtension.cs" />
       </list>
     </option>
   </component>
@@ -85,6 +45,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TWShift.3" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="editorconfig.notification" value="utf-8-bom" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -155,6 +116,11 @@
               <path>
                 <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
                 <item name=".NET Launch Settings Profile" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Running" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name=".NET Launch Settings Profile" type="7427dc5b:ServiceModel$ServiceGroupNode" />
                 <item name="Finished" type="7427dc5b:ServiceModel$ServiceGroupNode" />
               </path>
               <path>
@@ -183,7 +149,7 @@
       <workItem from="1583822903814" duration="1073000" />
       <workItem from="1583824114039" duration="129000" />
       <workItem from="1583824304978" duration="4096000" />
-      <workItem from="1583828499334" duration="5343000" />
+      <workItem from="1583828499334" duration="8147000" />
     </task>
     <servers />
   </component>
@@ -210,29 +176,37 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="420" y="41" key="#InRAM_server/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583825337345" />
+    <state x="361" y="71" key="#Notifications" timestamp="1583836002577">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="71" key="#Notifications/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583836002577" />
     <state x="194" y="80" width="1238" height="744" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583834878348">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="194" y="80" width="1238" height="744" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583834878348" />
-    <state width="1024" height="210" key="GridCell.Tab.0.bottom" timestamp="1583833617359">
+    <state width="1024" height="210" key="GridCell.Tab.0.bottom" timestamp="1583837709740">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1024" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583833617359" />
-    <state width="1024" height="210" key="GridCell.Tab.0.center" timestamp="1583833617359">
+    <state width="1024" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583837709740" />
+    <state width="1024" height="210" key="GridCell.Tab.0.center" timestamp="1583837709740">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1024" height="210" key="GridCell.Tab.0.center/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583833617359" />
-    <state width="1024" height="210" key="GridCell.Tab.0.left" timestamp="1583833617359">
+    <state width="1024" height="210" key="GridCell.Tab.0.center/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583837709740" />
+    <state width="1024" height="210" key="GridCell.Tab.0.left" timestamp="1583837709740">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1024" height="210" key="GridCell.Tab.0.left/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583833617359" />
-    <state width="1024" height="210" key="GridCell.Tab.0.right" timestamp="1583833617359">
+    <state width="1024" height="210" key="GridCell.Tab.0.left/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583837709740" />
+    <state width="1024" height="210" key="GridCell.Tab.0.right" timestamp="1583837709740">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1024" height="210" key="GridCell.Tab.0.right/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583833617359" />
+    <state width="1024" height="210" key="GridCell.Tab.0.right/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583837709740" />
     <state x="277" y="55" key="SettingsEditor" timestamp="1583823357331">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="55" key="SettingsEditor/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583823357331" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1583837698735">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.-600.1920.1040@0.0.1536.824" timestamp="1583837698735" />
   </component>
 </project>
