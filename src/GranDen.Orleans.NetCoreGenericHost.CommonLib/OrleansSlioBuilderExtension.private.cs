@@ -12,7 +12,6 @@ using GranDen.Orleans.Server.SharedInterface;
 using McMaster.NETCore.Plugins;
 using Microsoft.Extensions.Logging;
 using Orleans.Hosting;
-using Orleans.Statistics;
 
 namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 {
@@ -29,11 +28,31 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                siloBuilder.UseLinuxEnvironmentStatistics();
+                try
+                {
+                    var helper = new ExtMethodInvoker("Orleans.TelemetryConsumers.Linux");
+                    siloBuilder = helper.Invoke<ISiloBuilder>(
+                        new ExtMethodInfo { MethodName = "UseLinuxEnvironmentStatistics", ExtendedType = typeof(ISiloBuilder) },
+                        siloBuilder);
+                }
+                catch (Exception exception)
+                {
+                    throw new LinuxTelemetryLibLoadFailedException(exception);
+                }
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                siloBuilder.UsePerfCounterEnvironmentStatistics();
+                try
+                {
+                    var helper = new ExtMethodInvoker("Orleans.TelemetryConsumers.Counters");
+                    siloBuilder = helper.Invoke<ISiloBuilder>(
+                        new ExtMethodInfo { MethodName = "UsePerfCounterEnvironmentStatistics", ExtendedType = typeof(ISiloBuilder) },
+                        siloBuilder);
+                }
+                catch (Exception exception)
+                {
+                    throw new WindowsPerformanceCountersTelemetryLibLoadFailedException(exception);
+                }
             }
 
             logger.LogInformation($"Enable Orleans Dashboard on this host {orleansDashboard.Port} port");
@@ -41,8 +60,8 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
             try
             {
 #if NETCOREAPP2_1
-            var helper = new ExtMethodInvoker("GranDen.Orleans.NetCoreGenericHost.OrleansDashboard");
-            var dashboardOptionsType = helper.ExtensionLibAssembly.GetType("GranDen.Orleans.NetCoreGenericHost.OrleansDashboard.DashboardOptions", true);
+                var helper = new ExtMethodInvoker("GranDen.Orleans.NetCoreGenericHost.OrleansDashboard");
+                var dashboardOptionsType = helper.ExtensionLibAssembly.GetType("GranDen.Orleans.NetCoreGenericHost.OrleansDashboard.DashboardOptions", true);
 #else
                 var helper = new ExtMethodInvoker("OrleansDashboard");
                 var dashboardOptionsType = helper.ExtensionLibAssembly.GetType("OrleansDashboard.DashboardOptions", true);
@@ -50,9 +69,11 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
                 var configAction =
                     CreateDelegateHelper.CreateAssignValueAction(dashboardOptionsType, "options", new Dictionary<string, object> { ["Port"] = orleansDashboard.Port });
 
-                var ret = helper.Invoke<ISiloBuilder>(new ExtMethodInfo { MethodName = "UseDashboard", ExtendedType = typeof(ISiloBuilder) }, siloBuilder, configAction);
+                siloBuilder = helper.Invoke<ISiloBuilder>(
+                    new ExtMethodInfo { MethodName = "UseDashboard", ExtendedType = typeof(ISiloBuilder) }, 
+                    siloBuilder, configAction);
 
-                return ret;
+                return siloBuilder;
             }
             catch (Exception exception)
             {

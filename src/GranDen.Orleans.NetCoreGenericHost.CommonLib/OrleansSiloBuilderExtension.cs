@@ -344,7 +344,17 @@ namespace GranDen.Orleans.NetCoreGenericHost.CommonLib
 
             if (!string.IsNullOrEmpty(siloConfig.AzureApplicationInsightKey))
             {
-                siloBuilder.AddApplicationInsightsTelemetryConsumer(siloConfig.AzureApplicationInsightKey);
+                try
+                {
+                    var helper = new ExtMethodInvoker("Orleans.TelemetryConsumers.AI");
+                    siloBuilder = helper.Invoke<ISiloBuilder>(
+                        new ExtMethodInfo { MethodName = "AddApplicationInsightsTelemetryConsumer", ExtendedType = typeof(ISiloBuilder) }, 
+                        siloBuilder, siloConfig.AzureApplicationInsightKey);
+                }
+                catch (Exception exception)
+                {
+                   throw new AzureApplicationInsightLibLoadFailedException(exception);
+                }
             }
 
             if (siloConfig.IsMultiCluster.HasValue && siloConfig.IsMultiCluster.Value)
