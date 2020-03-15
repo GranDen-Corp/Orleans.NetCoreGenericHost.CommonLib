@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MySQLDemo" type="CompoundRunConfigurationType">
-    <toRun name="CodeGenDemo client" type="LaunchSettings" />
-    <toRun name="CodeGenDemo server" type="LaunchSettings" />
+    <toRun name="MySqlDemo server" type="LaunchSettings" />
+    <toRun name="MySqlDemo client" type="LaunchSettings" />
     <method v="2" />
   </configuration>
 </component>

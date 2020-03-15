@@ -28,7 +28,7 @@
     <PackageProjectUrl>https://www.nuget.org/packages/GranDen.Orleans.Server.SharedInterface</PackageProjectUrl>
   </PropertyGroup>
   
-  <Import Project="./version.props" />
+  <Import Project="./ReleaseNotes.props" />
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>./GranDen.Orleans.Server.SharedInterface.xml</DocumentationFile>
