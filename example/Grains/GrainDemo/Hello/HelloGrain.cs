@@ -4,6 +4,7 @@ using IGrainDemo;
 
 namespace GrainDemo.Hello
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class HelloGrain : Orleans.Grain, IHello
     {
         private readonly ILogger<HelloGrain> _logger;

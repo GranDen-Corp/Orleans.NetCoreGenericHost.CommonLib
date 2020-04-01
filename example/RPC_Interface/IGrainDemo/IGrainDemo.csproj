@@ -9,7 +9,7 @@
   </PropertyGroup>  
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.1.3" Condition="$([System.Text.RegularExpressions.Regex]::Match($(NETCoreSdkVersion),'^3\.\d+\.[\w-]+').Success)">
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.1.4" Condition="$([System.Text.RegularExpressions.Regex]::Match($(NETCoreSdkVersion),'^3\.\d+\.[\w-]+').Success)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -19,8 +19,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     
-    <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.1.3" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
+    <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.1.4" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
   </ItemGroup>
 
 </Project>
